@@ -73,9 +73,9 @@ export default function ArticleGrid() {
     if (categories) {
       return categories.map((category) => (
         <div key={category}>
-          <Separator className="mt-2" />
-          <div className="text-xl">{category}</div>
-          <div className="flex flex-col gap-2 my-2">
+          <Separator className="mb-4" />
+          <div className="text-md">{category}</div>
+          <div className="flex flex-col gap-2 mt-2 mb-6">
             {renderArticles(category)}
           </div>
         </div>
@@ -99,8 +99,8 @@ export default function ArticleGrid() {
     }
   }
   return (
-    <div className="grid grid-cols-1 gap-2">
-      <div>{renderCategories()}</div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+      {renderCategories()}
     </div>
   );
 }
