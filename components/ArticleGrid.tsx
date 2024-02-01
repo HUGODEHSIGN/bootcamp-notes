@@ -1,17 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
 
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
+import { atom, useAtom } from "jotai";
 import { db } from "../app/firestore-config";
 import { Separator } from "./ui/separator";
 
@@ -23,9 +16,20 @@ type articleType = {
   description: string;
 };
 
+export const articlesAtom = atom([
+  {
+    id: "loading",
+    category: "loading",
+    content: "loading",
+    title: "loading",
+    description: "loading",
+  },
+]);
+
 export default function ArticleGrid() {
   const [categories, setCategories] = useState<Array<string>>();
-  const [articles, setArticles] = useState<Array<articleType>>();
+  // const [articles, setArticles] = useState<Array<articleType>>();
+  const [articles, setArticles] = useAtom(articlesAtom);
 
   // fetch all of the data needed to display article cards
   useEffect(() => {

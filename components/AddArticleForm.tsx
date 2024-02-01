@@ -4,10 +4,12 @@ import { db } from "@/app/firestore-config";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDoc, collection, doc, getDoc } from "firebase/firestore";
+import { useAtom } from "jotai";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { articlesAtom } from "./ArticleGrid";
 import { Button } from "./ui/button";
 import {
   Command,
@@ -43,6 +45,8 @@ export default function AddArticleForm({
 }: AddArticleFormProps) {
   const [categories, setCategories] = useState<Array<string>>();
   const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
+
+  const [articles, setArticles] = useAtom(articlesAtom);
 
   function changeCategorySchema() {
     let categorySchema: z.ZodString;
@@ -88,6 +92,7 @@ export default function AddArticleForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
+      description: "",
       content: "",
     },
   });
@@ -106,6 +111,16 @@ export default function AddArticleForm({
       title: values.title,
     });
     console.log("Document written with ID: ", docRef.id);
+    setArticles([
+      ...articles,
+      {
+        id: values.title,
+        category: values.category,
+        content: values.content,
+        description: values.description,
+        title: values.title,
+      },
+    ]);
     setState(false);
   }
 
