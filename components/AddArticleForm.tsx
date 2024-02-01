@@ -3,7 +3,7 @@
 import { db } from "@/app/firestore-config";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -31,23 +31,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Switch } from "./ui/switch";
 import { Textarea } from "./ui/textarea";
 
-// for testing
-const languages = [
-  { label: "English", value: "en" },
-  { label: "French", value: "fr" },
-  { label: "German", value: "de" },
-  { label: "Spanish", value: "es" },
-  { label: "Portuguese", value: "pt" },
-  { label: "Russian", value: "ru" },
-  { label: "Japanese", value: "ja" },
-  { label: "Korean", value: "ko" },
-  { label: "Chinese", value: "zh" },
-] as const;
+type AddArticleFormProps = {
+  className?: string;
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 // form component
 export default function AddArticleForm({
   className,
-}: React.ComponentProps<"form">) {
+  setState,
+}: AddArticleFormProps) {
   const [categories, setCategories] = useState<Array<string>>();
   const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
 
@@ -101,10 +94,19 @@ export default function AddArticleForm({
 
   // function for submitting
   // add firebase functionality later
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    // console.log(values);
+
+    const docRef = await addDoc(collection(db, "articles"), {
+      category: values.category,
+      content: values.content,
+      description: values.description,
+      title: values.title,
+    });
+    console.log("Document written with ID: ", docRef.id);
+    setState(false);
   }
 
   // render form here
@@ -166,7 +168,7 @@ export default function AddArticleForm({
                             ? categories?.find(
                                 (category) => category === field.value
                               )
-                            : "Select language"}
+                            : "Select category"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </FormControl>
@@ -210,7 +212,7 @@ export default function AddArticleForm({
                     checked={isNewCategory}
                     onCheckedChange={() => setIsNewCategory(!isNewCategory)}
                   />
-                  <Label htmlFor="is-new-category">{`${isNewCategory}`}</Label>
+                  <Label htmlFor="is-new-category">Create new category</Label>
                 </div>
 
                 <FormDescription>
@@ -246,12 +248,6 @@ export default function AddArticleForm({
           <Button type="submit" className="w-full">
             Submit
           </Button>
-          {/* <Button
-            onClick={() => {
-              console.log(categories);
-            }}>
-            test
-          </Button> */}
         </form>
       </Form>
     </div>

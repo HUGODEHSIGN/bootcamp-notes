@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
-import { useMediaQuery } from "@uidotdev/usehooks";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,8 +19,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useMediaQuery } from "@uidotdev/usehooks";
 import { Plus } from "lucide-react";
 import AddArticleForm from "./AddArticleForm";
 
@@ -45,7 +42,7 @@ export function AddArticleDialog() {
               Make changes to your profile here. Click save when you're done.
             </DialogDescription>
           </DialogHeader>
-          <AddArticleForm />
+          <AddArticleForm setState={setOpen} />
         </DialogContent>
       </Dialog>
     );
@@ -65,7 +62,7 @@ export function AddArticleDialog() {
             Make changes to your profile here. Click save when you're done.
           </DrawerDescription>
         </DrawerHeader>
-        <AddArticleForm className="px-4" />
+        <AddArticleForm className="px-4" setState={setOpen} />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
