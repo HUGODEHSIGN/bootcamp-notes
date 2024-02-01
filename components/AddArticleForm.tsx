@@ -3,13 +3,13 @@
 import { db } from "@/app/firestore-config";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addDoc, collection, doc, getDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { articlesAtom } from "./ArticleGrid";
+import { articlesAtom, categoriesAtom } from "./ArticleGrid";
 import { Button } from "./ui/button";
 import {
   Command,
@@ -43,7 +43,7 @@ export default function AddArticleForm({
   className,
   setState,
 }: AddArticleFormProps) {
-  const [categories, setCategories] = useState<Array<string>>();
+  const [categories, setCategories] = useAtom(categoriesAtom);
   const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
 
   const [articles, setArticles] = useAtom(articlesAtom);
@@ -71,21 +71,21 @@ export default function AddArticleForm({
     content: z.string().min(2).max(2000),
   });
 
-  useEffect(() => {
-    // fetch categories
-    const categoryRef = doc(db, "categories", "categories");
-    async function fetchCategory() {
-      const docSnap = await getDoc(categoryRef);
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-        setCategories(docSnap.data().categories);
-      } else {
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    }
-    fetchCategory();
-  }, []);
+  // useEffect(() => {
+  //   // fetch categories
+  //   const categoryRef = doc(db, "categories", "categories");
+  //   async function fetchCategory() {
+  //     const docSnap = await getDoc(categoryRef);
+  //     if (docSnap.exists()) {
+  //       console.log("Document data:", docSnap.data());
+  //       setCategories(docSnap.data().categories);
+  //     } else {
+  //       // docSnap.data() will be undefined in this case
+  //       console.log("No such document!");
+  //     }
+  //   }
+  //   fetchCategory();
+  // }, []);
 
   // set default values for each field
   const form = useForm<z.infer<typeof formSchema>>({

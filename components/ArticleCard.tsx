@@ -1,8 +1,5 @@
-import React from "react";
-
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -23,7 +20,7 @@ export default function ArticleCard({ title, description }: Props) {
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button>Visit Page</Button>
+        <Button>View</Button>
       </CardFooter>
     </Card>
   );
