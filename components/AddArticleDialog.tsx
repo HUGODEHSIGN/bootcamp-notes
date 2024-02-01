@@ -1,6 +1,4 @@
 "use client";
-
-import dynamic from "next/dynamic";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -24,11 +22,8 @@ import {
 } from "@/components/ui/drawer";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { Plus } from "lucide-react";
+import AddArticleForm from "./AddArticleForm";
 import { ScrollArea } from "./ui/scroll-area";
-
-const AddArticleForm = dynamic(() => import("./AddArticleForm"), {
-  ssr: false,
-});
 
 export function AddArticleDialog() {
   const [open, setOpen] = React.useState(false);
