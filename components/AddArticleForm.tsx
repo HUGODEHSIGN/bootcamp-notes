@@ -1,6 +1,6 @@
 "use client";
 
-import { db } from "@/app/firestore-config";
+import { db } from "@/lib/firestore-config";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
