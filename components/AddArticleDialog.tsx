@@ -40,7 +40,8 @@ export function AddArticleDialog() {
           <DialogHeader>
             <DialogTitle>Add a new article</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you're done.
+              Make changes to your profile here. Click save when you&apos;re
+              done.
             </DialogDescription>
           </DialogHeader>
           <AddArticleForm setState={setOpen} />
@@ -61,7 +62,8 @@ export function AddArticleDialog() {
           <DrawerHeader className="text-left">
             <DrawerTitle>Add a new article</DrawerTitle>
             <DrawerDescription>
-              Make changes to your profile here. Click save when you're done.
+              Make changes to your profile here. Click save when you&apos;re
+              done.
             </DrawerDescription>
           </DrawerHeader>
           <AddArticleForm className="px-4" setState={setOpen} />

@@ -72,7 +72,7 @@ export default function ArticleGrid() {
       setArticles(articleData);
     }
     fetchArticles();
-  }, []);
+  }, [setArticles, setCategories]);
 
   function renderCategories() {
     if (categories) {
