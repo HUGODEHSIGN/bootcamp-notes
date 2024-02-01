@@ -48,14 +48,41 @@ export default function AddArticleForm({
 
   const [articles, setArticles] = useAtom(articlesAtom);
 
+  const doesNotExist = (value: string) => {
+    if (
+      categories
+        .map((category) => category.toLowerCase())
+        .includes(value.toLowerCase())
+    ) {
+      return false;
+    }
+    return true;
+  };
+
+  const categoryDoesNotExist = z.string().refine(doesNotExist, {
+    message: "Category already exists",
+  });
+
+  const categoryIsRightLength = z.string().min(2).max(10);
+
+  const combinedSchema = z.intersection(
+    categoryDoesNotExist,
+    categoryIsRightLength
+  );
+
   function changeCategorySchema() {
-    let categorySchema: z.ZodString;
+    let categorySchema:
+      | z.ZodString
+      | z.ZodIntersection<
+          z.ZodEffects<z.ZodString, string, string>,
+          z.ZodString
+        >;
     if (!isNewCategory) {
       categorySchema = z.string({
         required_error: "Please select a category",
       });
     } else {
-      categorySchema = z.string().min(2).max(10);
+      categorySchema = combinedSchema;
     }
     return categorySchema;
   }
@@ -64,28 +91,9 @@ export default function AddArticleForm({
   const formSchema = z.object({
     title: z.string().min(2).max(50),
     description: z.string().min(10).max(100),
-    // category: z.string({
-    //   required_error: "Please select a category",
-    // }),
     category: changeCategorySchema(),
     content: z.string().min(2).max(2000),
   });
-
-  // useEffect(() => {
-  //   // fetch categories
-  //   const categoryRef = doc(db, "categories", "categories");
-  //   async function fetchCategory() {
-  //     const docSnap = await getDoc(categoryRef);
-  //     if (docSnap.exists()) {
-  //       console.log("Document data:", docSnap.data());
-  //       setCategories(docSnap.data().categories);
-  //     } else {
-  //       // docSnap.data() will be undefined in this case
-  //       console.log("No such document!");
-  //     }
-  //   }
-  //   fetchCategory();
-  // }, []);
 
   // set default values for each field
   const form = useForm<z.infer<typeof formSchema>>({
@@ -217,7 +225,12 @@ export default function AddArticleForm({
                   </Popover>
                 ) : (
                   <FormControl>
-                    <Input placeholder="New category" {...field} />
+                    {/* <Input placeholder="New category" {...field} /> */}
+                    <Input
+                      placeholder="New category"
+                      value={field.value || ""}
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                 )}
 
