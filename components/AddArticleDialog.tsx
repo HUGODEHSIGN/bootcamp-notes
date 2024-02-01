@@ -22,6 +22,7 @@ import {
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { Plus } from "lucide-react";
 import AddArticleForm from "./AddArticleForm";
+import { ScrollArea } from "./ui/scroll-area";
 
 export function AddArticleDialog() {
   const [open, setOpen] = React.useState(false);
@@ -56,18 +57,20 @@ export function AddArticleDialog() {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <DrawerHeader className="text-left">
-          <DrawerTitle>Add a new article</DrawerTitle>
-          <DrawerDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DrawerDescription>
-        </DrawerHeader>
-        <AddArticleForm className="px-4" setState={setOpen} />
-        <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
+        <ScrollArea className="h-[66vh]">
+          <DrawerHeader className="text-left">
+            <DrawerTitle>Add a new article</DrawerTitle>
+            <DrawerDescription>
+              Make changes to your profile here. Click save when you're done.
+            </DrawerDescription>
+          </DrawerHeader>
+          <AddArticleForm className="px-4" setState={setOpen} />
+          <DrawerFooter className="pt-2">
+            <DrawerClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </ScrollArea>
       </DrawerContent>
     </Drawer>
   );

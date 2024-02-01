@@ -3,7 +3,13 @@
 import { db } from "@/app/firestore-config";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addDoc, collection } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { useAtom } from "jotai";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
@@ -112,13 +118,21 @@ export default function AddArticleForm({
     // ✅ This will be type-safe and validated.
     // console.log(values);
 
-    const docRef = await addDoc(collection(db, "articles"), {
+    const categoriesRef = doc(db, "categories", "categories");
+
+    await updateDoc(categoriesRef, {
+      categories: arrayUnion(values.category),
+    });
+
+    setCategories([...categories, values.category]);
+
+    const articleRef = await addDoc(collection(db, "articles"), {
       category: values.category,
       content: values.content,
       description: values.description,
       title: values.title,
     });
-    console.log("Document written with ID: ", docRef.id);
+
     setArticles([
       ...articles,
       {
@@ -129,6 +143,8 @@ export default function AddArticleForm({
         title: values.title,
       },
     ]);
+
+    // close dialog after submission
     setState(false);
   }
 
