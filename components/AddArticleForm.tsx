@@ -4,10 +4,12 @@ import { db } from "@/lib/firestore-config";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  Timestamp,
   addDoc,
   arrayUnion,
   collection,
   doc,
+  serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
 import { useAtom } from "jotai";
@@ -134,6 +136,8 @@ export default function AddArticleForm({
       content: values.content,
       description: values.description,
       title: values.title,
+      created: serverTimestamp(),
+      edited: serverTimestamp(),
     });
 
     setArticles([
@@ -144,6 +148,8 @@ export default function AddArticleForm({
         content: values.content,
         description: values.description,
         title: values.title,
+        created: Timestamp.now(),
+        edited: Timestamp.now(),
       },
     ]);
 
