@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,10 +11,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAtom } from "jotai";
+import { useState } from "react";
 import { articleType, articlesAtom } from "./ArticleGrid";
 
 export default function ArticleSortDropdown() {
-  const [sort, setSort] = React.useState("alphabetical");
+  const [sort, setSort] = useState("alphabetical");
+
   const [articles, setArticles] = useAtom(articlesAtom);
 
   function sortByAlphabetical(a: articleType, b: articleType) {

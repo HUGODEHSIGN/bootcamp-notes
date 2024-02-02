@@ -1,6 +1,7 @@
 "use client";
 
 import { db } from "@/lib/firestore-config";
+import { useSortArticles } from "@/lib/useSortArticles";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -58,6 +59,8 @@ export default function AddArticleForm({
   const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
 
   const [articles, setArticles] = useAtom(articlesAtom);
+
+  const { sortArticles } = useSortArticles();
 
   const doesNotExist = (value: string) => {
     if (
@@ -152,6 +155,8 @@ export default function AddArticleForm({
         edited: Timestamp.now(),
       },
     ]);
+
+    // sortArticles("alphabetical");
 
     // close dialog after submission
     setState.setOpenDialog(false);
