@@ -5,14 +5,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 import { Button } from "./ui/button";
 
 type Props = {
   title: string;
   description: string;
+  id: string;
 };
 
-export default function ArticleCard({ title, description }: Props) {
+export default function ArticleCard({ title, description, id }: Props) {
   return (
     <Card>
       <CardHeader>
@@ -20,7 +22,9 @@ export default function ArticleCard({ title, description }: Props) {
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button>View</Button>
+        <Button>
+          <Link href={`/${title}`}>View</Link>
+        </Button>
       </CardFooter>
     </Card>
   );
