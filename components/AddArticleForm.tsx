@@ -1,13 +1,16 @@
 "use client";
 
 import { db } from "@/lib/firestore-config";
+import { useSortArticles } from "@/lib/useSortArticles";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  Timestamp,
   addDoc,
   arrayUnion,
   collection,
   doc,
+  serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
 import { useAtom } from "jotai";
@@ -56,6 +59,8 @@ export default function AddArticleForm({
   const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
 
   const [articles, setArticles] = useAtom(articlesAtom);
+
+  const { sortArticles } = useSortArticles();
 
   const doesNotExist = (value: string) => {
     if (
@@ -134,6 +139,8 @@ export default function AddArticleForm({
       content: values.content,
       description: values.description,
       title: values.title,
+      created: serverTimestamp(),
+      edited: serverTimestamp(),
     });
 
     setArticles([
@@ -144,8 +151,12 @@ export default function AddArticleForm({
         content: values.content,
         description: values.description,
         title: values.title,
+        created: Timestamp.now(),
+        edited: Timestamp.now(),
       },
     ]);
+
+    // sortArticles("alphabetical");
 
     // close dialog after submission
     setState.setOpenDialog(false);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
 
 import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
@@ -13,6 +13,8 @@ export type articleType = {
   content: string;
   title: string;
   description: string;
+  created: { seconds: number; nanoseconds: number };
+  edited: { seconds: number; nanoseconds: number };
 };
 
 export const articlesAtom = atom([
@@ -22,6 +24,8 @@ export const articlesAtom = atom([
     content: "",
     title: "",
     description: "",
+    created: { seconds: 0, nanoseconds: 0 },
+    edited: { seconds: 0, nanoseconds: 0 },
   },
 ]);
 
@@ -30,6 +34,7 @@ export const categoriesAtom = atom([""]);
 export default function ArticleGrid() {
   const [categories, setCategories] = useAtom(categoriesAtom);
   const [articles, setArticles] = useAtom(articlesAtom);
+  const [sort, setSort] = useState(false);
 
   // fetch all of the data needed to display article cards
   useEffect(() => {
@@ -65,13 +70,18 @@ export default function ArticleGrid() {
           content: doc.data().content,
           title: doc.data().title,
           description: doc.data().description,
+          created: doc.data().created,
+          edited: doc.data().edited,
         };
         articleData.push(newData);
       });
       setArticles(articleData);
+      console.log(articles);
     }
     fetchArticles();
   }, [setArticles, setCategories]);
+
+  function sortArticles() {}
 
   function renderCategories() {
     if (categories) {
@@ -102,8 +112,10 @@ export default function ArticleGrid() {
     }
   }
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
-      {renderCategories()}
-    </div>
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 pt-6">
+        {renderCategories()}
+      </div>
+    </>
   );
 }
