@@ -1,8 +1,8 @@
 import ArticleGrid from "@/components/ArticleGrid";
 
-export default function Home() {
+export default function Page() {
   return (
-    <main className="mx-6 sm:mx-12 md:mx-24 lg:mx-48">
+    <main>
       <ArticleGrid />
     </main>
   );

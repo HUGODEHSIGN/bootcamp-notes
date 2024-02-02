@@ -34,7 +34,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange>
           <Navbar />
-          {children}
+          <div className="mx-6 sm:mx-12 md:mx-24 lg:mx-48">{children}</div>
         </ThemeProvider>
       </body>
     </html>

@@ -11,10 +11,9 @@ import { Button } from "./ui/button";
 type Props = {
   title: string;
   description: string;
-  id: string;
 };
 
-export default function ArticleCard({ title, description, id }: Props) {
+export default function ArticleCard({ title, description }: Props) {
   return (
     <Card>
       <CardHeader>

@@ -7,7 +7,7 @@ import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import { atom, useAtom } from "jotai";
 import { db } from "../lib/firestore-config";
 
-type articleType = {
+export type articleType = {
   id: string;
   category: string;
   content: string;
@@ -96,7 +96,6 @@ export default function ArticleGrid() {
           <ArticleCard
             title={article.title}
             description={article.description}
-            id={article.id}
           />
         </div>
       ));
