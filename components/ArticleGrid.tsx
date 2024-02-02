@@ -6,9 +6,8 @@ import ArticleCard from "./ArticleCard";
 import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import { atom, useAtom } from "jotai";
 import { db } from "../lib/firestore-config";
-import { Separator } from "./ui/separator";
 
-type articleType = {
+export type articleType = {
   id: string;
   category: string;
   content: string;
@@ -78,7 +77,6 @@ export default function ArticleGrid() {
     if (categories) {
       return categories.map((category) => (
         <div key={category}>
-          <Separator className="mb-4" />
           <div className="text-md">{category}</div>
           <div className="flex flex-col gap-2 mt-2 mb-6">
             {renderArticles(category)}

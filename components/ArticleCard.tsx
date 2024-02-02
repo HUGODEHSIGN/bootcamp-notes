@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 import { Button } from "./ui/button";
 
 type Props = {
@@ -20,7 +21,9 @@ export default function ArticleCard({ title, description }: Props) {
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button>View</Button>
+        <Button>
+          <Link href={`/${title}`}>View</Link>
+        </Button>
       </CardFooter>
     </Card>
   );
