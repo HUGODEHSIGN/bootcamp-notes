@@ -21,7 +21,7 @@ export default function ArticleCard({ title, description }: Props) {
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button>
+        <Button asChild>
           <Link href={`/${title}`}>View</Link>
         </Button>
       </CardFooter>
