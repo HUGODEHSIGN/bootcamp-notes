@@ -30,14 +30,14 @@ export default function Article({ articleParams }: Props) {
     fetchArticle();
   }, []);
   return (
-    <>
-      <div className="py-6">
+    <div className="py-6">
+      <div className="pb-6">
         <div className="text-4xl font-bold">{article?.title}</div>
         <div className="text-2xl font-medium">{article?.description}</div>
       </div>
       {article?.content && (
         <div dangerouslySetInnerHTML={{ __html: article?.content }} />
       )}
-    </>
+    </div>
   );
 }
