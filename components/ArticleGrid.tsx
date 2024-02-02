@@ -5,7 +5,7 @@ import ArticleCard from "./ArticleCard";
 
 import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import { atom, useAtom } from "jotai";
-import { db } from "../app/firestore-config";
+import { db } from "../lib/firestore-config";
 import { Separator } from "./ui/separator";
 
 type articleType = {
@@ -72,7 +72,7 @@ export default function ArticleGrid() {
       setArticles(articleData);
     }
     fetchArticles();
-  }, []);
+  }, [setArticles, setCategories]);
 
   function renderCategories() {
     if (categories) {

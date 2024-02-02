@@ -1,6 +1,6 @@
 "use client";
 
-import { db } from "@/app/firestore-config";
+import { db } from "@/lib/firestore-config";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -41,7 +41,10 @@ import { Textarea } from "./ui/textarea";
 
 type AddArticleFormProps = {
   className?: string;
-  setState: React.Dispatch<React.SetStateAction<boolean>>;
+  setState: {
+    setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpenDrawer: React.Dispatch<React.SetStateAction<boolean>>;
+  };
 };
 
 // form component
@@ -145,7 +148,8 @@ export default function AddArticleForm({
     ]);
 
     // close dialog after submission
-    setState(false);
+    setState.setOpenDialog(false);
+    setState.setOpenDrawer(false);
   }
 
   // render form here
