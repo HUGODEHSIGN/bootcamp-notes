@@ -1,3 +1,6 @@
+import { Button } from "./ui/button";
+import Link from "next/link";
+
 import {
   Card,
   CardDescription,
@@ -5,15 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
-import { Button } from "./ui/button";
 
 type Props = {
   title: string;
   description: string;
 };
 
+// component takes props from ArticleGrid
 export default function ArticleCard({ title, description }: Props) {
+  // render component
   return (
     <Card>
       <CardHeader>

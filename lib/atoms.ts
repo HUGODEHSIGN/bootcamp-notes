@@ -13,3 +13,5 @@ export const articlesAtom = atom([
 ]);
 
 export const categoriesAtom = atom([""]);
+
+export const sortAtom = atom("alphabetical");

@@ -1,5 +1,9 @@
 "use client";
 
+import { articleType } from "./ArticleGrid";
+import { articlesAtom, sortAtom } from "@/lib/atoms";
+import { useAtom } from "jotai";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,14 +14,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { articlesAtom } from "@/lib/atoms";
-import { useAtom } from "jotai";
-import { useState } from "react";
-import { articleType } from "./ArticleGrid";
 
+// component for deciding how to sort all of the articles
 export default function ArticleSortDropdown() {
-  const [sort, setSort] = useState("alphabetical");
+  // state for which sorting method to use
+  const [sort, setSort] = useAtom(sortAtom);
 
+  // article state
   const [articles, setArticles] = useAtom(articlesAtom);
 
   function sortByAlphabetical(a: articleType, b: articleType) {
@@ -32,6 +35,7 @@ export default function ArticleSortDropdown() {
     return b.edited.seconds - a.edited.seconds;
   }
 
+  // function for sortingArticle - calling this function affects state directly and returns nothing
   function sortArticles(sortParameter: string) {
     let sortedArticles: articleType[];
 
@@ -52,6 +56,7 @@ export default function ArticleSortDropdown() {
     }
   }
 
+  // render dropdown
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -67,7 +72,8 @@ export default function ArticleSortDropdown() {
           onValueChange={(e) => {
             setSort(e);
             sortArticles(e);
-          }}>
+          }}
+        >
           <DropdownMenuRadioItem value="alphabetical">
             Alphabetical
           </DropdownMenuRadioItem>

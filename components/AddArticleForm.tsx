@@ -1,14 +1,5 @@
 "use client";
 
-import { useSubmit } from "@/lib/hooks/useSubmit";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useAtom } from "jotai";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { categoriesAtom } from "../lib/atoms";
 import { Button } from "./ui/button";
 import {
   Command,
@@ -31,6 +22,17 @@ import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Switch } from "./ui/switch";
 import { Textarea } from "./ui/textarea";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAtom } from "jotai";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { useSubmit } from "@/lib/hooks/useSubmit";
+
+import { categoriesAtom } from "../lib/atoms";
 
 type AddArticleFormProps = {
   className?: string;
@@ -45,15 +47,22 @@ export default function AddArticleForm({
   className,
   setState,
 }: AddArticleFormProps) {
+  // adding necessary states to this component
   const [categories, setCategories] = useAtom(categoriesAtom);
   const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
 
+  // custom hook for submitting the form
   const { submit } = useSubmit();
 
+  // custom filter for testing whether category exists when creating a new category
   function doesNotExist(value: string) {
     if (
       categories
+
+        // to lower case to normalize the comparison
         .map((category) => category.toLowerCase())
+
+        // testing whether the form data matches with categories already existing
         .includes(value.toLowerCase())
     ) {
       return false;
@@ -61,28 +70,39 @@ export default function AddArticleForm({
     return true;
   }
 
+  // new zod schema using filter doesNotExist
   const categoryDoesNotExist = z.string().refine(doesNotExist, {
     message: "Category already exists",
   });
 
+  // validation for string length of category
   const categoryIsRightLength = z.string().min(2).max(10);
 
+  // combine categoryDoesNotExist and categoryIsRightLength schema - both need to pass to submit form
   const combinedSchema = z.intersection(
     categoryDoesNotExist,
-    categoryIsRightLength
+    categoryIsRightLength,
   );
 
+  // there are two options for category, one to select an existing one and one to create a new category
+  // this function switches between two schemas appropriate for either scenario
   function changeCategorySchema() {
+    // initialize variable for switching between the two schemas
     let categorySchema:
       | z.ZodString
       | z.ZodIntersection<
           z.ZodEffects<z.ZodString, string, string>,
           z.ZodString
         >;
+
+    // if it is not a new category, only need to require a selection
     if (!isNewCategory) {
       categorySchema = z.string({
         required_error: "Please select a category",
       });
+
+      // if it is a new category, need to check if category exists already and if character is the right length
+      // see combinedSchema above
     } else {
       categorySchema = combinedSchema;
     }
@@ -115,6 +135,7 @@ export default function AddArticleForm({
     setState.setOpenDrawer(false);
   }
 
+  // render component
   return (
     <div className={cn("grid items-start gap-4", className)}>
       <Form {...form}>
@@ -134,7 +155,7 @@ export default function AddArticleForm({
               </FormItem>
             )}
           />
-
+          {/* form field for description */}
           <FormField
             control={form.control}
             name="description"
@@ -167,11 +188,12 @@ export default function AddArticleForm({
                           role="combobox"
                           className={cn(
                             "w-[200px] justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}>
+                            !field.value && "text-muted-foreground",
+                          )}
+                        >
                           {field.value
                             ? categories?.find(
-                                (category) => category === field.value
+                                (category) => category === field.value,
                               )
                             : "Select category"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -189,13 +211,14 @@ export default function AddArticleForm({
                               key={category}
                               onSelect={() => {
                                 form.setValue("category", category);
-                              }}>
+                              }}
+                            >
                               <Check
                                 className={cn(
                                   "mr-2 h-4 w-4",
                                   category === field.value
                                     ? "opacity-100"
-                                    : "opacity-0"
+                                    : "opacity-0",
                                 )}
                               />
                               {category}
@@ -207,7 +230,6 @@ export default function AddArticleForm({
                   </Popover>
                 ) : (
                   <FormControl>
-                    {/* <Input placeholder="New category" {...field} /> */}
                     <Input
                       placeholder="New category"
                       value={field.value || ""}
@@ -216,6 +238,7 @@ export default function AddArticleForm({
                   </FormControl>
                 )}
 
+                {/* toggle for changing between selecting existing category or creating new category */}
                 <div className="flex items-center space-x-2">
                   <Switch
                     id="is-new-category"
@@ -255,6 +278,8 @@ export default function AddArticleForm({
               </FormItem>
             )}
           />
+
+          {/* submission button */}
           <Button type="submit" className="w-full">
             Submit
           </Button>
