@@ -1,24 +1,14 @@
 "use client";
 
-import { db } from "@/lib/firestore-config";
-import { useSortArticles } from "@/lib/useSortArticles";
+import { useSubmit } from "@/lib/hooks/useSubmit";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Timestamp,
-  addDoc,
-  arrayUnion,
-  collection,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
 import { useAtom } from "jotai";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { articlesAtom, categoriesAtom } from "./ArticleGrid";
+import { categoriesAtom } from "../lib/atoms";
 import { Button } from "./ui/button";
 import {
   Command,
@@ -58,11 +48,9 @@ export default function AddArticleForm({
   const [categories, setCategories] = useAtom(categoriesAtom);
   const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
 
-  const [articles, setArticles] = useAtom(articlesAtom);
+  const { submit } = useSubmit();
 
-  const { sortArticles } = useSortArticles();
-
-  const doesNotExist = (value: string) => {
+  function doesNotExist(value: string) {
     if (
       categories
         .map((category) => category.toLowerCase())
@@ -71,7 +59,7 @@ export default function AddArticleForm({
       return false;
     }
     return true;
-  };
+  }
 
   const categoryDoesNotExist = z.string().refine(doesNotExist, {
     message: "Category already exists",
@@ -120,50 +108,13 @@ export default function AddArticleForm({
   });
 
   // function for submitting
-  // add firebase functionality later
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // console.log(values);
-
-    const categoriesRef = doc(db, "categories", "categories");
-
-    await updateDoc(categoriesRef, {
-      categories: arrayUnion(values.category),
-    });
-
-    setCategories([...categories, values.category]);
-
-    const articleRef = await addDoc(collection(db, "articles"), {
-      category: values.category,
-      content: values.content,
-      description: values.description,
-      title: values.title,
-      created: serverTimestamp(),
-      edited: serverTimestamp(),
-    });
-
-    setArticles([
-      ...articles,
-      {
-        id: values.title,
-        category: values.category,
-        content: values.content,
-        description: values.description,
-        title: values.title,
-        created: Timestamp.now(),
-        edited: Timestamp.now(),
-      },
-    ]);
-
-    // sortArticles("alphabetical");
-
+    submit(values);
     // close dialog after submission
     setState.setOpenDialog(false);
     setState.setOpenDrawer(false);
   }
 
-  // render form here
   return (
     <div className={cn("grid items-start gap-4", className)}>
       <Form {...form}>

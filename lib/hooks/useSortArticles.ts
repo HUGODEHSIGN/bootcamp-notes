@@ -1,5 +1,6 @@
-import { articleType, articlesAtom } from "@/components/ArticleGrid";
+import { articleType } from "@/components/ArticleGrid";
 import { useAtom } from "jotai";
+import { articlesAtom } from "../atoms";
 
 export function useSortArticles() {
   const [articles, setArticles] = useAtom(articlesAtom);
