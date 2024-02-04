@@ -1,8 +1,9 @@
 "use client";
 
-import { articleType } from "./ArticleGrid";
 import { articlesAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
+
+import { useSortArticles } from "@/lib/hooks/useSortArticles";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,38 +24,8 @@ export default function ArticleSortDropdown() {
   // article state
   const [articles, setArticles] = useAtom(articlesAtom);
 
-  function sortByAlphabetical(a: articleType, b: articleType) {
-    return a.title.localeCompare(b.title);
-  }
-
-  function sortByCreated(a: articleType, b: articleType) {
-    return b.created.seconds - a.created.seconds;
-  }
-
-  function sortByEdited(a: articleType, b: articleType) {
-    return b.edited.seconds - a.edited.seconds;
-  }
-
-  // function for sortingArticle - calling this function affects state directly and returns nothing
-  function sortArticles(sortParameter: string) {
-    let sortedArticles: articleType[];
-
-    if (sortParameter == "alphabetical") {
-      sortedArticles = [...articles].sort(sortByAlphabetical);
-      setArticles(sortedArticles);
-      console.log(sortedArticles);
-    } else if (sortParameter == "created") {
-      sortedArticles = [...articles].sort(sortByCreated);
-      setArticles(sortedArticles);
-      console.log(sortedArticles);
-    } else if (sortParameter == "edited") {
-      sortedArticles = [...articles].sort(sortByEdited);
-      setArticles(sortedArticles);
-      console.log(sortedArticles);
-    } else {
-      console.log("sortParameter does not exist");
-    }
-  }
+  // hook for sorting articles
+  const { sortArticles } = useSortArticles();
 
   // render dropdown
   return (
