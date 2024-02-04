@@ -10,9 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { articlesAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { useState } from "react";
-import { articleType, articlesAtom } from "./ArticleGrid";
+import { articleType } from "./ArticleGrid";
 
 export default function ArticleSortDropdown() {
   const [sort, setSort] = useState("alphabetical");

@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
 
+import { articlesAtom, categoriesAtom } from "@/lib/atoms";
 import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 import { db } from "../lib/firestore-config";
 
 export type articleType = {
@@ -16,20 +17,6 @@ export type articleType = {
   created: { seconds: number; nanoseconds: number };
   edited: { seconds: number; nanoseconds: number };
 };
-
-export const articlesAtom = atom([
-  {
-    id: "",
-    category: "",
-    content: "",
-    title: "",
-    description: "",
-    created: { seconds: 0, nanoseconds: 0 },
-    edited: { seconds: 0, nanoseconds: 0 },
-  },
-]);
-
-export const categoriesAtom = atom([""]);
 
 export default function ArticleGrid() {
   const [categories, setCategories] = useAtom(categoriesAtom);
