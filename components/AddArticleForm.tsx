@@ -1,24 +1,5 @@
 "use client";
 
-import { db } from "@/lib/firestore-config";
-import { useSortArticles } from "@/lib/useSortArticles";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Timestamp,
-  addDoc,
-  arrayUnion,
-  collection,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
-import { useAtom } from "jotai";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { articlesAtom, categoriesAtom } from "./ArticleGrid";
 import { Button } from "./ui/button";
 import {
   Command,
@@ -41,6 +22,17 @@ import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Switch } from "./ui/switch";
 import { Textarea } from "./ui/textarea";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAtom } from "jotai";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { useSubmit } from "@/lib/hooks/useSubmit";
+
+import { categoriesAtom } from "../lib/atoms";
 
 type AddArticleFormProps = {
   className?: string;
@@ -55,46 +47,62 @@ export default function AddArticleForm({
   className,
   setState,
 }: AddArticleFormProps) {
+  // adding necessary states to this component
   const [categories, setCategories] = useAtom(categoriesAtom);
   const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
 
-  const [articles, setArticles] = useAtom(articlesAtom);
+  // custom hook for submitting the form
+  const { submit } = useSubmit();
 
-  const { sortArticles } = useSortArticles();
-
-  const doesNotExist = (value: string) => {
+  // custom filter for testing whether category exists when creating a new category
+  function doesNotExist(value: string) {
     if (
       categories
+
+        // to lower case to normalize the comparison
         .map((category) => category.toLowerCase())
+
+        // testing whether the form data matches with categories already existing
         .includes(value.toLowerCase())
     ) {
       return false;
     }
     return true;
-  };
+  }
 
+  // new zod schema using filter doesNotExist
   const categoryDoesNotExist = z.string().refine(doesNotExist, {
     message: "Category already exists",
   });
 
+  // validation for string length of category
   const categoryIsRightLength = z.string().min(2).max(10);
 
+  // combine categoryDoesNotExist and categoryIsRightLength schema - both need to pass to submit form
   const combinedSchema = z.intersection(
     categoryDoesNotExist,
-    categoryIsRightLength
+    categoryIsRightLength,
   );
 
+  // there are two options for category, one to select an existing one and one to create a new category
+  // this function switches between two schemas appropriate for either scenario
   function changeCategorySchema() {
+    // initialize variable for switching between the two schemas
     let categorySchema:
       | z.ZodString
       | z.ZodIntersection<
           z.ZodEffects<z.ZodString, string, string>,
           z.ZodString
         >;
+
+    // if it is not a new category, only need to require a selection
     if (!isNewCategory) {
       categorySchema = z.string({
         required_error: "Please select a category",
       });
+
+      // if it is a new category, need to check if category exists already and if character is the right length
+      // see combinedSchema above
     } else {
       categorySchema = combinedSchema;
     }
@@ -120,50 +128,14 @@ export default function AddArticleForm({
   });
 
   // function for submitting
-  // add firebase functionality later
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // console.log(values);
-
-    const categoriesRef = doc(db, "categories", "categories");
-
-    await updateDoc(categoriesRef, {
-      categories: arrayUnion(values.category),
-    });
-
-    setCategories([...categories, values.category]);
-
-    const articleRef = await addDoc(collection(db, "articles"), {
-      category: values.category,
-      content: values.content,
-      description: values.description,
-      title: values.title,
-      created: serverTimestamp(),
-      edited: serverTimestamp(),
-    });
-
-    setArticles([
-      ...articles,
-      {
-        id: values.title,
-        category: values.category,
-        content: values.content,
-        description: values.description,
-        title: values.title,
-        created: Timestamp.now(),
-        edited: Timestamp.now(),
-      },
-    ]);
-
-    // sortArticles("alphabetical");
-
+    submit(values);
     // close dialog after submission
     setState.setOpenDialog(false);
     setState.setOpenDrawer(false);
   }
 
-  // render form here
+  // render component
   return (
     <div className={cn("grid items-start gap-4", className)}>
       <Form {...form}>
@@ -183,7 +155,7 @@ export default function AddArticleForm({
               </FormItem>
             )}
           />
-
+          {/* form field for description */}
           <FormField
             control={form.control}
             name="description"
@@ -216,11 +188,12 @@ export default function AddArticleForm({
                           role="combobox"
                           className={cn(
                             "w-[200px] justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}>
+                            !field.value && "text-muted-foreground",
+                          )}
+                        >
                           {field.value
                             ? categories?.find(
-                                (category) => category === field.value
+                                (category) => category === field.value,
                               )
                             : "Select category"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -238,13 +211,14 @@ export default function AddArticleForm({
                               key={category}
                               onSelect={() => {
                                 form.setValue("category", category);
-                              }}>
+                              }}
+                            >
                               <Check
                                 className={cn(
                                   "mr-2 h-4 w-4",
                                   category === field.value
                                     ? "opacity-100"
-                                    : "opacity-0"
+                                    : "opacity-0",
                                 )}
                               />
                               {category}
@@ -256,7 +230,6 @@ export default function AddArticleForm({
                   </Popover>
                 ) : (
                   <FormControl>
-                    {/* <Input placeholder="New category" {...field} /> */}
                     <Input
                       placeholder="New category"
                       value={field.value || ""}
@@ -265,6 +238,7 @@ export default function AddArticleForm({
                   </FormControl>
                 )}
 
+                {/* toggle for changing between selecting existing category or creating new category */}
                 <div className="flex items-center space-x-2">
                   <Switch
                     id="is-new-category"
@@ -304,6 +278,8 @@ export default function AddArticleForm({
               </FormItem>
             )}
           />
+
+          {/* submission button */}
           <Button type="submit" className="w-full">
             Submit
           </Button>

@@ -1,5 +1,9 @@
 "use client";
-import * as React from "react";
+
+import AddArticleForm from "./AddArticleForm";
+import { ScrollArea } from "./ui/scroll-area";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,17 +24,20 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Plus } from "lucide-react";
-import AddArticleForm from "./AddArticleForm";
-import { ScrollArea } from "./ui/scroll-area";
 
+// component
 export function AddArticleDialog() {
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const [openDrawer, setOpenDrawer] = React.useState(false);
+  // set dialog/drawer open state
+  // setting states separately to allow different media queries
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
+  // render component
   return (
     <>
+      {/* dialog */}
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+        {/* css mediaquery to hide on smaller devices */}
         <div className="hidden sm:block">
           <DialogTrigger asChild>
             <Button size="icon">
@@ -38,7 +45,8 @@ export function AddArticleDialog() {
             </Button>
           </DialogTrigger>
         </div>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent>
+          {/* scroll area needs set height to work */}
           <ScrollArea className="h-[90vh]">
             <DialogHeader>
               <DialogTitle>Add a new article</DialogTitle>
@@ -47,12 +55,15 @@ export function AddArticleDialog() {
                 done.
               </DialogDescription>
             </DialogHeader>
+
+            {/* props allow form buttons to control state of overlay */}
             <AddArticleForm setState={{ setOpenDialog, setOpenDrawer }} />
           </ScrollArea>
         </DialogContent>
       </Dialog>
 
       <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
+        {/* css mediaquery to hide on larger devices */}
         <div className="block sm:hidden">
           <DrawerTrigger asChild>
             <Button size="icon">
@@ -61,6 +72,7 @@ export function AddArticleDialog() {
           </DrawerTrigger>
         </div>
         <DrawerContent>
+          {/* scroll area needs set height to work */}
           <ScrollArea className="h-[66vh]">
             <DrawerHeader className="text-left">
               <DrawerTitle>Add a new article</DrawerTitle>
@@ -69,6 +81,8 @@ export function AddArticleDialog() {
                 done.
               </DrawerDescription>
             </DrawerHeader>
+
+            {/* props allow form buttons to control state of overlay */}
             <AddArticleForm
               className="px-4"
               setState={{ setOpenDialog, setOpenDrawer }}
