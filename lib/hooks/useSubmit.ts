@@ -1,3 +1,4 @@
+import { useSortArticles } from "./useSortArticles";
 import {
   Timestamp,
   addDoc,
@@ -9,9 +10,10 @@ import {
 } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { useState } from "react";
-import { articlesAtom, categoriesAtom } from "../atoms";
+
 import { db } from "../firestore-config";
-import { useSortArticles } from "./useSortArticles";
+
+import { articlesAtom, categoriesAtom, sortAtom } from "../atoms";
 
 type ValueType = {
   title: string;
@@ -23,10 +25,8 @@ type ValueType = {
 export function useSubmit() {
   const [categories, setCategories] = useAtom(categoriesAtom);
   const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
-
   const [articles, setArticles] = useAtom(articlesAtom);
-
-  const { sortArticles } = useSortArticles();
+  const [sort, setSort] = useAtom(sortAtom);
 
   const categoriesRef = doc(db, "categories", "categories");
 
@@ -47,7 +47,7 @@ export function useSubmit() {
       edited: serverTimestamp(),
     });
 
-    setArticles([
+    let newArticles = [
       ...articles,
       {
         id: values.title,
@@ -58,8 +58,15 @@ export function useSubmit() {
         created: Timestamp.now(),
         edited: Timestamp.now(),
       },
-    ]);
-    // sortArticles("alphabetical");
+    ];
+
+    const { sortArticles } = useSortArticles(newArticles);
+
+    let sortedArticles = sortArticles(sort);
+
+    if (sortedArticles) {
+      setArticles(sortedArticles);
+    }
   }
 
   return { submit };

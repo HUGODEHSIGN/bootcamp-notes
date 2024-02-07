@@ -1,10 +1,6 @@
 import { articleType } from "@/components/ArticleGrid";
-import { useAtom } from "jotai";
-import { articlesAtom } from "../atoms";
 
-export function useSortArticles() {
-  const [articles, setArticles] = useAtom(articlesAtom);
-
+export function useSortArticles(articles: articleType[]) {
   function sortByAlphabetical(a: articleType, b: articleType) {
     return a.title.localeCompare(b.title);
   }
@@ -18,23 +14,20 @@ export function useSortArticles() {
   }
 
   function sortArticles(sortParameter: string) {
-    let sortedArticles: articleType[];
-
-    if (sortParameter == "alphabetical") {
+    let sortedArticles;
+    if (sortParameter === "alphabetical") {
       sortedArticles = [...articles].sort(sortByAlphabetical);
-      setArticles(sortedArticles);
-      console.log(sortedArticles);
-    } else if (sortParameter == "created") {
+    } else if (sortParameter === "created") {
       sortedArticles = [...articles].sort(sortByCreated);
-      setArticles(sortedArticles);
-      console.log(sortedArticles);
-    } else if (sortParameter == "edited") {
+    } else if (sortParameter === "edited") {
       sortedArticles = [...articles].sort(sortByEdited);
-      setArticles(sortedArticles);
-      console.log(sortedArticles);
     } else {
       console.log("sortParameter does not exist");
     }
+    // setArticles(() => sortedArticles);
+    return sortedArticles;
+    console.log(sortedArticles);
   }
+
   return { sortArticles };
 }

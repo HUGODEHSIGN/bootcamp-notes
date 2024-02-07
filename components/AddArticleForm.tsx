@@ -129,7 +129,7 @@ export default function AddArticleForm({
   });
 
   // function for submitting
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     submit(values);
     // close dialog after submission
     setState.setOpenDialog(false);

@@ -25,7 +25,7 @@ export default function ArticleSortDropdown() {
   const [articles, setArticles] = useAtom(articlesAtom);
 
   // hook for sorting articles
-  const { sortArticles } = useSortArticles();
+  const { sortArticles } = useSortArticles(articles);
 
   // render dropdown
   return (
@@ -42,7 +42,10 @@ export default function ArticleSortDropdown() {
           value={sort}
           onValueChange={(e) => {
             setSort(e);
-            sortArticles(e);
+            let sortedArticles = sortArticles(e);
+            if (sortedArticles) {
+              setArticles(sortedArticles);
+            }
           }}
         >
           <DropdownMenuRadioItem value="alphabetical">
