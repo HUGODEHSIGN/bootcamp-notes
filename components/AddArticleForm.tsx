@@ -50,6 +50,7 @@ export default function AddArticleForm({
   // adding necessary states to this component
   const [categories, setCategories] = useAtom(categoriesAtom);
   const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
+  const [IsCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
 
   // custom hook for submitting the form
   const { submit } = useSubmit();
@@ -180,7 +181,10 @@ export default function AddArticleForm({
                 <FormLabel>Category</FormLabel>
 
                 {!isNewCategory ? (
-                  <Popover>
+                  <Popover
+                    open={IsCategoryOpen}
+                    onOpenChange={setIsCategoryOpen}
+                  >
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
@@ -211,6 +215,7 @@ export default function AddArticleForm({
                               key={category}
                               onSelect={() => {
                                 form.setValue("category", category);
+                                setIsCategoryOpen(false);
                               }}
                             >
                               <Check

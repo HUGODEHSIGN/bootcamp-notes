@@ -20,7 +20,7 @@ export default function ArticleGrid() {
   const [categories, setCategories] = useAtom(categoriesAtom);
   const [articles, setArticles] = useAtom(articlesAtom);
 
-  useInit();
+  const init = useInit();
 
   // first render all of the categories
   function renderCategories() {
