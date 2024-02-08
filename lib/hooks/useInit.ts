@@ -6,11 +6,12 @@ import { db } from "../firestore-config";
 
 import { articleType } from "@/components/ArticleGrid";
 
-import { articlesAtom, categoriesAtom } from "../atoms";
+import { articlesAtom, categoriesAtom, filteredArticleAtom } from "../atoms";
 
 export default function useInit() {
   const [categories, setCategories] = useAtom(categoriesAtom);
   const [articles, setArticles] = useAtom(articlesAtom);
+  const [filteredArticles, setFilteredArticles] = useAtom(filteredArticleAtom);
   useEffect(() => {
     const categoryRef = doc(db, "categories", "categories");
     async function fetchCategory() {
@@ -51,6 +52,7 @@ export default function useInit() {
         articleData.push(newData);
       });
       setArticles(articleData);
+      setFilteredArticles(articleData);
       console.log(articles);
     }
     fetchArticles();

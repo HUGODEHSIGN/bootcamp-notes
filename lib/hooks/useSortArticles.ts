@@ -1,7 +1,6 @@
 import { articleType } from "@/components/ArticleGrid";
 
-export function useSortArticles(articles: articleType[]) {
-  console.log(articles);
+export function useSortArticles() {
   function sortByAlphabetical(a: articleType, b: articleType) {
     console.log(a);
     console.log(b);
@@ -21,7 +20,7 @@ export function useSortArticles(articles: articleType[]) {
     return b.edited.seconds - a.edited.seconds;
   }
 
-  function sortArticles(sortParameter: string) {
+  function sortArticles(sortParameter: string, articles: articleType[]) {
     let sortedArticles;
     if (sortParameter === "alphabetical") {
       sortedArticles = [...articles].sort(sortByAlphabetical);

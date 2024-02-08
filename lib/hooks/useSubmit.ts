@@ -27,6 +27,8 @@ export function useSubmit() {
   const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
   const [articles, setArticles] = useAtom(articlesAtom);
   const [sort, setSort] = useAtom(sortAtom);
+  // call hook here because we need variable newArticles
+  const { sortArticles } = useSortArticles();
 
   const categoriesRef = doc(db, "categories", "categories");
 
@@ -60,11 +62,8 @@ export function useSubmit() {
       },
     ];
 
-    // call hook here because we need variable newArticles
-    const { sortArticles } = useSortArticles(newArticles);
-
     // store sorted articles into variable
-    let sortedArticles = sortArticles(sort);
+    let sortedArticles = sortArticles(sort, newArticles);
 
     // set stored variable in state
     // if statement is for typechecking

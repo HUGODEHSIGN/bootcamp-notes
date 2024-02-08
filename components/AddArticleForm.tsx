@@ -218,7 +218,9 @@ export default function AddArticleForm({
                           <div className="flex flex-row gap-2">
                             {field.value &&
                               field.value.map((category) => (
-                                <Badge variant="secondary">{category}</Badge>
+                                <Badge variant="secondary" key={category}>
+                                  {category}
+                                </Badge>
                               ))}
                           </div>
                         </Button>
