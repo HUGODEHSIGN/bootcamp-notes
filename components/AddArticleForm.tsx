@@ -52,41 +52,10 @@ export default function AddArticleForm({
 }: AddArticleFormProps) {
   // adding necessary states to this component
   const [categories, setCategories] = useAtom(categoriesAtom);
-  const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
   const [IsCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
 
   // custom hook for submitting the form
   const { submit } = useSubmit();
-
-  // custom filter for testing whether category exists when creating a new category
-  function doesNotExist(value: string) {
-    if (
-      categories
-
-        // to lower case to normalize the comparison
-        .map((category) => category.toLowerCase())
-
-        // testing whether the form data matches with categories already existing
-        .includes(value.toLowerCase())
-    ) {
-      return false;
-    }
-    return true;
-  }
-
-  // new zod schema using filter doesNotExist
-  const categoryDoesNotExist = z.string().refine(doesNotExist, {
-    message: "Category already exists",
-  });
-
-  // validation for string length of category
-  const categoryIsRightLength = z.string().min(2).max(10);
-
-  // combine categoryDoesNotExist and categoryIsRightLength schema - both need to pass to submit form
-  const combinedSchema = z.intersection(
-    categoryDoesNotExist,
-    categoryIsRightLength,
-  );
 
   // there are two options for category, one to select an existing one and one to create a new category
   // this function switches between two schemas appropriate for either scenario
@@ -98,19 +67,6 @@ export default function AddArticleForm({
           z.ZodEffects<z.ZodString, string, string>,
           z.ZodString
         >;
-
-    // if it is not a new category, only need to require a selection
-    if (!isNewCategory) {
-      categorySchema = z.string({
-        required_error: "Please select a category",
-      });
-
-      // if it is a new category, need to check if category exists already and if character is the right length
-      // see combinedSchema above
-    } else {
-      categorySchema = combinedSchema;
-    }
-    return categorySchema;
   }
 
   // set schema for submitting each field
@@ -187,113 +143,118 @@ export default function AddArticleForm({
               <FormItem className="flex flex-col">
                 <FormLabel>Category</FormLabel>
 
-                {!isNewCategory ? (
-                  <Popover
-                    open={IsCategoryOpen}
-                    onOpenChange={setIsCategoryOpen}
-                  >
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "w-fit",
-                            !field.value && "text-muted-foreground",
-                          )}
-                        >
-                          {/* {field.value
+                <Popover open={IsCategoryOpen} onOpenChange={setIsCategoryOpen}>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "w-fit",
+                          !field.value && "text-muted-foreground",
+                        )}
+                      >
+                        {/* {field.value
                             ? categories?.find(
                                 (category) => category === field.value,
                               ) */}
-                          {/* : "Select category"} */}
-                          <Plus className="mr-2 h-4 w-4" />
-                          Tags
-                          {field.value && (
-                            <Separator
-                              orientation="vertical"
-                              className="mx-2"
-                            />
-                          )}
-                          <div className="flex flex-row gap-2">
-                            {field.value &&
-                              field.value.map((category) => (
-                                <Badge variant="secondary" key={category}>
-                                  {category}
-                                </Badge>
-                              ))}
-                          </div>
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0" align="start">
-                      <Command>
-                        <CommandInput placeholder="Search category" />
-                        <CommandEmpty>Category not found</CommandEmpty>
-                        <CommandGroup>
-                          {categories?.map((category) => (
-                            <CommandItem
-                              value={category}
-                              key={category}
-                              onSelect={() => {
-                                const selectedCategories = Array.isArray(
-                                  field.value,
-                                )
-                                  ? [...field.value]
-                                  : [];
-                                let updatedCategories: string[] = [];
-                                if (selectedCategories.includes(category)) {
+                        {/* : "Select category"} */}
+                        <Plus className="mr-2 h-4 w-4" />
+                        Tags
+                        {field.value && (
+                          <Separator orientation="vertical" className="mx-2" />
+                        )}
+                        <div className="flex flex-row gap-2">
+                          {field.value &&
+                            field.value.map((category) => (
+                              <Badge
+                                variant="secondary"
+                                key={category}
+                                onClick={() => {
+                                  const selectedCategories = Array.isArray(
+                                    field.value,
+                                  )
+                                    ? [...field.value]
+                                    : [];
+
+                                  let updatedCategories: string[] = [];
                                   const index =
                                     selectedCategories.indexOf(category);
                                   console.log(index);
                                   updatedCategories = [...selectedCategories];
                                   updatedCategories.splice(index, 1);
-                                } else {
-                                  updatedCategories = [
-                                    ...selectedCategories,
-                                    category,
-                                  ];
-                                }
-                                console.log(updatedCategories);
-                                form.setValue("category", updatedCategories);
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  field.value?.includes(category)
-                                    ? "opacity-100"
-                                    : "opacity-0",
-                                )}
-                              />
-                              {category}
-                            </CommandItem>
-                          ))}
+                                  form.setValue("category", updatedCategories);
+                                }}
+                                className="hover:bg-primary hover:text-secondary"
+                              >
+                                {category}
+                              </Badge>
+                            ))}
+                        </div>
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0" align="start">
+                    <Command>
+                      <CommandInput placeholder="Search category" />
+                      <CommandEmpty>Category not found</CommandEmpty>
+                      <CommandGroup>
+                        {categories?.map((category) => (
+                          <CommandItem
+                            value={category}
+                            key={category}
+                            onSelect={() => {
+                              const selectedCategories = Array.isArray(
+                                field.value,
+                              )
+                                ? [...field.value]
+                                : [];
+                              let updatedCategories: string[] = [];
+                              if (selectedCategories.includes(category)) {
+                                const index =
+                                  selectedCategories.indexOf(category);
+                                console.log(index);
+                                updatedCategories = [...selectedCategories];
+                                updatedCategories.splice(index, 1);
+                              } else {
+                                updatedCategories = [
+                                  ...selectedCategories,
+                                  category,
+                                ];
+                              }
+                              form.setValue("category", updatedCategories);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                field.value?.includes(category)
+                                  ? "opacity-100"
+                                  : "opacity-0",
+                              )}
+                            />
+                            {category}
+                          </CommandItem>
+                        ))}
 
-                          <CreateNewCategoryDialog></CreateNewCategoryDialog>
-                        </CommandGroup>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                ) : (
-                  <FormControl>
-                    <Input
-                      placeholder="New category"
-                      value={field.value || ""}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                )}
-
-                {/* toggle for changing between selecting existing category or creating new category */}
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="is-new-category"
-                    checked={isNewCategory}
-                    onCheckedChange={() => setIsNewCategory(!isNewCategory)}
-                  />
-                  <Label htmlFor="is-new-category">Create new category</Label>
-                </div>
+                        <CreateNewCategoryDialog
+                          handleSubmit={(newCategory: string) => {
+                            const selectedCategories = Array.isArray(
+                              field.value,
+                            )
+                              ? [...field.value]
+                              : [];
+                            let updatedCategories: string[] = [
+                              ...selectedCategories,
+                              newCategory,
+                            ];
+                            form.setValue("category", updatedCategories);
+                          }}
+                        />
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
 
                 <FormDescription>
                   Choose which category best fits the article or create a new

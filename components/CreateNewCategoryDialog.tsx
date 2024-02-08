@@ -2,6 +2,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Plus } from "lucide-react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import {
   AlertDialog,
@@ -15,7 +16,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export default function CreateNewCategoryDialog() {
+type Props = {
+  handleSubmit: (newCategory: string) => void;
+};
+
+export default function CreateNewCategoryDialog({ handleSubmit }: Props) {
+  const [newCategory, setNewCategory] = useState<string>("");
   return (
     <AlertDialog>
       <AlertDialogTrigger className="w-full justify-start" asChild>
@@ -28,17 +34,23 @@ export default function CreateNewCategoryDialog() {
         <AlertDialogHeader>
           <AlertDialogTitle>New Category</AlertDialogTitle>
           <AlertDialogDescription asChild>
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="category">
-                Please type your new category name below
-              </Label>
-              <Input type="text" id="category" placeholder="Category" />
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="category">Please type below</Label>
+              <Input
+                type="text"
+                id="category"
+                placeholder="Category"
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+              />
             </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Submit</AlertDialogAction>
+          <AlertDialogAction onClick={() => handleSubmit(newCategory)}>
+            Submit
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
