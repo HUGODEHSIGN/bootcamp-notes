@@ -1,6 +1,7 @@
 import { articleType } from "@/components/ArticleGrid";
 
 export function useSortArticles(articles: articleType[]) {
+  console.log(articles);
   function sortByAlphabetical(a: articleType, b: articleType) {
     console.log(a);
     console.log(b);
@@ -31,9 +32,7 @@ export function useSortArticles(articles: articleType[]) {
     } else {
       console.log("sortParameter does not exist");
     }
-    // setArticles(() => sortedArticles);
     return sortedArticles;
-    console.log(sortedArticles);
   }
 
   return { sortArticles };
