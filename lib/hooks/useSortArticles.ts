@@ -2,14 +2,21 @@ import { articleType } from "@/components/ArticleGrid";
 
 export function useSortArticles(articles: articleType[]) {
   function sortByAlphabetical(a: articleType, b: articleType) {
+    console.log(a);
+    console.log(b);
+    console.log(a.title.localeCompare(b.title));
     return a.title.localeCompare(b.title);
   }
 
   function sortByCreated(a: articleType, b: articleType) {
+    console.log(a);
+    console.log(b);
     return b.created.seconds - a.created.seconds;
   }
 
   function sortByEdited(a: articleType, b: articleType) {
+    console.log(a);
+    console.log(b);
     return b.edited.seconds - a.edited.seconds;
   }
 

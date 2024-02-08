@@ -8,7 +8,7 @@ import useInit from "@/lib/hooks/useInit";
 
 export type articleType = {
   id: string;
-  category: string;
+  category: string[];
   content: string;
   title: string;
   description: string;

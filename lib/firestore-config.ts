@@ -2,17 +2,16 @@
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-
 import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyB6MHrGmTyk0AiwDfaLEOWzXKYfUYsgrBk",
-  authDomain: "full-stack-bootcamp-notes.firebaseapp.com",
-  projectId: "full-stack-bootcamp-notes",
-  storageBucket: "full-stack-bootcamp-notes.appspot.com",
-  messagingSenderId: "856414069083",
-  appId: "1:856414069083:web:1c1ab69a73b0c06385ba7e",
+  apiKey: "AIzaSyB5jzm0_PxDohSZenS71u_M-CRdN0xM9Gk",
+  authDomain: "bootcamp-notes.firebaseapp.com",
+  projectId: "bootcamp-notes",
+  storageBucket: "bootcamp-notes.appspot.com",
+  messagingSenderId: "432975998377",
+  appId: "1:432975998377:web:beed5eabe772afad2f28b8",
 };
 
 // Initialize Firebase

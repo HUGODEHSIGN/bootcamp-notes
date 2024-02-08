@@ -18,7 +18,7 @@ import { articlesAtom, categoriesAtom, sortAtom } from "../atoms";
 type ValueType = {
   title: string;
   description: string;
-  category: string;
+  category: string[];
   content: string;
 };
 
@@ -32,11 +32,11 @@ export function useSubmit() {
 
   async function submit(values: ValueType) {
     await updateDoc(categoriesRef, {
-      categories: arrayUnion(values.category),
+      categories: arrayUnion(...values.category),
     });
 
     // fix duplication later
-    setCategories([...categories, values.category]);
+    // setCategories([...categories, values.category]);
 
     const articleRef = await addDoc(collection(db, "articles"), {
       category: values.category,
@@ -60,10 +60,14 @@ export function useSubmit() {
       },
     ];
 
+    // call hook here because we need variable newArticles
     const { sortArticles } = useSortArticles(newArticles);
 
+    // store sorted articles into variable
     let sortedArticles = sortArticles(sort);
 
+    // set stored variable in state
+    // if statement is for typechecking
     if (sortedArticles) {
       setArticles(sortedArticles);
     }

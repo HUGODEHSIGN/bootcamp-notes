@@ -1,5 +1,7 @@
 "use client";
 
+import CreateNewCategoryDialog from "./CreateNewCategoryDialog";
+import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import {
   Command,
@@ -20,12 +22,13 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Separator } from "./ui/separator";
 import { Switch } from "./ui/switch";
 import { Textarea } from "./ui/textarea";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -114,7 +117,7 @@ export default function AddArticleForm({
   const formSchema = z.object({
     title: z.string().min(2).max(50),
     description: z.string().min(10).max(100),
-    category: changeCategorySchema(),
+    category: z.string().array(),
     content: z.string().min(2).max(2000),
   });
 
@@ -124,7 +127,7 @@ export default function AddArticleForm({
     defaultValues: {
       title: "",
       description: "",
-      content: "",
+      // content: [''],
     },
   });
 
@@ -135,6 +138,10 @@ export default function AddArticleForm({
     setState.setOpenDialog(false);
     setState.setOpenDrawer(false);
   }
+
+  const [selectedCategories, setSelectedCategories] = useState<Array<string>>(
+    [],
+  );
 
   // render component
   return (
@@ -191,20 +198,33 @@ export default function AddArticleForm({
                           variant="outline"
                           role="combobox"
                           className={cn(
-                            "w-[200px] justify-between",
+                            "w-fit",
                             !field.value && "text-muted-foreground",
                           )}
                         >
-                          {field.value
+                          {/* {field.value
                             ? categories?.find(
                                 (category) => category === field.value,
-                              )
-                            : "Select category"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              ) */}
+                          {/* : "Select category"} */}
+                          <Plus className="mr-2 h-4 w-4" />
+                          Tags
+                          {field.value && (
+                            <Separator
+                              orientation="vertical"
+                              className="mx-2"
+                            />
+                          )}
+                          <div className="flex flex-row gap-2">
+                            {field.value &&
+                              field.value.map((category) => (
+                                <Badge variant="secondary">{category}</Badge>
+                              ))}
+                          </div>
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
+                    <PopoverContent className="w-[200px] p-0" align="start">
                       <Command>
                         <CommandInput placeholder="Search category" />
                         <CommandEmpty>Category not found</CommandEmpty>
@@ -214,14 +234,32 @@ export default function AddArticleForm({
                               value={category}
                               key={category}
                               onSelect={() => {
-                                form.setValue("category", category);
-                                setIsCategoryOpen(false);
+                                const selectedCategories = Array.isArray(
+                                  field.value,
+                                )
+                                  ? [...field.value]
+                                  : [];
+                                let updatedCategories: string[] = [];
+                                if (selectedCategories.includes(category)) {
+                                  const index =
+                                    selectedCategories.indexOf(category);
+                                  console.log(index);
+                                  updatedCategories = [...selectedCategories];
+                                  updatedCategories.splice(index, 1);
+                                } else {
+                                  updatedCategories = [
+                                    ...selectedCategories,
+                                    category,
+                                  ];
+                                }
+                                console.log(updatedCategories);
+                                form.setValue("category", updatedCategories);
                               }}
                             >
                               <Check
                                 className={cn(
                                   "mr-2 h-4 w-4",
-                                  category === field.value
+                                  field.value?.includes(category)
                                     ? "opacity-100"
                                     : "opacity-0",
                                 )}
@@ -229,6 +267,8 @@ export default function AddArticleForm({
                               {category}
                             </CommandItem>
                           ))}
+
+                          <CreateNewCategoryDialog></CreateNewCategoryDialog>
                         </CommandGroup>
                       </Command>
                     </PopoverContent>

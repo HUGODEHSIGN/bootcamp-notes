@@ -1,9 +1,10 @@
 import { atom } from "jotai";
 
+const categoryInitialValue: string[] = [];
 export const articlesAtom = atom([
   {
     id: "",
-    category: "",
+    category: categoryInitialValue,
     content: "",
     title: "",
     description: "",
