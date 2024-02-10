@@ -73,6 +73,7 @@ export default function AddArticleForm({
       title: "",
       description: "",
       category: [],
+      content: "",
     },
   });
 
@@ -143,11 +144,6 @@ export default function AddArticleForm({
                           !field.value && "text-muted-foreground",
                         )}
                       >
-                        {/* {field.value
-                            ? categories?.find(
-                                (category) => category === field.value,
-                              ) */}
-                        {/* : "Select category"} */}
                         <Plus className="mr-2 h-4 w-4" />
                         Tags
                         {field.value.length !== 0 && (
