@@ -9,7 +9,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useAtom } from "jotai";
-import { useState } from "react";
 
 import { db } from "../firestore-config";
 
@@ -24,7 +23,6 @@ type ValueType = {
 
 export function useSubmit() {
   const [categories, setCategories] = useAtom(categoriesAtom);
-  const [isNewCategory, setIsNewCategory] = useState<boolean>(false);
   const [articles, setArticles] = useAtom(articlesAtom);
   const [sort, setSort] = useAtom(sortAtom);
   // call hook here because we need variable newArticles
@@ -38,7 +36,11 @@ export function useSubmit() {
     });
 
     // fix duplication later
-    // setCategories([...categories, values.category]);
+    values.category.forEach((newCategory) => {
+      if (!newCategory.includes(newCategory)) {
+        setCategories([...categories, newCategory]);
+      }
+    });
 
     const articleRef = await addDoc(collection(db, "articles"), {
       category: values.category,
