@@ -1,16 +1,10 @@
 "use client";
 
-import {
-  articlesAtom,
-  categoriesAtom,
-  filterAtom,
-  filteredArticleAtom,
-  sortAtom,
-} from "@/lib/atoms";
+import { articlesAtom } from "./ArticleGrid";
+import { categoriesAtom, filterAtom, filteredArticleAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 
 import useFilterArticles from "@/lib/hooks/useFilterArticles";
-import { useSortArticles } from "@/lib/hooks/useSortArticles";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +23,7 @@ export default function ArticleFilterDropdown() {
   const [filter, setFilter] = useAtom(filterAtom);
 
   // article state
-  const [articles, setArticles] = useAtom(articlesAtom);
+  const [{ data, isPending, isError }] = useAtom(articlesAtom);
   const [filteredArticles, setFilteredArticles] = useAtom(filteredArticleAtom);
   const [categories, setCategories] = useAtom(categoriesAtom);
 
@@ -57,7 +51,7 @@ export default function ArticleFilterDropdown() {
           value={filter}
           onValueChange={(e) => {
             setFilter(e);
-            let filteredArticles = filterArticles(e, articles);
+            let filteredArticles = filterArticles(e, data);
             if (filteredArticles) {
               setFilteredArticles(filteredArticles);
             }

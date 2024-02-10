@@ -1,5 +1,6 @@
 "use client";
 
+import { articlesAtom } from "./ArticleGrid";
 import CreateNewCategoryDialog from "./CreateNewCategoryDialog";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -25,13 +26,15 @@ import { Separator } from "./ui/separator";
 import { Textarea } from "./ui/textarea";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { Check, Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { useSubmit } from "@/lib/hooks/useSubmit";
+import { db } from "@/lib/firestore-config";
 
 import { categoriesAtom } from "../lib/atoms";
 
@@ -43,6 +46,26 @@ type AddArticleFormProps = {
   };
 };
 
+export type ValueType = {
+  title: string;
+  description: string;
+  category: string[];
+  content: string;
+};
+
+// function for submitting new article
+
+async function submit(value: ValueType) {
+  const articleRef = await addDoc(collection(db, "articles"), {
+    category: value.category,
+    content: value.content,
+    description: value.description,
+    title: value.title,
+    created: serverTimestamp(),
+    edited: serverTimestamp(),
+  });
+}
+
 // form component
 export default function AddArticleForm({
   className,
@@ -51,9 +74,18 @@ export default function AddArticleForm({
   // adding necessary states to this component
   const [categories, setCategories] = useAtom(categoriesAtom);
   const [IsCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
+  const [{ refetch }] = useAtom(articlesAtom);
 
-  // custom hook for submitting the form
-  const { submit } = useSubmit();
+  const queryClient = useQueryClient();
+
+  const { mutate, status, variables } = useMutation({
+    mutationKey: ["articles"],
+    mutationFn: (value: ValueType) => submit(value),
+    onSuccess: async () => {
+      console.log("test");
+      refetch();
+    },
+  });
 
   // there are two options for category, one to select an existing one and one to create a new category
   // this function switches between two schemas appropriate for either scenario
@@ -78,8 +110,8 @@ export default function AddArticleForm({
   });
 
   // function for submitting
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    submit(values);
+  function onSubmit(value: z.infer<typeof formSchema>) {
+    mutate(value);
     // close dialog after submission
     setState.setOpenDialog(false);
     setState.setOpenDrawer(false);

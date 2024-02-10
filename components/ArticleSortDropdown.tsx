@@ -1,6 +1,7 @@
 "use client";
 
-import { articlesAtom, sortAtom } from "@/lib/atoms";
+import { articlesAtom } from "./ArticleGrid";
+import { sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 
 import { useSortArticles } from "@/lib/hooks/useSortArticles";
@@ -22,7 +23,7 @@ export default function ArticleSortDropdown() {
   const [sort, setSort] = useAtom(sortAtom);
 
   // article state
-  const [articles, setArticles] = useAtom(articlesAtom);
+  const [{ data, isPending, isError }] = useAtom(articlesAtom);
 
   // hook for sorting articles
   const { sortArticles } = useSortArticles();
@@ -42,9 +43,9 @@ export default function ArticleSortDropdown() {
           value={sort}
           onValueChange={(e) => {
             setSort(e);
-            let sortedArticles = sortArticles(e, articles);
+            let sortedArticles = sortArticles(e, data);
             if (sortedArticles) {
-              setArticles(sortedArticles);
+              // setArticles(sortedArticles);
             }
           }}
         >

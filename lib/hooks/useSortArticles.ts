@@ -20,18 +20,23 @@ export function useSortArticles() {
     return b.edited.seconds - a.edited.seconds;
   }
 
-  function sortArticles(sortParameter: string, articles: articleType[]) {
+  function sortArticles(
+    sortParameter: string,
+    articles: articleType[] | undefined,
+  ) {
     let sortedArticles;
-    if (sortParameter === "alphabetical") {
-      sortedArticles = [...articles].sort(sortByAlphabetical);
-    } else if (sortParameter === "created") {
-      sortedArticles = [...articles].sort(sortByCreated);
-    } else if (sortParameter === "edited") {
-      sortedArticles = [...articles].sort(sortByEdited);
-    } else {
-      console.log("sortParameter does not exist");
+    if (articles) {
+      if (sortParameter === "alphabetical") {
+        sortedArticles = [...articles].sort(sortByAlphabetical);
+      } else if (sortParameter === "created") {
+        sortedArticles = [...articles].sort(sortByCreated);
+      } else if (sortParameter === "edited") {
+        sortedArticles = [...articles].sort(sortByEdited);
+      } else {
+        console.log("sortParameter does not exist");
+      }
+      return sortedArticles;
     }
-    return sortedArticles;
   }
 
   return { sortArticles };

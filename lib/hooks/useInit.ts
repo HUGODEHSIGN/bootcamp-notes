@@ -1,41 +1,42 @@
 import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
 
 import { db } from "../firestore-config";
 
 import { articleType } from "@/components/ArticleGrid";
 
-import { articlesAtom, categoriesAtom, filteredArticleAtom } from "../atoms";
+import { categoriesAtom, filteredArticleAtom } from "../atoms";
 
 export default function useInit() {
   const [categories, setCategories] = useAtom(categoriesAtom);
-  const [articles, setArticles] = useAtom(articlesAtom);
+  // const [articles, setArticles] = useAtom(articlesAtom);
   const [filteredArticles, setFilteredArticles] = useAtom(filteredArticleAtom);
-  useEffect(() => {
-    const categoryRef = doc(db, "categories", "categories");
-    async function fetchCategory() {
-      const docSnap = await getDoc(categoryRef);
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-        setCategories(docSnap.data().categories);
-      } else {
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
-      }
+  // useEffect(() => {
+  const categoryRef = doc(db, "categories", "categories");
+  async function fetchCategory() {
+    const docSnap = await getDoc(categoryRef);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      setCategories(docSnap.data().categories);
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
     }
-    fetchCategory();
+  }
+  // fetchCategory();
 
-    // fetch HTML articles
-    const q = query(
-      collection(db, "articles"),
-      //   where("category", "==", "HTML")
-    );
+  // fetch HTML articles
+  const q = query(
+    collection(db, "articles"),
+    //   where("category", "==", "HTML")
+  );
 
-    // fetch articles
-    async function fetchArticles() {
-      // initialize variable, sets it to state at the end of the function
-      const articleData: articleType[] = [];
+  // fetch articles
+
+  async function fetchArticles() {
+    // initialize variable, sets it to state at the end of the function
+    const articleData: articleType[] = [];
+    try {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
@@ -51,12 +52,24 @@ export default function useInit() {
         };
         articleData.push(newData);
       });
-      setArticles(articleData);
-      setFilteredArticles(articleData);
-      console.log(articles);
+    } catch (e) {
+      throw e;
     }
-    fetchArticles();
-  }, []);
+
+    // setArticles(articleData);
+    // setFilteredArticles(articleData);
+    // console.log(articles);
+    return articleData;
+  }
+
+  // const { data, status } = useQuery({
+  //   queryKey: ["articles"],
+  //   queryFn: () => fetchArticles(),
+  // });
+
+  // const [{ data, status }] = useAtom(articlesAtom);
+  // fetchArticles();
+  // }, []);
 
   return;
 }
