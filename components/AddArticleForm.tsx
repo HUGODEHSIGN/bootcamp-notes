@@ -20,10 +20,8 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Separator } from "./ui/separator";
-import { Switch } from "./ui/switch";
 import { Textarea } from "./ui/textarea";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -59,21 +57,12 @@ export default function AddArticleForm({
 
   // there are two options for category, one to select an existing one and one to create a new category
   // this function switches between two schemas appropriate for either scenario
-  function changeCategorySchema() {
-    // initialize variable for switching between the two schemas
-    let categorySchema:
-      | z.ZodString
-      | z.ZodIntersection<
-          z.ZodEffects<z.ZodString, string, string>,
-          z.ZodString
-        >;
-  }
 
   // set schema for submitting each field
   const formSchema = z.object({
     title: z.string().min(2).max(50),
     description: z.string().min(10).max(100),
-    category: z.string().array(),
+    category: z.array(z.string()),
     content: z.string().min(2).max(2000),
   });
 
@@ -83,7 +72,7 @@ export default function AddArticleForm({
     defaultValues: {
       title: "",
       description: "",
-      // content: [''],
+      category: [],
     },
   });
 
@@ -161,7 +150,7 @@ export default function AddArticleForm({
                         {/* : "Select category"} */}
                         <Plus className="mr-2 h-4 w-4" />
                         Tags
-                        {field.value && (
+                        {field.value.length !== 0 && (
                           <Separator orientation="vertical" className="mx-2" />
                         )}
                         <div className="flex flex-row gap-2">
