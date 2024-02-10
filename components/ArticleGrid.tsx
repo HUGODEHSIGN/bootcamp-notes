@@ -1,7 +1,7 @@
 "use client";
 
 import ArticleCard from "./ArticleCard";
-import { categoriesAtom, filteredArticleAtom } from "@/lib/atoms";
+import { filteredArticleAtom } from "@/lib/atoms";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
@@ -53,7 +53,6 @@ export const articlesAtom = atomWithQuery(() => ({
 }));
 
 export default function ArticleGrid() {
-  const [categories, setCategories] = useAtom(categoriesAtom);
   const [{ data, isPending, isError }] = useAtom(articlesAtom);
   const [filteredArticles, setFilteredArticles] = useAtom(filteredArticleAtom);
 

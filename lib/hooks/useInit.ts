@@ -5,10 +5,9 @@ import { db } from "../firestore-config";
 
 import { articleType } from "@/components/ArticleGrid";
 
-import { categoriesAtom, filteredArticleAtom } from "../atoms";
+import { filteredArticleAtom } from "../atoms";
 
 export default function useInit() {
-  const [categories, setCategories] = useAtom(categoriesAtom);
   // const [articles, setArticles] = useAtom(articlesAtom);
   const [filteredArticles, setFilteredArticles] = useAtom(filteredArticleAtom);
   // useEffect(() => {

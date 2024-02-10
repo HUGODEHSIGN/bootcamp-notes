@@ -14,8 +14,6 @@ export const filteredArticleAtom = atom([
   },
 ]);
 
-export const categoriesAtom = atom([""]);
-
 export const sortAtom = atom("alphabetical");
 
 export const filterAtom = atom("All");

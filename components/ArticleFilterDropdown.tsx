@@ -1,8 +1,11 @@
 "use client";
 
-import { articlesAtom } from "./ArticleGrid";
-import { categoriesAtom, filterAtom, filteredArticleAtom } from "@/lib/atoms";
+import { filterAtom, filteredArticleAtom } from "@/lib/atoms";
+import { collection, getDocs, query } from "firebase/firestore";
 import { useAtom } from "jotai";
+import { atomWithQuery } from "jotai-tanstack-query";
+
+import { db } from "@/lib/firestore-config";
 
 import useFilterArticles from "@/lib/hooks/useFilterArticles";
 
@@ -17,21 +20,41 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+async function fetchCategories() {
+  // initialize variable, sets it to state at the end of the function
+  const categoriesData: string[] = [];
+  const q = query(collection(db, "articles"));
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    console.log(doc.data());
+    // doc.data() is never undefined for query doc snapshots
+    const newData = doc.data().category;
+    categoriesData.push(newData);
+  });
+
+  return categoriesData;
+}
+
+export const categoriesAtom = atomWithQuery(() => ({
+  queryKey: ["categories"],
+  queryFn: () => fetchCategories(),
+}));
+
 // component for deciding how to sort all of the articles
 export default function ArticleFilterDropdown() {
   // state for which sorting method to use
   const [filter, setFilter] = useAtom(filterAtom);
 
   // article state
-  const [{ data, isPending, isError }] = useAtom(articlesAtom);
   const [filteredArticles, setFilteredArticles] = useAtom(filteredArticleAtom);
-  const [categories, setCategories] = useAtom(categoriesAtom);
+  const [{ data, isPending, isError }] = useAtom(categoriesAtom);
 
   // hook for filtering articles
   const { filterArticles } = useFilterArticles();
 
   function renderDropdown() {
-    return categories.map((category) => (
+    return data?.map((category) => (
       <DropdownMenuRadioItem value={category} key={category}>
         {category}
       </DropdownMenuRadioItem>
@@ -51,10 +74,6 @@ export default function ArticleFilterDropdown() {
           value={filter}
           onValueChange={(e) => {
             setFilter(e);
-            let filteredArticles = filterArticles(e, data);
-            if (filteredArticles) {
-              setFilteredArticles(filteredArticles);
-            }
           }}
         >
           <DropdownMenuRadioItem value="All" key="All">

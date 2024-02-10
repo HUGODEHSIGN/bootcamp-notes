@@ -1,5 +1,6 @@
 "use client";
 
+import { categoriesAtom } from "./ArticleFilterDropdown";
 import { articlesAtom } from "./ArticleGrid";
 import CreateNewCategoryDialog from "./CreateNewCategoryDialog";
 import { Badge } from "./ui/badge";
@@ -36,8 +37,6 @@ import { z } from "zod";
 
 import { db } from "@/lib/firestore-config";
 
-import { categoriesAtom } from "../lib/atoms";
-
 type AddArticleFormProps = {
   className?: string;
   setState: {
@@ -72,9 +71,9 @@ export default function AddArticleForm({
   setState,
 }: AddArticleFormProps) {
   // adding necessary states to this component
-  const [categories, setCategories] = useAtom(categoriesAtom);
   const [IsCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
-  const [{ refetch }] = useAtom(articlesAtom);
+  const [article] = useAtom(articlesAtom);
+  const [categories] = useAtom(categoriesAtom);
 
   const queryClient = useQueryClient();
 
@@ -83,7 +82,8 @@ export default function AddArticleForm({
     mutationFn: (value: ValueType) => submit(value),
     onSuccess: async () => {
       console.log("test");
-      refetch();
+      article.refetch();
+      categories.refetch();
     },
   });
 
@@ -216,7 +216,7 @@ export default function AddArticleForm({
                       <CommandInput placeholder="Search category" />
                       <CommandEmpty>Category not found</CommandEmpty>
                       <CommandGroup>
-                        {categories?.map((category) => (
+                        {categories.data?.map((category) => (
                           <CommandItem
                             value={category}
                             key={category}
