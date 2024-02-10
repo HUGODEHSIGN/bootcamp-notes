@@ -1,19 +1,26 @@
 import { articleType } from "@/components/ArticleGrid";
 
-export function useSortArticles(articles: articleType[]) {
+export function useSortArticles() {
   function sortByAlphabetical(a: articleType, b: articleType) {
+    console.log(a);
+    console.log(b);
+    console.log(a.title.localeCompare(b.title));
     return a.title.localeCompare(b.title);
   }
 
   function sortByCreated(a: articleType, b: articleType) {
+    console.log(a);
+    console.log(b);
     return b.created.seconds - a.created.seconds;
   }
 
   function sortByEdited(a: articleType, b: articleType) {
+    console.log(a);
+    console.log(b);
     return b.edited.seconds - a.edited.seconds;
   }
 
-  function sortArticles(sortParameter: string) {
+  function sortArticles(sortParameter: string, articles: articleType[]) {
     let sortedArticles;
     if (sortParameter === "alphabetical") {
       sortedArticles = [...articles].sort(sortByAlphabetical);
@@ -24,9 +31,7 @@ export function useSortArticles(articles: articleType[]) {
     } else {
       console.log("sortParameter does not exist");
     }
-    // setArticles(() => sortedArticles);
     return sortedArticles;
-    console.log(sortedArticles);
   }
 
   return { sortArticles };

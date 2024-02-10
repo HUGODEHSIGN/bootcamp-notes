@@ -1,9 +1,22 @@
 import { atom } from "jotai";
 
+const categoryInitialValue: string[] = [];
 export const articlesAtom = atom([
   {
     id: "",
-    category: "",
+    category: categoryInitialValue,
+    content: "",
+    title: "",
+    description: "",
+    created: { seconds: 0, nanoseconds: 0 },
+    edited: { seconds: 0, nanoseconds: 0 },
+  },
+]);
+
+export const filteredArticleAtom = atom([
+  {
+    id: "",
+    category: categoryInitialValue,
     content: "",
     title: "",
     description: "",
@@ -15,3 +28,5 @@ export const articlesAtom = atom([
 export const categoriesAtom = atom([""]);
 
 export const sortAtom = atom("alphabetical");
+
+export const filterAtom = atom("All");

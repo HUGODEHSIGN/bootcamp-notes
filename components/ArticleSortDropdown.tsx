@@ -25,24 +25,24 @@ export default function ArticleSortDropdown() {
   const [articles, setArticles] = useAtom(articlesAtom);
 
   // hook for sorting articles
-  const { sortArticles } = useSortArticles(articles);
+  const { sortArticles } = useSortArticles();
 
   // render dropdown
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-40">
+        <Button variant="outline">
           {sort.charAt(0).toUpperCase() + sort.slice(1)}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40">
+      <DropdownMenuContent className="w-40" align="start">
         <DropdownMenuLabel>Sort Articles</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
           value={sort}
           onValueChange={(e) => {
             setSort(e);
-            let sortedArticles = sortArticles(e);
+            let sortedArticles = sortArticles(e, articles);
             if (sortedArticles) {
               setArticles(sortedArticles);
             }
