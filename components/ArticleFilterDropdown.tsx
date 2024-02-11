@@ -6,16 +6,17 @@ import { collection, getDocs, query } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
 import _ from "lodash";
+import { Filter } from "lucide-react";
+import { useEffect } from "react";
 
 import { db } from "@/lib/firestore-config";
 
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -55,32 +56,41 @@ export default function ArticleFilterDropdown() {
 
   function renderDropdown() {
     return data?.map((category) => (
-      <DropdownMenuRadioItem value={category} key={category}>
+      <DropdownMenuCheckboxItem
+        key={category}
+        onClick={() => setFilter(category)}
+        checked={filter === category}
+      >
         {category}
-      </DropdownMenuRadioItem>
+      </DropdownMenuCheckboxItem>
     ));
   }
+
+  useEffect(() => {
+    article.refetch();
+  }, [filter]);
 
   // render dropdown
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{filter}</Button>
+        <Button variant="outline">
+          {filter}
+          <Filter className="ml-2 h-4 w-4" />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="start">
-        <DropdownMenuLabel>Sort Articles</DropdownMenuLabel>
+        <DropdownMenuLabel>Filter</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup
-          value={filter}
-          onValueChange={(e) => {
-            setFilter(e);
-          }}
+
+        <DropdownMenuCheckboxItem
+          key="All"
+          onClick={() => setFilter("All")}
+          checked={filter === "All"}
         >
-          <DropdownMenuRadioItem value="All" key="All">
-            All
-          </DropdownMenuRadioItem>
-          {renderDropdown()}
-        </DropdownMenuRadioGroup>
+          All
+        </DropdownMenuCheckboxItem>
+        {renderDropdown()}
       </DropdownMenuContent>
     </DropdownMenu>
   );
