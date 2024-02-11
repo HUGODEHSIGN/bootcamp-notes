@@ -1,9 +1,8 @@
 "use client";
 
-import { articlesAtom, sortAtom } from "@/lib/atoms";
+import { articlesAtom } from "./ArticleGrid";
+import { sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
-
-import { useSortArticles } from "@/lib/hooks/useSortArticles";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -22,11 +21,7 @@ export default function ArticleSortDropdown() {
   const [sort, setSort] = useAtom(sortAtom);
 
   // article state
-  const [articles, setArticles] = useAtom(articlesAtom);
-
-  // hook for sorting articles
-  const { sortArticles } = useSortArticles();
-
+  const [{ data, isPending, isError, refetch }] = useAtom(articlesAtom);
   // render dropdown
   return (
     <DropdownMenu>
@@ -42,15 +37,10 @@ export default function ArticleSortDropdown() {
           value={sort}
           onValueChange={(e) => {
             setSort(e);
-            let sortedArticles = sortArticles(e, articles);
-            if (sortedArticles) {
-              setArticles(sortedArticles);
-            }
+            refetch();
           }}
         >
-          <DropdownMenuRadioItem value="alphabetical">
-            Alphabetical
-          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="title">Title</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="created">Created</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="edited">Edited</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
