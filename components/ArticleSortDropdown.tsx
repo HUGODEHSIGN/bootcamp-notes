@@ -1,10 +1,11 @@
 "use client";
 
-import { articlesAtom } from "./ArticleGrid";
-import { sortAtom } from "@/lib/atoms";
+import { filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { ArrowDownAZ, CalendarCheck, CalendarPlus } from "lucide-react";
 import { useEffect } from "react";
+
+import useFetchArticles from "@/lib/hooks/useFetchArticles";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,13 +21,14 @@ import {
 // component for deciding how to sort all of the articles
 export default function ArticleSortDropdown() {
   // state for which sorting method to use
+  const [filter, setFilter] = useAtom(filterAtom);
   const [sort, setSort] = useAtom(sortAtom);
 
   // article state
-  const [{ data, isPending, isError, refetch }] = useAtom(articlesAtom);
+  const articles = useFetchArticles(filter, sort);
 
   useEffect(() => {
-    refetch();
+    articles.refetch();
   }, [sort]);
 
   // render dropdown
