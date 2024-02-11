@@ -11,21 +11,23 @@ import {
 } from "@/components/ui/card";
 
 type Props = {
-  title: string;
-  description: string;
-  category: string[];
+  title: React.ReactNode;
+  description: React.ReactNode;
+  category: string[] | React.ReactNode;
 };
 
 // component takes props from ArticleGrid
 export default function ArticleCard({ title, description, category }: Props) {
   function renderTags() {
-    return category.map((tag) => <Badge key={tag}>{tag}</Badge>);
+    if (Array.isArray(category)) {
+      return category.map((tag) => <Badge key={tag}>{tag}</Badge>);
+    }
   }
 
   // render component
   return (
     <Link href={`/${title}`}>
-      <Card className="hover:bg-secondary">
+      <Card className="hover:bg-secondary h-[145px]">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>

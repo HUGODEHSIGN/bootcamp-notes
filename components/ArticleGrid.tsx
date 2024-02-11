@@ -1,6 +1,8 @@
 "use client";
 
 import ArticleCard from "./ArticleCard";
+import LoadingArticleCard from "./LoadingArticleCard";
+import { Skeleton } from "./ui/skeleton";
 import { filterAtom } from "@/lib/atoms";
 import { QueryClient } from "@tanstack/query-core";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
@@ -68,7 +70,8 @@ export const articlesAtom = atomWithQuery(() => ({
 }));
 
 export default function ArticleGrid() {
-  const [{ data, isPending, isError, error, refetch }] = useAtom(articlesAtom);
+  const [{ data, isPending, isError, isSuccess, error, refetch }] =
+    useAtom(articlesAtom);
   const [filter, setFilter] = useAtom(filterAtom);
 
   useEffect(() => {
@@ -102,7 +105,8 @@ export default function ArticleGrid() {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 pt-6">
-        {renderArticles()}
+        {isSuccess && renderArticles()}
+        {isPending && <LoadingArticleCard />}
       </div>
       {isPending.toString()}
       {isError.toString()}
