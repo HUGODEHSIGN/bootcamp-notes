@@ -1,6 +1,7 @@
 import DeleteArticleDialog from "./DeleteArticleDialog";
 import { disableLinkAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
+import { ArrowUpRightFromSquare, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -8,6 +9,7 @@ import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
+  ContextMenuShortcut,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 
@@ -34,9 +36,19 @@ export default function ArticleCardContextMenu({
           className="w-64"
         >
           <ContextMenuItem inset asChild>
-            <Link href={`./${title}`}>Open</Link>
+            <Link href={`./${title}`}>
+              Open
+              <ContextMenuShortcut>
+                <ArrowUpRightFromSquare size={18} />
+              </ContextMenuShortcut>
+            </Link>
           </ContextMenuItem>
-          <ContextMenuItem inset>Edit</ContextMenuItem>
+          <ContextMenuItem inset>
+            Edit
+            <ContextMenuShortcut>
+              <Pencil size={18} />
+            </ContextMenuShortcut>
+          </ContextMenuItem>
           <ContextMenuItem
             className="text-destructive"
             onClick={() => {
@@ -45,6 +57,9 @@ export default function ArticleCardContextMenu({
             inset
           >
             Delete
+            <ContextMenuShortcut>
+              <Trash2 size={18} />
+            </ContextMenuShortcut>
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
