@@ -46,9 +46,7 @@ export default function ArticleSortDropdown() {
             refetch();
           }}
         >
-          <DropdownMenuRadioItem value="alphabetical">
-            Alphabetical
-          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="title">Title</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="created">Created</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="edited">Edited</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>

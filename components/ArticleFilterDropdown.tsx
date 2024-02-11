@@ -5,6 +5,7 @@ import { filterAtom } from "@/lib/atoms";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
+import _ from "lodash";
 
 import { db } from "@/lib/firestore-config";
 
@@ -21,7 +22,7 @@ import {
 
 async function fetchCategories() {
   // initialize variable, sets it to state at the end of the function
-  const categoriesData: string[] = [];
+  let categoriesData: string[] = [];
   const q = query(collection(db, "articles"));
 
   const querySnapshot = await getDocs(q);
@@ -31,6 +32,7 @@ async function fetchCategories() {
     const newData: string[] = doc.data().category;
     categoriesData.push(...newData);
   });
+  categoriesData = _.uniq(categoriesData);
 
   return categoriesData;
 }

@@ -3,7 +3,7 @@
 import ArticleCard from "./ArticleCard";
 import LoadingArticleCard from "./LoadingArticleCard";
 import { Skeleton } from "./ui/skeleton";
-import { filterAtom } from "@/lib/atoms";
+import { filterAtom, sortAtom } from "@/lib/atoms";
 import { QueryClient } from "@tanstack/query-core";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useAtom } from "jotai";
@@ -23,16 +23,17 @@ export type articleType = {
 };
 
 let filterParameter: string = "Testing";
+let sortParameter: string = "All";
 
 function filtering(f: string, s: string) {
   let q;
   if (f === "All") {
-    q = query(collection(db, "articles"), orderBy(`${"title"}`, "desc"));
+    q = query(collection(db, "articles"), orderBy(s, "asc"));
   } else {
     q = query(
       collection(db, "articles"),
       where("category", "array-contains", f),
-      orderBy(`${"title"}`, "desc"),
+      orderBy(s, "asc"),
     );
   }
   return q;
@@ -42,7 +43,7 @@ function filtering(f: string, s: string) {
 async function fetchArticles() {
   // initialize variable, sets it to state at the end of the function
   const articleData: articleType[] = [];
-  const q = filtering(filterParameter, "lol");
+  const q = filtering(filterParameter, sortParameter);
 
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
@@ -73,11 +74,13 @@ export default function ArticleGrid() {
   const [{ data, isPending, isError, isSuccess, error, refetch }] =
     useAtom(articlesAtom);
   const [filter, setFilter] = useAtom(filterAtom);
+  const [sort, setSort] = useAtom(sortAtom);
 
   useEffect(() => {
     filterParameter = filter;
+    sortParameter = sort;
     refetch();
-  }, [filter]);
+  }, [filter, sort]);
 
   // const init = useInit();
 

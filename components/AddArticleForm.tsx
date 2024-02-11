@@ -187,7 +187,7 @@ export default function AddArticleForm({
                               <Badge
                                 variant="secondary"
                                 key={category}
-                                onClick={() => {
+                                onClick={(e) => {
                                   const selectedCategories = Array.isArray(
                                     field.value,
                                   )
@@ -201,6 +201,7 @@ export default function AddArticleForm({
                                   updatedCategories = [...selectedCategories];
                                   updatedCategories.splice(index, 1);
                                   form.setValue("category", updatedCategories);
+                                  e.stopPropagation();
                                 }}
                                 className="hover:bg-primary hover:text-secondary"
                               >
