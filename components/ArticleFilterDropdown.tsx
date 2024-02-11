@@ -1,7 +1,6 @@
 "use client";
 
-import { articlesAtom } from "./ArticleGrid";
-import { filterAtom } from "@/lib/atoms";
+import { filterAtom, sortAtom } from "@/lib/atoms";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
@@ -10,6 +9,8 @@ import { Filter } from "lucide-react";
 import { useEffect } from "react";
 
 import { db } from "@/lib/firestore-config";
+
+import useFetchArticles from "@/lib/hooks/useFetchArticles";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -47,10 +48,10 @@ export const categoriesAtom = atomWithQuery(() => ({
 export default function ArticleFilterDropdown() {
   // state for which sorting method to use
   const [filter, setFilter] = useAtom(filterAtom);
-
+  const [sort, setSort] = useAtom(sortAtom);
+  const [{ data }] = useAtom(categoriesAtom);
   // article state
-  const [article] = useAtom(articlesAtom);
-  const [{ data, isPending, isError }] = useAtom(categoriesAtom);
+  const articles = useFetchArticles(filter, sort);
 
   // hook for filtering articles
 
@@ -67,7 +68,7 @@ export default function ArticleFilterDropdown() {
   }
 
   useEffect(() => {
-    article.refetch();
+    articles.refetch();
   }, [filter]);
 
   // render dropdown

@@ -1,7 +1,6 @@
 "use client";
 
 import { categoriesAtom } from "./ArticleFilterDropdown";
-import { articlesAtom } from "./ArticleGrid";
 import CreateNewCategoryDialog from "./CreateNewCategoryDialog";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -25,6 +24,7 @@ import { Input } from "./ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Separator } from "./ui/separator";
 import { Textarea } from "./ui/textarea";
+import { filterAtom, sortAtom } from "@/lib/atoms";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -36,6 +36,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { db } from "@/lib/firestore-config";
+
+import useFetchArticles from "@/lib/hooks/useFetchArticles";
 
 type AddArticleFormProps = {
   className?: string;
@@ -72,7 +74,9 @@ export default function AddArticleForm({
 }: AddArticleFormProps) {
   // adding necessary states to this component
   const [IsCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
-  const [article] = useAtom(articlesAtom);
+  const [filter, setFilter] = useAtom(filterAtom);
+  const [sort, setSort] = useAtom(sortAtom);
+  const articles = useFetchArticles(filter, sort);
   const [categories] = useAtom(categoriesAtom);
 
   const { mutate, status, variables } = useMutation({
@@ -80,7 +84,7 @@ export default function AddArticleForm({
     mutationFn: (value: ValueType) => submit(value),
     onSuccess: async () => {
       console.log("test");
-      article.refetch();
+      articles.refetch();
       categories.refetch();
     },
   });

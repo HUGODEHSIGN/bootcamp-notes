@@ -1,4 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  useMutation,
+} from "@tanstack/react-query";
 import { deleteDoc, doc } from "firebase/firestore";
 import { AtomWithQueryResult } from "jotai-tanstack-query";
 
@@ -8,7 +12,9 @@ import { articleType } from "@/components/ArticleGrid";
 
 export default function useDeleteArticle(
   docId: string,
-  articles: AtomWithQueryResult<articleType[], Error>,
+  articlesRefetch: (
+    options?: RefetchOptions | undefined,
+  ) => Promise<QueryObserverResult<articleType[], Error>>,
   categories: AtomWithQueryResult<string[], Error>,
 ) {
   async function deleteArticle() {
@@ -20,7 +26,7 @@ export default function useDeleteArticle(
     mutationKey: ["deleteArticles"],
     mutationFn: () => deleteArticle(),
     onSuccess: async () => {
-      articles.refetch();
+      articlesRefetch();
       categories.refetch();
     },
   });
