@@ -4,8 +4,6 @@ import { articlesAtom } from "./ArticleGrid";
 import { sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 
-import { useSortArticles } from "@/lib/hooks/useSortArticles";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,10 +22,6 @@ export default function ArticleSortDropdown() {
 
   // article state
   const [{ data, isPending, isError, refetch }] = useAtom(articlesAtom);
-
-  // hook for sorting articles
-  const { sortArticles } = useSortArticles();
-
   // render dropdown
   return (
     <DropdownMenu>
