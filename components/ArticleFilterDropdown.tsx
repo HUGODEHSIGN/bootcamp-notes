@@ -1,13 +1,12 @@
 "use client";
 
-import { filterAtom, filteredArticleAtom } from "@/lib/atoms";
+import { articlesAtom } from "./ArticleGrid";
+import { filterAtom } from "@/lib/atoms";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
 
 import { db } from "@/lib/firestore-config";
-
-import useFilterArticles from "@/lib/hooks/useFilterArticles";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -29,8 +28,8 @@ async function fetchCategories() {
   querySnapshot.forEach((doc) => {
     console.log(doc.data());
     // doc.data() is never undefined for query doc snapshots
-    const newData = doc.data().category;
-    categoriesData.push(newData);
+    const newData: string[] = doc.data().category;
+    categoriesData.push(...newData);
   });
 
   return categoriesData;
@@ -47,11 +46,10 @@ export default function ArticleFilterDropdown() {
   const [filter, setFilter] = useAtom(filterAtom);
 
   // article state
-  const [filteredArticles, setFilteredArticles] = useAtom(filteredArticleAtom);
+  const [article] = useAtom(articlesAtom);
   const [{ data, isPending, isError }] = useAtom(categoriesAtom);
 
   // hook for filtering articles
-  const { filterArticles } = useFilterArticles();
 
   function renderDropdown() {
     return data?.map((category) => (

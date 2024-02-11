@@ -1,10 +1,11 @@
 "use client";
 
 import ArticleCard from "./ArticleCard";
-import { filteredArticleAtom } from "@/lib/atoms";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { filterAtom } from "@/lib/atoms";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
+import { useEffect } from "react";
 
 import { db } from "@/lib/firestore-config";
 
@@ -18,15 +19,27 @@ export type articleType = {
   edited: { seconds: number; nanoseconds: number };
 };
 
+let filterParameter: string = "Testing";
+
+function filtering(f: string, s: string) {
+  let q;
+  if (f === "All") {
+    q = query(collection(db, "articles"), orderBy(`${"title"}`, "desc"));
+  } else {
+    q = query(
+      collection(db, "articles"),
+      where("category", "array-contains", f),
+      orderBy(`${"title"}`, "desc"),
+    );
+  }
+  return q;
+}
+
 // function for fetching articles
 async function fetchArticles() {
   // initialize variable, sets it to state at the end of the function
   const articleData: articleType[] = [];
-  const q = query(
-    collection(db, "articles"),
-    // where("category", "array-contains", `${"JavaScript"}`),
-    orderBy("created", "desc"),
-  );
+  const q = filtering(filterParameter, "lol");
 
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
@@ -50,11 +63,17 @@ async function fetchArticles() {
 export const articlesAtom = atomWithQuery(() => ({
   queryKey: ["articles"],
   queryFn: () => fetchArticles(),
+  enabled: true,
 }));
 
 export default function ArticleGrid() {
-  const [{ data, isPending, isError }] = useAtom(articlesAtom);
-  const [filteredArticles, setFilteredArticles] = useAtom(filteredArticleAtom);
+  const [{ data, isPending, isError, error, refetch }] = useAtom(articlesAtom);
+  const [filter, setFilter] = useAtom(filterAtom);
+
+  useEffect(() => {
+    filterParameter = filter;
+    refetch();
+  }, [filter]);
 
   // const init = useInit();
 
@@ -84,6 +103,9 @@ export default function ArticleGrid() {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 pt-6">
         {renderArticles()}
       </div>
+      {isPending.toString()}
+      {isError.toString()}
+      {error?.toString()}
     </>
   );
 }
