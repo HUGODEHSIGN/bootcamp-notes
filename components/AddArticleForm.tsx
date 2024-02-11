@@ -1,6 +1,5 @@
 "use client";
 
-import { categoriesAtom } from "./ArticleFilterDropdown";
 import CreateNewCategoryDialog from "./CreateNewCategoryDialog";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -38,6 +37,7 @@ import { z } from "zod";
 import { db } from "@/lib/firestore-config";
 
 import useFetchArticles from "@/lib/hooks/useFetchArticles";
+import useFetchCategories from "@/lib/hooks/useFetchCategories";
 
 type AddArticleFormProps = {
   className?: string;
@@ -77,7 +77,7 @@ export default function AddArticleForm({
   const [filter, setFilter] = useAtom(filterAtom);
   const [sort, setSort] = useAtom(sortAtom);
   const articles = useFetchArticles(filter, sort);
-  const [categories] = useAtom(categoriesAtom);
+  const categories = useFetchCategories();
 
   const { mutate, status, variables } = useMutation({
     mutationKey: ["articles"],
