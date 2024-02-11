@@ -27,7 +27,7 @@ import { Separator } from "./ui/separator";
 import { Textarea } from "./ui/textarea";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { Check, Plus } from "lucide-react";
@@ -74,8 +74,6 @@ export default function AddArticleForm({
   const [IsCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const [article] = useAtom(articlesAtom);
   const [categories] = useAtom(categoriesAtom);
-
-  const queryClient = useQueryClient();
 
   const { mutate, status, variables } = useMutation({
     mutationKey: ["articles"],

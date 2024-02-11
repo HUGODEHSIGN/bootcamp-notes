@@ -17,3 +17,5 @@ export const filteredArticleAtom = atom([
 export const sortAtom = atom("title");
 
 export const filterAtom = atom("All");
+
+export const disableLinkAtom = atom(false);
