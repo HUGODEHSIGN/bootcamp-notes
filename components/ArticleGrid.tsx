@@ -2,13 +2,11 @@
 
 import ArticleCard from "./ArticleCard";
 import LoadingArticleCard from "./LoadingArticleCard";
-import { Skeleton } from "./ui/skeleton";
 import { filterAtom, sortAtom } from "@/lib/atoms";
-import { QueryClient } from "@tanstack/query-core";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useAtom } from "jotai";
-import { atomWithQuery, queryClientAtom } from "jotai-tanstack-query";
-import { useEffect } from "react";
+import { atomWithQuery } from "jotai-tanstack-query";
+import { useLayoutEffect } from "react";
 
 import { db } from "@/lib/firestore-config";
 
@@ -76,7 +74,7 @@ export default function ArticleGrid() {
   const [filter, setFilter] = useAtom(filterAtom);
   const [sort, setSort] = useAtom(sortAtom);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     filterParameter = filter;
     sortParameter = sort;
     refetch();
