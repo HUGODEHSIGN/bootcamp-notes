@@ -2,9 +2,10 @@
 
 import ArticleCard from "./ArticleCard";
 import { filterAtom } from "@/lib/atoms";
+import { QueryClient } from "@tanstack/query-core";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useAtom } from "jotai";
-import { atomWithQuery } from "jotai-tanstack-query";
+import { atomWithQuery, queryClientAtom } from "jotai-tanstack-query";
 import { useEffect } from "react";
 
 import { db } from "@/lib/firestore-config";
