@@ -1,9 +1,8 @@
+import ArticleCardContextMenu from "./ArticleCardContextMenu";
 import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { filterAtom } from "@/lib/atoms";
+import { disableLinkAtom, filterAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import Link from "next/link";
-import { useState } from "react";
 
 import {
   Card,
@@ -14,16 +13,22 @@ import {
 } from "@/components/ui/card";
 
 type Props = {
-  title: React.ReactNode;
+  title: string;
   description: React.ReactNode;
   category: string[] | React.ReactNode;
+  docId: string;
 };
 
 // component takes props from ArticleGrid
-export default function ArticleCard({ title, description, category }: Props) {
+export default function ArticleCard({
+  title,
+  description,
+  category,
+  docId,
+}: Props) {
   const [filter, setFilter] = useAtom(filterAtom);
 
-  const [tagHovering, setTagHovering] = useState<boolean>(false);
+  const [linkIsDisabled, setLinkIsDisabled] = useAtom(disableLinkAtom);
 
   function renderTags() {
     if (Array.isArray(category)) {
@@ -34,10 +39,10 @@ export default function ArticleCard({ title, description, category }: Props) {
             setFilter(tag);
           }}
           onMouseEnter={() => {
-            setTagHovering(true);
+            setLinkIsDisabled(true);
           }}
           onMouseLeave={() => {
-            setTagHovering(false);
+            setLinkIsDisabled(false);
           }}
         >
           {tag}
@@ -48,16 +53,18 @@ export default function ArticleCard({ title, description, category }: Props) {
 
   // render component
   return (
-    <Link href={tagHovering ? "#" : `/${title}`}>
-      <Card className="hover:bg-secondary h-[145px]">
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>{description}</CardDescription>
-        </CardHeader>
-        <CardFooter>
-          <div className="flex flex-row gap-2">{renderTags()}</div>
-        </CardFooter>
-      </Card>
+    <Link href={linkIsDisabled ? "#" : `/${title}`}>
+      <ArticleCardContextMenu title={title} docId={docId}>
+        <Card className="hover:bg-secondary h-[145px]">
+          <CardHeader>
+            <CardTitle>{title}</CardTitle>
+            <CardDescription>{description}</CardDescription>
+          </CardHeader>
+          <CardFooter>
+            <div className="flex flex-row gap-2">{renderTags()}</div>
+          </CardFooter>
+        </Card>
+      </ArticleCardContextMenu>
     </Link>
   );
 }

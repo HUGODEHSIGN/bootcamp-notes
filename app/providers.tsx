@@ -1,12 +1,9 @@
 "use client";
 
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Provider } from "jotai";
+import { DevTools } from "jotai-devtools";
 import { queryClientAtom } from "jotai-tanstack-query";
 import { useHydrateAtoms } from "jotai/react/utils";
 import { useState } from "react";
@@ -33,6 +30,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider>
+        <DevTools />
         <HydrateAtoms>{children}</HydrateAtoms>
       </Provider>
       <ReactQueryDevtools initialIsOpen={false} />

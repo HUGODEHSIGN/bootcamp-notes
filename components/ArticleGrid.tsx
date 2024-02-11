@@ -96,6 +96,7 @@ export default function ArticleGrid() {
             title={article.title}
             description={article.description}
             category={article.category}
+            docId={article.id}
           />
         </div>
       ));
