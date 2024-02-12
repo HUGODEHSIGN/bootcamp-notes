@@ -3,7 +3,7 @@ import { selectedArticleAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import Link from "next/link";
 
-import ArticleCardContextMenu from "../home/ArticleCardContextMenu";
+import ArticleCardContextMenu from "../all/ArticleCardContextMenu";
 import { Button } from "../ui/button";
 
 type Props = {

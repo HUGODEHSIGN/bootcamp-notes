@@ -1,4 +1,3 @@
-import ArticleCardContextMenu from "./ArticleCardContextMenu";
 import { disableLinkAtom, filterAtom, selectedArticleAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import Link from "next/link";
@@ -11,7 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { Badge } from "../ui/badge";
+import ArticleCardContextMenu from "../all/ArticleCardContextMenu";
+import Tag from "../all/Tag";
 
 type Props = {
   title: string;
@@ -35,20 +35,9 @@ export default function ArticleCard({
   function renderTags() {
     if (Array.isArray(category)) {
       return category.map((tag) => (
-        <Badge
-          key={tag}
-          onClick={() => {
-            setFilter(tag);
-          }}
-          onMouseEnter={() => {
-            setLinkIsDisabled(true);
-          }}
-          onMouseLeave={() => {
-            setLinkIsDisabled(false);
-          }}
-        >
-          {tag}
-        </Badge>
+        <div key={tag}>
+          <Tag category={tag} />
+        </div>
       ));
     }
   }
