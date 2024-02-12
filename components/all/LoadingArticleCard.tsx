@@ -1,12 +1,5 @@
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
-import { Skeleton } from "./ui/skeleton";
-import React from "react";
+import { Card, CardFooter, CardHeader } from "../ui/card";
+import { Skeleton } from "../ui/skeleton";
 
 export default function LoadingArticleCard() {
   return (

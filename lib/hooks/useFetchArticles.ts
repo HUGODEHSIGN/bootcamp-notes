@@ -3,7 +3,7 @@ import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 
 import { db } from "../firestore-config";
 
-import { articleType } from "@/components/ArticleGrid";
+import { articleType } from "@/components/home/ArticleCardGrid";
 
 export default function useFetchArticles(filter: string, sort: string) {
   async function fetchArticles() {

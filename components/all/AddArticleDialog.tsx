@@ -1,7 +1,6 @@
 "use client";
 
 import AddArticleForm from "./AddArticleForm";
-import { ScrollArea } from "./ui/scroll-area";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -24,6 +23,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+
+import { ScrollArea } from "../ui/scroll-area";
 
 // component
 export function AddArticleDialog() {

@@ -1,6 +1,5 @@
 import ArticleCardContextMenu from "./ArticleCardContextMenu";
-import { Badge } from "./ui/badge";
-import { disableLinkAtom, filterAtom } from "@/lib/atoms";
+import { disableLinkAtom, filterAtom, selectedArticleAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import Link from "next/link";
 
@@ -11,6 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
+import { Badge } from "../ui/badge";
 
 type Props = {
   title: string;
@@ -29,6 +30,7 @@ export default function ArticleCard({
   const [filter, setFilter] = useAtom(filterAtom);
 
   const [linkIsDisabled, setLinkIsDisabled] = useAtom(disableLinkAtom);
+  const [selectedArticle, setSelectedArticle] = useAtom(selectedArticleAtom);
 
   function renderTags() {
     if (Array.isArray(category)) {
@@ -55,7 +57,10 @@ export default function ArticleCard({
   return (
     <Link href={linkIsDisabled ? "#" : `/${title}`}>
       <ArticleCardContextMenu title={title} docId={docId}>
-        <Card className="hover:bg-secondary h-[145px]">
+        <Card
+          className="hover:bg-secondary h-[145px]"
+          onClick={() => setSelectedArticle(title)}
+        >
           <CardHeader>
             <CardTitle>{title}</CardTitle>
             <CardDescription>{description}</CardDescription>

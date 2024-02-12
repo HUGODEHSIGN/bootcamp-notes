@@ -35,7 +35,7 @@ export default function ArticleSortDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" size="sm">
           {sort.charAt(0).toUpperCase() + sort.slice(1)}
           {sort === "title" && <ArrowDownAZ className="ml-2 h-4 w-4" />}
           {sort === "created" && <CalendarPlus className="ml-2 h-4 w-4" />}

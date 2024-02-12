@@ -1,4 +1,3 @@
-import DeleteArticleDialog from "./DeleteArticleDialog";
 import { disableLinkAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { ArrowUpRightFromSquare, Pencil, Trash2 } from "lucide-react";
@@ -12,6 +11,8 @@ import {
   ContextMenuShortcut,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+
+import DeleteArticleDialog from "../DeleteArticleDialog";
 
 type Props = {
   children: React.ReactNode;

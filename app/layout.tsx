@@ -1,6 +1,5 @@
 import "./globals.css";
 import Providers from "./providers";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { Metadata } from "next";
 import { Montserrat as FontSans } from "next/font/google";
 
@@ -40,7 +39,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Navbar />
-            <div className="mx-6 sm:mx-12 md:mx-24 lg:mx-48">{children}</div>
+            <div className="mx-6 sm:mx-12 md:mx-24 xl:mx-48">{children}</div>
           </ThemeProvider>
         </Providers>
       </body>

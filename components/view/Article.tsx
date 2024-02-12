@@ -1,6 +1,6 @@
 "use client";
 
-import { articleType } from "./ArticleGrid";
+import { selectedArticleAtom } from "@/lib/atoms";
 import {
   Timestamp,
   collection,
@@ -13,6 +13,10 @@ import { atomWithQuery } from "jotai-tanstack-query";
 import { useLayoutEffect } from "react";
 
 import { db } from "@/lib/firestore-config";
+
+import Tag from "../all/Tag";
+import { articleType } from "../home/ArticleCardGrid";
+import { CardDescription, CardTitle } from "../ui/card";
 
 type Props = { articleParams: string };
 
@@ -57,22 +61,37 @@ export const currentArticleAtom = atomWithQuery(() => ({
 export default function Article({ articleParams }: Props) {
   const [{ data, isPending, isError, isSuccess, refetch }] =
     useAtom(currentArticleAtom);
+  const [selectedArticle, setSelectedArticle] = useAtom(selectedArticleAtom);
 
   useLayoutEffect(() => {
     currentTitle = decodeURIComponent(articleParams);
-    console.log(articleParams);
+    setSelectedArticle(currentTitle);
     refetch();
   }, [articleParams]);
+
+  function renderCategories() {
+    return data?.category.map((tag) => (
+      <div key={tag}>
+        <Tag category={tag}></Tag>
+      </div>
+    ));
+  }
 
   // render component
   return (
     // container for article
-    <div className="py-6">
+    <div className="mt-6 flex flex-col gap-6">
       {/* container for heading section */}
       {/* title and description */}
-      <div className="pb-6">
-        <div className="text-4xl font-bold">{data?.title}</div>
+
+      <div className="flex flex-col gap-1">
+        {/* <div className="text-4xl font-bold">{data?.title}</div>
         <div className="text-2xl font-medium">{data?.description}</div>
+        <div className="flex flex-row gap-2">{renderCategories()}</div> */}
+
+        <CardTitle>{data?.title}</CardTitle>
+        <CardDescription>{data?.description}</CardDescription>
+        <div className="flex flex-row gap-2">{renderCategories()}</div>
       </div>
 
       {/* article content */}

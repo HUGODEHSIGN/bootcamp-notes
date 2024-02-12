@@ -7,7 +7,7 @@ import { deleteDoc, doc } from "firebase/firestore";
 
 import { db } from "../firestore-config";
 
-import { articleType } from "@/components/ArticleGrid";
+import { articleType } from "@/components/home/ArticleCardGrid";
 
 export default function useDeleteArticle(
   docId: string,

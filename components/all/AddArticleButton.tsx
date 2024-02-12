@@ -1,5 +1,6 @@
-import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
+
+import { Button } from "../ui/button";
 
 // component for plus button for adding new article
 export default function AddArticleButton() {

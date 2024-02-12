@@ -1,4 +1,4 @@
-import Article from "@/components/Article";
+import Article from "@/components/view/Article";
 
 export default function Page({ params }: { params: { article: string } }) {
   return (

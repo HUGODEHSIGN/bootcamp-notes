@@ -1,28 +1,14 @@
 "use client";
 
-import ArticleCard from "./ArticleCard";
-import LoadingArticleCard from "./LoadingArticleCard";
+import ArticleButton from "./ArticleButton";
 import { filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 
 import useFetchArticles from "@/lib/hooks/useFetchArticles";
 
-export type articleType = {
-  id: string;
-  category: string[];
-  content: string;
-  title: string;
-  description: string;
-  created: { seconds: number; nanoseconds: number };
-  edited: { seconds: number; nanoseconds: number };
-};
+import { Separator } from "../ui/separator";
 
-let filterParameter: string = "Testing";
-let sortParameter: string = "All";
-
-// function for fetching articles
-
-export default function ArticleGrid() {
+export default function () {
   const [filter, setFilter] = useAtom(filterAtom);
   const [sort, setSort] = useAtom(sortAtom);
   const { data, isPending, isError, isSuccess, error, refetch } =
@@ -40,7 +26,7 @@ export default function ArticleGrid() {
       // mapping through all of the filtered articles
       return data.map((article) => (
         <div key={article.id}>
-          <ArticleCard
+          <ArticleButton
             title={article.title}
             description={article.description}
             category={article.category}
@@ -54,13 +40,15 @@ export default function ArticleGrid() {
   // render all of the articles
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 pt-6">
+      <div className="flex flex-row h-full mr-6">
+        <div className="flex flex-col mt-2 mr-2">{renderArticles()}</div>
+        {isSuccess && <Separator orientation="vertical" />}
+      </div>
+
+      {/* <div className="grid grid-rows-1 gap-2 p-6 pl-0">
         {isSuccess && renderArticles()}
         {isPending && <LoadingArticleCard />}
-      </div>
-      {isPending.toString()}
-      {isError.toString()}
-      {error?.toString()}
+      </div> */}
     </>
   );
 }
