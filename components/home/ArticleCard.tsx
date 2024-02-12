@@ -35,17 +35,9 @@ export default function ArticleCard({
   function renderTags() {
     if (Array.isArray(category)) {
       return category.map((tag) => (
-        <Tag category={tag} />
-
-        // <Badge
-        //   key={tag}
-        //   onClick={() => {
-        //     setFilter(tag);
-        //   }}
-
-        // >
-        //   {tag}
-        // </Badge>
+        <div key={tag}>
+          <Tag category={tag} />
+        </div>
       ));
     }
   }
