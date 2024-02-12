@@ -1,6 +1,7 @@
 "use client";
 
 import AddArticleForm from "./AddArticleForm";
+import TooltipAll from "./TooltipAll";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -40,11 +41,13 @@ export function AddArticleDialog() {
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         {/* css mediaquery to hide on smaller devices */}
         <div className="hidden sm:block">
-          <DialogTrigger asChild>
-            <Button size="icon">
-              <Plus />
-            </Button>
-          </DialogTrigger>
+          <TooltipAll content="Create a new article">
+            <DialogTrigger asChild>
+              <Button size="icon">
+                <Plus />
+              </Button>
+            </DialogTrigger>
+          </TooltipAll>
         </div>
         <DialogContent>
           {/* scroll area needs set height to work */}

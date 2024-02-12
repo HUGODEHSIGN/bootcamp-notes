@@ -4,6 +4,7 @@ import React from "react";
 
 import ArticleFilterDropdown from "@/components/all/ArticleFilterDropdown";
 import ArticleSortDropdown from "@/components/all/ArticleSortDropdown";
+import TooltipAll from "@/components/all/TooltipAll";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import ArticleButtonList from "@/components/view/ArticleButtonList";
@@ -13,23 +14,28 @@ export default function layout({ children }: { children: React.ReactNode }) {
     <div className="flex flex-col">
       <div className="flex flex-row justify-between">
         <div className="flex flex-row gap-2 mb-2">
-          <Button size="icon" className="h-9 w-9" asChild>
-            <Link href="/">
-              <ChevronLeft />
-            </Link>
-          </Button>
+          <TooltipAll content="Back">
+            <Button size="icon" className="h-9 w-9" asChild>
+              <Link href="/">
+                <ChevronLeft />
+              </Link>
+            </Button>
+          </TooltipAll>
           <ArticleSortDropdown />
           <ArticleFilterDropdown />
         </div>
+
         <div className="hidden sm:flex flex-row gap-2">
-          <Button size="sm">
-            Edit
-            <Pencil className="ml-2 h-4 w-4" />
-          </Button>
-          <Button variant="destructive" size="sm">
-            Delete
-            <Trash2 className="ml-2 h-4 w-4" />
-          </Button>
+          <TooltipAll content="Edit">
+            <Button size="icon" className="h-9 w-9">
+              <Pencil className="h-4 w-4" />
+            </Button>
+          </TooltipAll>
+          <TooltipAll content="Delete">
+            <Button variant="destructive" size="icon" className="h-9 w-9">
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </TooltipAll>
         </div>
         <Button size="icon" className="flex sm:hidden">
           <MoreHorizontal />

@@ -1,5 +1,6 @@
 "use client";
 
+import TooltipAll from "./TooltipAll";
 import { filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { Filter } from "lucide-react";
@@ -49,13 +50,19 @@ export default function ArticleFilterDropdown() {
   // render dropdown
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
-          {filter}
-          <Filter className="ml-2 h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40" align="start">
+      <TooltipAll content="Filter By Tags">
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm">
+            {filter}
+            <Filter className="ml-2 h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+      </TooltipAll>
+      <DropdownMenuContent
+        className="w-40"
+        align="start"
+        onCloseAutoFocus={(e) => e.preventDefault()}
+      >
         <DropdownMenuLabel>Filter</DropdownMenuLabel>
         <DropdownMenuSeparator />
 

@@ -1,5 +1,6 @@
 "use client";
 
+import TooltipAll from "./TooltipAll";
 import { filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { ArrowDownAZ, CalendarCheck, CalendarPlus } from "lucide-react";
@@ -34,15 +35,21 @@ export default function ArticleSortDropdown() {
   // render dropdown
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
-          {sort.charAt(0).toUpperCase() + sort.slice(1)}
-          {sort === "title" && <ArrowDownAZ className="ml-2 h-4 w-4" />}
-          {sort === "created" && <CalendarPlus className="ml-2 h-4 w-4" />}
-          {sort === "edited" && <CalendarCheck className="ml-2 h-4 w-4" />}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40" align="start">
+      <TooltipAll content="Sort By">
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm">
+            {sort.charAt(0).toUpperCase() + sort.slice(1)}
+            {sort === "title" && <ArrowDownAZ className="ml-2 h-4 w-4" />}
+            {sort === "created" && <CalendarPlus className="ml-2 h-4 w-4" />}
+            {sort === "edited" && <CalendarCheck className="ml-2 h-4 w-4" />}
+          </Button>
+        </DropdownMenuTrigger>
+      </TooltipAll>
+      <DropdownMenuContent
+        className="w-40"
+        align="start"
+        onCloseAutoFocus={(e) => e.preventDefault()}
+      >
         <DropdownMenuLabel>Sort</DropdownMenuLabel>
         <DropdownMenuSeparator />
 

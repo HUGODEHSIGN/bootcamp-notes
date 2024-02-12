@@ -36,7 +36,7 @@ export default function ArticleCardContextMenu({
           onMouseOut={() => setLinkIsDisabled(false)}
           className="w-64"
         >
-          <ContextMenuItem inset asChild>
+          <ContextMenuItem asChild>
             <Link href={`./${title}`}>
               Open
               <ContextMenuShortcut>
@@ -44,7 +44,7 @@ export default function ArticleCardContextMenu({
               </ContextMenuShortcut>
             </Link>
           </ContextMenuItem>
-          <ContextMenuItem inset>
+          <ContextMenuItem>
             Edit
             <ContextMenuShortcut>
               <Pencil size={18} />
@@ -55,7 +55,6 @@ export default function ArticleCardContextMenu({
             onClick={() => {
               setDialogIsOpen(true);
             }}
-            inset
           >
             Delete
             <ContextMenuShortcut>

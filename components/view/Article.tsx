@@ -72,7 +72,7 @@ export default function Article({ articleParams }: Props) {
   function renderCategories() {
     return data?.category.map((tag) => (
       <div key={tag}>
-        <Tag category={tag}></Tag>
+        <Tag category={tag} />
       </div>
     ));
   }
