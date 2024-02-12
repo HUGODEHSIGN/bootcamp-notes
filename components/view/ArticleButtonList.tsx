@@ -8,7 +8,7 @@ import useFetchArticles from "@/lib/hooks/useFetchArticles";
 
 import { Separator } from "../ui/separator";
 
-export default function () {
+export default function ArticleButtonList() {
   const [filter, setFilter] = useAtom(filterAtom);
   const [sort, setSort] = useAtom(sortAtom);
   const { data, isPending, isError, isSuccess, error, refetch } =
