@@ -81,7 +81,7 @@ export default function Article({ articleParams }: Props) {
   }
 
   useEffect(() => {
-    if (isSuccess && data.content) {
+    if (isSuccess && data?.content) {
       setArticleContent(data.content);
       console.log(`data is ${data.content}`);
     }
