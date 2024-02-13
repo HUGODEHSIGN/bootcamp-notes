@@ -1,5 +1,7 @@
 "use client";
 
+import CreateNewCategoryDialog from "./CreateNewCategoryDialog";
+import Tiptap from "./Tiptap";
 import { filterAtom, sortAtom } from "@/lib/atoms";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +18,6 @@ import { db } from "@/lib/firestore-config";
 import useFetchArticles from "@/lib/hooks/useFetchArticles";
 import useFetchCategories from "@/lib/hooks/useFetchCategories";
 
-import CreateNewCategoryDialog from "../CreateNewCategoryDialog";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
@@ -38,7 +39,6 @@ import {
 import { Input } from "../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Separator } from "../ui/separator";
-import { Textarea } from "../ui/textarea";
 
 type AddArticleFormProps = {
   className?: string;
@@ -98,12 +98,13 @@ export default function AddArticleForm({
     title: z.string().min(2).max(50),
     description: z.string().min(10).max(100),
     category: z.array(z.string()),
-    content: z.string().min(2).max(2000),
+    content: z.string(),
   });
 
   // set default values for each field
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
     defaultValues: {
       title: "",
       description: "",
@@ -119,10 +120,6 @@ export default function AddArticleForm({
     setState.setOpenDialog(false);
     setState.setOpenDrawer(false);
   }
-
-  const [selectedCategories, setSelectedCategories] = useState<Array<string>>(
-    [],
-  );
 
   // render component
   return (
@@ -294,10 +291,15 @@ export default function AddArticleForm({
               <FormItem>
                 <FormLabel>Content</FormLabel>
                 <FormControl>
-                  <Textarea
+                  {/* <Textarea
                     placeholder="Type here..."
                     className=""
                     {...field}
+                  /> */}
+                  <Tiptap
+                    content=""
+                    onChange={field.onChange}
+                    editable={true}
                   />
                 </FormControl>
                 <FormDescription>

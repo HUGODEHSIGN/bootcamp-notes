@@ -21,8 +21,6 @@ export default function useFetchArticles(filter: string, sort: string) {
           orderBy(s, "asc"),
         );
       }
-      //   console.log(f);
-      console.log(s);
       return q;
     }
 
@@ -31,7 +29,6 @@ export default function useFetchArticles(filter: string, sort: string) {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
       const newData: articleType = {
         id: doc.id,
         category: doc.data().category,

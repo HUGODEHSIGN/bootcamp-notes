@@ -12,7 +12,6 @@ export default function useFetchCategories() {
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      console.log(doc.data());
       // doc.data() is never undefined for query doc snapshots
       const newData: string[] = doc.data().category;
       categoriesData.push(...newData);

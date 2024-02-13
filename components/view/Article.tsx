@@ -1,6 +1,6 @@
 "use client";
 
-import { selectedArticleAtom } from "@/lib/atoms";
+import { isEditableAtom, selectedArticleAtom } from "@/lib/atoms";
 import {
   Timestamp,
   collection,
@@ -10,11 +10,12 @@ import {
 } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 import { db } from "@/lib/firestore-config";
 
 import Tag from "../all/Tag";
+import Tiptap from "../form/Tiptap";
 import { articleType } from "../home/ArticleCardGrid";
 import { CardDescription, CardTitle } from "../ui/card";
 
@@ -59,9 +60,11 @@ export const currentArticleAtom = atomWithQuery(() => ({
 
 // component
 export default function Article({ articleParams }: Props) {
-  const [{ data, isPending, isError, isSuccess, refetch }] =
+  const [{ data, isPending, isError, isSuccess, status, refetch }] =
     useAtom(currentArticleAtom);
   const [selectedArticle, setSelectedArticle] = useAtom(selectedArticleAtom);
+  const [articleContent, setArticleContent] = useState("");
+  const [isEditable, setIsEditable] = useAtom(isEditableAtom);
 
   useLayoutEffect(() => {
     currentTitle = decodeURIComponent(articleParams);
@@ -76,6 +79,13 @@ export default function Article({ articleParams }: Props) {
       </div>
     ));
   }
+
+  useEffect(() => {
+    if (isSuccess && data?.content) {
+      setArticleContent(data.content);
+      console.log(`data is ${data.content}`);
+    }
+  }, [isSuccess]);
 
   // render component
   return (
@@ -95,8 +105,14 @@ export default function Article({ articleParams }: Props) {
       </div>
 
       {/* article content */}
+      {/* {data?.content && <div>{data?.content}</div>} */}
       {data?.content && (
-        <div dangerouslySetInnerHTML={{ __html: data?.content }} />
+        <Tiptap
+          content={data?.content}
+          onChange={setArticleContent}
+          editable={isEditable}
+          key={data?.content + isEditable}
+        />
       )}
     </div>
   );
