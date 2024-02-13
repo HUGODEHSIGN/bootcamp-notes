@@ -1,4 +1,4 @@
-import { ChevronLeft, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { ChevronLeft, MoreHorizontal, Trash2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -8,6 +8,7 @@ import TooltipAll from "@/components/all/TooltipAll";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import ArticleButtonList from "@/components/view/ArticleButtonList";
+import EditButton from "@/components/view/EditButton";
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
@@ -26,11 +27,8 @@ export default function layout({ children }: { children: React.ReactNode }) {
         </div>
 
         <div className="hidden sm:flex flex-row gap-2">
-          <TooltipAll content="Edit">
-            <Button size="icon" className="h-9 w-9">
-              <Pencil className="h-4 w-4" />
-            </Button>
-          </TooltipAll>
+          <EditButton />
+
           <TooltipAll content="Delete">
             <Button variant="destructive" size="icon" className="h-9 w-9">
               <Trash2 className="h-4 w-4" />

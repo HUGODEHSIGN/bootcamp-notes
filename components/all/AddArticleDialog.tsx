@@ -1,6 +1,5 @@
 "use client";
 
-import AddArticleForm from "./AddArticleForm";
 import TooltipAll from "./TooltipAll";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -25,6 +24,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
+import AddArticleForm from "../form/AddArticleForm";
 import { ScrollArea } from "../ui/scroll-area";
 
 // component
