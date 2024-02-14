@@ -24,7 +24,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
-import AddArticleForm from "../form/AddArticleForm";
+import AddArticleForm from "../form/add/AddArticleForm";
 import { ScrollArea } from "../ui/scroll-area";
 
 // component

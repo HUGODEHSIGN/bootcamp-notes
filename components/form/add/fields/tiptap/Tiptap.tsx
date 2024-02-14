@@ -21,7 +21,29 @@ type Props = {
   editable: boolean;
 };
 
+// please add lowlight languages here
+const lowlightLanguages = [
+  {
+    name: "html",
+    language: html,
+  },
+  {
+    name: "css",
+    langauge: css,
+  },
+  {
+    name: "js",
+    language: js,
+  },
+  {
+    name: "ts",
+    langauge: ts,
+  },
+];
+
+// prop editable allows for custom styles and functionality, this component is reusable in both editing and displaying content
 export default function Tiptap({ content, onChange, editable }: Props) {
+  // different styles determined by editable
   function textBoxStyle() {
     if (editable) {
       return "rounded-md min-h-[150px] bg-backdropborder border border-input p-2 px-3";
@@ -30,16 +52,21 @@ export default function Tiptap({ content, onChange, editable }: Props) {
     }
   }
 
+  // init lowlight
   const lowlight = createLowlight();
 
-  lowlight.register("html", html);
-  lowlight.register("css", css);
-  lowlight.register("js", js);
-  lowlight.register("ts", ts);
+  // steps to add new language:
+  // 1. import language at the top of file
+  // 2. add to lowlightLanguages array above
+  lowlightLanguages.forEach((language) => {
+    if (language.language) {
+      lowlight.register(language.name, language.language);
+    }
+  });
 
+  // add extensions and configure editor here
   const editor = useEditor({
     extensions: [
-      // StarterKit.configure(),
       Document,
       Text,
       Paragraph,
@@ -47,7 +74,11 @@ export default function Tiptap({ content, onChange, editable }: Props) {
       Italic,
       Underline,
       Strike,
-      Youtube,
+      Youtube.configure({
+        HTMLAttributes: {
+          class: "w-full",
+        },
+      }),
       CodeBlockLowlight.configure({
         lowlight,
         HTMLAttributes: {
@@ -55,13 +86,19 @@ export default function Tiptap({ content, onChange, editable }: Props) {
         },
       }),
     ],
+
+    // editable and content are passed through props here
     editable,
+
+    // content only determines initial value, not the onchange value
     content,
     editorProps: {
       attributes: {
         class: textBoxStyle(),
       },
     },
+
+    // editor content is stored as html elements
     onUpdate({ editor }) {
       onChange(editor.getHTML());
     },

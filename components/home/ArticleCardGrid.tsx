@@ -22,8 +22,6 @@ export default function ArticleCardGrid() {
   const articles = useFilterSortArticles();
   const [{ isSuccess, isPending }] = useAtom(articlesQueryAtom);
 
-  console.log(articles);
-
   function renderArticles() {
     if (articles) {
       return articles.map((article) => (

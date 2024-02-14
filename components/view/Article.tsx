@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { articlesQueryAtom } from "../hooks/fetch/read/articleQueryAtom";
 
 import Tag from "../all/Tag";
-import Tiptap from "../form/Tiptap";
+import Tiptap from "../form/add/fields/tiptap/Tiptap";
 import { CardDescription, CardTitle } from "../ui/card";
 
 type Props = { articleParams: string };
