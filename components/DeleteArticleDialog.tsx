@@ -2,10 +2,7 @@ import { disableLinkAtom, filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { useState } from "react";
 
-import useDeleteArticle from "@/lib/hooks/useDeleteArticle";
-import useFetchArticles from "@/lib/hooks/useFetchArticles";
-import useFetchCategories from "@/lib/hooks/useFetchCategories";
-
+import useDeleteArticle from "@/components/fetch/useDeleteArticle";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,13 +29,7 @@ export default function DeleteArticleDialog({
   const [linkIsDisabled, setLinkIsDisabled] = useAtom(disableLinkAtom);
   const [filter, setFilter] = useAtom(filterAtom);
   const [sort, setSort] = useAtom(sortAtom);
-  const article = useFetchArticles(filter, sort);
-  const categories = useFetchCategories();
-  const { mutate, status } = useDeleteArticle(
-    docId,
-    article.refetch,
-    categories.refetch,
-  );
+  const { mutate, status } = useDeleteArticle(docId);
 
   return (
     <AlertDialog open={isOpen}>

@@ -4,9 +4,6 @@ import TooltipAll from "./TooltipAll";
 import { filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { ArrowDownAZ, CalendarCheck, CalendarPlus } from "lucide-react";
-import { useEffect } from "react";
-
-import useFetchArticles from "@/lib/hooks/useFetchArticles";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -24,13 +21,6 @@ export default function ArticleSortDropdown() {
   // state for which sorting method to use
   const [filter, setFilter] = useAtom(filterAtom);
   const [sort, setSort] = useAtom(sortAtom);
-
-  // article state
-  const articles = useFetchArticles(filter, sort);
-
-  useEffect(() => {
-    articles.refetch();
-  }, [sort]);
 
   // render dropdown
   return (

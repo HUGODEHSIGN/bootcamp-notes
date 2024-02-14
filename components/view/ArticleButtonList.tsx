@@ -1,18 +1,15 @@
 "use client";
 
 import ArticleButton from "./ArticleButton";
-import { filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 
-import useFetchArticles from "@/lib/hooks/useFetchArticles";
-
+import { articlesQueryAtom } from "../fetch/articleQueryAtom";
+import useFilterSortArticles from "../fetch/useFilterSortArticles";
 import { Separator } from "../ui/separator";
 
 export default function ArticleButtonList() {
-  const [filter, setFilter] = useAtom(filterAtom);
-  const [sort, setSort] = useAtom(sortAtom);
-  const { data, isPending, isError, isSuccess, error, refetch } =
-    useFetchArticles(filter, sort);
+  const articles = useFilterSortArticles();
+  const [{ isSuccess }] = useAtom(articlesQueryAtom);
 
   // const init = useInit();
 
@@ -20,11 +17,11 @@ export default function ArticleButtonList() {
   // function is called above in renderCategories
   function renderArticles() {
     // if statement for typescript saying articles could be undefined
-    if (data) {
+    if (articles) {
       // filtering only the articles that has the same category as the category being rendered at the time
 
       // mapping through all of the filtered articles
-      return data.map((article) => (
+      return articles.map((article) => (
         <div key={article.id}>
           <ArticleButton
             title={article.title}

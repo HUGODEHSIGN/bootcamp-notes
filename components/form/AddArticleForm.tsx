@@ -1,6 +1,5 @@
 "use client";
 
-import CreateNewCategoryDialog from "./CreateNewCategoryDialog";
 import Tiptap from "./Tiptap";
 import { filterAtom, sortAtom } from "@/lib/atoms";
 import { cn } from "@/lib/utils";
@@ -8,16 +7,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useAtom } from "jotai";
-import { Check, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { db } from "@/lib/firestore-config";
 
-import useFetchArticles from "@/lib/hooks/useFetchArticles";
-import useFetchCategories from "@/lib/hooks/useFetchCategories";
-
+// import useFetchCategories from "@/lib/hooks/useFetchCategories";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
@@ -25,7 +22,6 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem,
 } from "../ui/command";
 import {
   Form,
@@ -77,16 +73,12 @@ export default function AddArticleForm({
   const [IsCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const [filter, setFilter] = useAtom(filterAtom);
   const [sort, setSort] = useAtom(sortAtom);
-  const articles = useFetchArticles(filter, sort);
-  const categories = useFetchCategories();
 
   const { mutate, status, variables } = useMutation({
     mutationKey: ["articles"],
     mutationFn: (value: ValueType) => submit(value),
     onSuccess: async () => {
       console.log("test");
-      articles.refetch();
-      categories.refetch();
     },
   });
 
@@ -217,7 +209,7 @@ export default function AddArticleForm({
                       <CommandInput placeholder="Search category" />
                       <CommandEmpty>Category not found</CommandEmpty>
                       <CommandGroup>
-                        {categories.data?.map((category) => (
+                        {/* {categories.data?.map((category) => (
                           <CommandItem
                             value={category}
                             key={category}
@@ -268,7 +260,7 @@ export default function AddArticleForm({
                             ];
                             form.setValue("category", updatedCategories);
                           }}
-                        />
+                        /> */}
                       </CommandGroup>
                     </Command>
                   </PopoverContent>

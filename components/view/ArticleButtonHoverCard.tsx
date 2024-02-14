@@ -4,24 +4,24 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 
-import Tag from "../all/Tag";
 import { CardDescription } from "../ui/card";
 
 type Props = {
   children: React.ReactNode;
   description: string;
-  category: string[];
+  category?: string[];
 };
 
 export default function ArticleButtonHoverCard({
   children,
   description,
-  category,
+  // category,
 }: Props) {
   function renderTags() {
-    return category.map((tag) => (
-      <Tag key={description + category} category={tag} />
-    ));
+    // return category.map((tag) => (
+    //   <Tag key={description + category} category={tag} />
+    // ));
+    return <div></div>;
   }
   return (
     <HoverCard>
