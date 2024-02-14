@@ -1,13 +1,8 @@
 "use client";
 
-import TooltipAll from "./TooltipAll";
-import { filterAtom, sortAtom } from "@/lib/atoms";
+import { filterAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { Filter } from "lucide-react";
-import { useEffect } from "react";
-
-import useFetchArticles from "@/lib/hooks/useFetchArticles";
-import useFetchCategories from "@/lib/hooks/useFetchCategories";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,20 +14,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import TooltipAll from "../../all/TooltipAll";
+import useGetCategories from "../fetch/read/useGetCategories";
+
 // component for deciding how to sort all of the articles
 export default function ArticleFilterDropdown() {
   // state for which sorting method to use
   const [filter, setFilter] = useAtom(filterAtom);
-  const [sort, setSort] = useAtom(sortAtom);
-  const { data, isPending, isError, isSuccess, error, refetch } =
-    useFetchCategories();
-  // article state
-  const articles = useFetchArticles(filter, sort);
+  const categories = useGetCategories();
 
   // hook for filtering articles
 
   function renderDropdown() {
-    return data?.map((category) => (
+    return categories?.map((category) => (
       <DropdownMenuCheckboxItem
         key={category}
         onClick={() => setFilter(category)}
@@ -42,10 +36,6 @@ export default function ArticleFilterDropdown() {
       </DropdownMenuCheckboxItem>
     ));
   }
-
-  useEffect(() => {
-    articles.refetch();
-  }, [filter]);
 
   // render dropdown
   return (

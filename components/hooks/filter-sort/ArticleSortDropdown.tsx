@@ -1,12 +1,8 @@
 "use client";
 
-import TooltipAll from "./TooltipAll";
 import { filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { ArrowDownAZ, CalendarCheck, CalendarPlus } from "lucide-react";
-import { useEffect } from "react";
-
-import useFetchArticles from "@/lib/hooks/useFetchArticles";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,18 +15,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import TooltipAll from "../../all/TooltipAll";
+
 // component for deciding how to sort all of the articles
 export default function ArticleSortDropdown() {
   // state for which sorting method to use
   const [filter, setFilter] = useAtom(filterAtom);
   const [sort, setSort] = useAtom(sortAtom);
-
-  // article state
-  const articles = useFetchArticles(filter, sort);
-
-  useEffect(() => {
-    articles.refetch();
-  }, [sort]);
 
   // render dropdown
   return (
@@ -40,7 +31,7 @@ export default function ArticleSortDropdown() {
           <Button variant="outline" size="sm">
             {sort.charAt(0).toUpperCase() + sort.slice(1)}
             {sort === "title" && <ArrowDownAZ className="ml-2 h-4 w-4" />}
-            {sort === "created" && <CalendarPlus className="ml-2 h-4 w-4" />}
+            {sort === "newest" && <CalendarPlus className="ml-2 h-4 w-4" />}
             {sort === "edited" && <CalendarCheck className="ml-2 h-4 w-4" />}
           </Button>
         </DropdownMenuTrigger>
@@ -63,10 +54,10 @@ export default function ArticleSortDropdown() {
           </DropdownMenuShortcut>
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
-          onSelect={() => setSort("created")}
-          checked={sort === "created"}
+          onSelect={() => setSort("new")}
+          checked={sort === "new"}
         >
-          Created
+          Newe
           <DropdownMenuShortcut>
             <CalendarPlus className="mr-2 h-4 w-4" />
           </DropdownMenuShortcut>

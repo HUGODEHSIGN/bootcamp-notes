@@ -1,14 +1,14 @@
 "use client";
 
 import ArticleCard from "./ArticleCard";
-import { filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 
-import useFetchArticles from "@/lib/hooks/useFetchArticles";
+import useFilterSortArticles from "../hooks/filter-sort/useFilterSortArticles";
+import { articlesQueryAtom } from "@/components/hooks/fetch/read/articleQueryAtom";
 
 import LoadingArticleCard from "../all/LoadingArticleCard";
 
-export type articleType = {
+export type ArticleType = {
   id: string;
   category: string[];
   content: string;
@@ -18,28 +18,15 @@ export type articleType = {
   edited: { seconds: number; nanoseconds: number };
 };
 
-let filterParameter: string = "Testing";
-let sortParameter: string = "All";
-
-// function for fetching articles
-
 export default function ArticleCardGrid() {
-  const [filter, setFilter] = useAtom(filterAtom);
-  const [sort, setSort] = useAtom(sortAtom);
-  const { data, isPending, isError, isSuccess, error, refetch } =
-    useFetchArticles(filter, sort);
+  const articles = useFilterSortArticles();
+  const [{ isSuccess, isPending }] = useAtom(articlesQueryAtom);
 
-  // const init = useInit();
+  console.log(articles);
 
-  // function for renderingArticles
-  // function is called above in renderCategories
   function renderArticles() {
-    // if statement for typescript saying articles could be undefined
-    if (data) {
-      // filtering only the articles that has the same category as the category being rendered at the time
-
-      // mapping through all of the filtered articles
-      return data.map((article) => (
+    if (articles) {
+      return articles.map((article) => (
         <div key={article.id}>
           <ArticleCard
             title={article.title}
@@ -52,7 +39,6 @@ export default function ArticleCardGrid() {
     }
   }
 
-  // render all of the articles
   return (
     <>
       <div className="grid grid-rows-1 gap-2">
