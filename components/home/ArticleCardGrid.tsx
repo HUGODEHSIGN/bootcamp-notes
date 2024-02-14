@@ -3,9 +3,10 @@
 import ArticleCard from "./ArticleCard";
 import { useAtom } from "jotai";
 
+import useFilterSortArticles from "../hooks/filter-sort/useFilterSortArticles";
+import { articlesQueryAtom } from "@/components/hooks/fetch/read/articleQueryAtom";
+
 import LoadingArticleCard from "../all/LoadingArticleCard";
-import { articlesQueryAtom } from "../fetch/articleQueryAtom";
-import useFilterSortArticles from "../fetch/useFilterSortArticles";
 
 export type ArticleType = {
   id: string;

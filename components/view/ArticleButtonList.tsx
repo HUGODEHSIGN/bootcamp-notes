@@ -3,8 +3,9 @@
 import ArticleButton from "./ArticleButton";
 import { useAtom } from "jotai";
 
-import { articlesQueryAtom } from "../fetch/articleQueryAtom";
-import useFilterSortArticles from "../fetch/useFilterSortArticles";
+import useFilterSortArticles from "../hooks/filter-sort/useFilterSortArticles";
+import { articlesQueryAtom } from "@/components/hooks/fetch/read/articleQueryAtom";
+
 import { Separator } from "../ui/separator";
 
 export default function ArticleButtonList() {

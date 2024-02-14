@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { deleteDoc, doc } from "firebase/firestore";
 
-import { db } from "../../lib/firestore-config";
+import { db } from "@/lib/firestore-config";
 
 export default function useDeleteArticle(docId: string) {
   async function deleteArticle() {

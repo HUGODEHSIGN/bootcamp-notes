@@ -2,8 +2,9 @@ import { ChevronLeft, MoreHorizontal, Trash2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-import ArticleFilterDropdown from "@/components/all/ArticleFilterDropdown";
-import ArticleSortDropdown from "@/components/all/ArticleSortDropdown";
+import ArticleFilterDropdown from "@/components/hooks/filter-sort/ArticleFilterDropdown";
+import ArticleSortDropdown from "@/components/hooks/filter-sort/ArticleSortDropdown";
+
 import TooltipAll from "@/components/all/TooltipAll";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";

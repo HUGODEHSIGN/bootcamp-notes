@@ -1,7 +1,7 @@
 import { collection, getDocs, query } from "firebase/firestore";
 import { atomWithQuery } from "jotai-tanstack-query";
 
-import { db } from "../../lib/firestore-config";
+import { db } from "@/lib/firestore-config";
 
 import { ArticleType } from "@/components/home/ArticleCardGrid";
 

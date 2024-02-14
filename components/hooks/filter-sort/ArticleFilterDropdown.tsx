@@ -1,6 +1,5 @@
 "use client";
 
-import TooltipAll from "./TooltipAll";
 import { filterAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { Filter } from "lucide-react";
@@ -15,7 +14,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import useGetCategories from "../fetch/useGetCategories";
+import TooltipAll from "../../all/TooltipAll";
+import useGetCategories from "../fetch/read/useGetCategories";
 
 // component for deciding how to sort all of the articles
 export default function ArticleFilterDropdown() {

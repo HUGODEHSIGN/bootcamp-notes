@@ -2,7 +2,8 @@ import { disableLinkAtom, filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { useState } from "react";
 
-import useDeleteArticle from "@/components/fetch/useDeleteArticle";
+import useDeleteArticle from "@/components/hooks/fetch/delete/useDeleteArticle";
+
 import {
   AlertDialog,
   AlertDialogAction,

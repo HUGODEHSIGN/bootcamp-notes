@@ -1,8 +1,9 @@
-import { articlesQueryAtom } from "./articleQueryAtom";
 import { filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 
-import { ArticleType } from "../home/ArticleCardGrid";
+import { articlesQueryAtom } from "@/components/hooks/fetch/read/articleQueryAtom";
+
+import { ArticleType } from "../../home/ArticleCardGrid";
 
 export default function useFilterSortArticles() {
   // state for filter and sort parameters
@@ -38,11 +39,11 @@ export default function useFilterSortArticles() {
       sortedArticles.sort((a, b) => a.title.localeCompare(b.title));
     }
     // calculating nanoseconds would cause more computing power, not necessary
-    if (sort === "created") {
-      sortedArticles.sort((a, b) => a.created.seconds - b.created.seconds);
+    if (sort === "new") {
+      sortedArticles.sort((a, b) => b.created.seconds - a.created.seconds);
     }
     if (sort === "edited") {
-      sortedArticles.sort((a, b) => a.created.seconds - b.created.seconds);
+      sortedArticles.sort((a, b) => b.created.seconds - a.created.seconds);
     }
     return sortedArticles;
   }
