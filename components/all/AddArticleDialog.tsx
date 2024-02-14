@@ -49,9 +49,10 @@ export function AddArticleDialog() {
             </DialogTrigger>
           </TooltipAll>
         </div>
-        <DialogContent>
+
+        <DialogContent className="min-w-[80vw]">
           {/* scroll area needs set height to work */}
-          <ScrollArea className="h-[90vh]">
+          <ScrollArea className="h-[80vh]">
             <DialogHeader>
               <DialogTitle>Add a new article</DialogTitle>
               <DialogDescription>

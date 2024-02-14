@@ -46,9 +46,9 @@ export default function Tiptap({ content, onChange, editable }: Props) {
   // different styles determined by editable
   function textBoxStyle() {
     if (editable) {
-      return "rounded-md min-h-[150px] bg-backdropborder border border-input p-2 px-3";
+      return "rounded-md min-h-[300px] bg-backdropborder border border-input p-2 px-3";
     } else {
-      return "rounded-md min-h-[150px] bg-backdropborder";
+      return "rounded-md min-h-[300pxpx] bg-backdropborder";
     }
   }
 

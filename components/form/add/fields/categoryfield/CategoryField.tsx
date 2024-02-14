@@ -29,7 +29,7 @@ export default function CategoryField({ form }: Props) {
       name="category"
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel>Category</FormLabel>
+          <FormLabel className="max-w-fit">Category</FormLabel>
 
           <CategoryPopover field={field} form={form} />
 
