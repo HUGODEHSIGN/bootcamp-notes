@@ -9,7 +9,6 @@ import { articlesQueryAtom } from "../hooks/fetch/read/articleQueryAtom";
 
 import Tag from "../all/Tag";
 import Tiptap from "../form/Tiptap";
-import { Button } from "../ui/button";
 import { CardDescription, CardTitle } from "../ui/card";
 
 type Props = { articleParams: string };
@@ -54,7 +53,6 @@ export default function Article({ articleParams }: Props) {
         onChange={setArticleContent}
         editable={false}
       />
-      <Button onClick={() => console.log(articleContent)}>test</Button>
     </div>
   );
 }

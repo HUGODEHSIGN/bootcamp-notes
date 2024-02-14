@@ -1,13 +1,12 @@
 "use client";
 
+import CreateNewCategoryDialog from "./CreateNewCategoryDialog";
 import Tiptap from "./Tiptap";
-import { filterAtom, sortAtom } from "@/lib/atoms";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { useAtom } from "jotai";
-import { Plus } from "lucide-react";
+import { Check, Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -15,6 +14,8 @@ import { z } from "zod";
 import { db } from "@/lib/firestore-config";
 
 // import useFetchCategories from "@/lib/hooks/useFetchCategories";
+import useGetCategories from "../hooks/fetch/read/useGetCategories";
+
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
@@ -22,6 +23,7 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandInput,
+  CommandItem,
 } from "../ui/command";
 import {
   Form,
@@ -71,8 +73,7 @@ export default function AddArticleForm({
 }: AddArticleFormProps) {
   // adding necessary states to this component
   const [IsCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
-  const [filter, setFilter] = useAtom(filterAtom);
-  const [sort, setSort] = useAtom(sortAtom);
+  const categories = useGetCategories();
 
   const { mutate, status, variables } = useMutation({
     mutationKey: ["articles"],
@@ -207,9 +208,9 @@ export default function AddArticleForm({
                   <PopoverContent className="w-[200px] p-0" align="start">
                     <Command>
                       <CommandInput placeholder="Search category" />
-                      <CommandEmpty>Category not found</CommandEmpty>
+                      <CommandEmpty>Tags Not Found</CommandEmpty>
                       <CommandGroup>
-                        {/* {categories.data?.map((category) => (
+                        {categories?.map((category) => (
                           <CommandItem
                             value={category}
                             key={category}
@@ -260,7 +261,7 @@ export default function AddArticleForm({
                             ];
                             form.setValue("category", updatedCategories);
                           }}
-                        /> */}
+                        />
                       </CommandGroup>
                     </Command>
                   </PopoverContent>
