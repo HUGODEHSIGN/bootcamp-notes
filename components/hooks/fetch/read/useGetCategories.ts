@@ -2,7 +2,7 @@ import { articlesQueryAtom } from "./articleQueryAtom";
 import { useAtom } from "jotai";
 import _ from "lodash";
 
-import { ArticleType } from "../../home/ArticleCardGrid";
+import { ArticleType } from "@/components/home/ArticleCardGrid";
 
 export default function useGetCategories() {
   // all of the fetched articles
