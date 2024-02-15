@@ -24,7 +24,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
-import AddArticleForm from "../form/AddArticleForm";
+import AddArticleForm from "../form/add/AddArticleForm";
 import { ScrollArea } from "../ui/scroll-area";
 
 // component
@@ -49,9 +49,10 @@ export function AddArticleDialog() {
             </DialogTrigger>
           </TooltipAll>
         </div>
-        <DialogContent>
+
+        <DialogContent className="min-w-[80vw]">
           {/* scroll area needs set height to work */}
-          <ScrollArea className="h-[90vh]">
+          <ScrollArea className="h-[80vh]">
             <DialogHeader>
               <DialogTitle>Add a new article</DialogTitle>
               <DialogDescription>

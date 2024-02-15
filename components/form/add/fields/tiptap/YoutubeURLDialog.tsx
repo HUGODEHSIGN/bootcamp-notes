@@ -1,3 +1,4 @@
+import { Editor } from "@tiptap/react";
 import { Youtube } from "lucide-react";
 import { useState } from "react";
 
@@ -15,14 +16,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 type Props = {
-  handleSubmit: (url: string) => void;
+  editor: Editor | null;
 };
 
-export default function YoutubeURLDialog({ handleSubmit }: Props) {
+export default function YoutubeURLDialog({ editor }: Props) {
   const [url, setUrl] = useState("");
   const [open, setOpen] = useState(false);
+  const [showError, setShowError] = useState(false);
+
+  function addYoutubeVideo() {
+    if (url) {
+      editor!.commands.setYoutubeVideo({
+        src: url,
+      });
+      return;
+    }
+    setShowError(true);
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
+      {/* this is the button that shows up in the toolbar */}
       <DialogTrigger asChild>
         <Button
           size="icon"
@@ -33,6 +47,8 @@ export default function YoutubeURLDialog({ handleSubmit }: Props) {
           <Youtube className="w-4 h-4" />
         </Button>
       </DialogTrigger>
+
+      {/* title and description */}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Add Youtube Video</DialogTitle>
@@ -41,20 +57,27 @@ export default function YoutubeURLDialog({ handleSubmit }: Props) {
           </DialogDescription>
         </DialogHeader>
 
-        <Label htmlFor="name">URL</Label>
-        <Input
-          id="name"
-          placeholder="https://www.youtube.com/"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          type="url"
-        />
+        {/* input with labels and errors */}
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="name">URL</Label>
+          <Input
+            id="name"
+            placeholder="https://www.youtube.com/"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            type="url"
+          />
+          {showError && (
+            <Label className="text-destructive">Please add URL</Label>
+          )}
+        </div>
 
+        {/* buttons */}
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button type="submit" onClick={() => handleSubmit(url)}>
+          <Button type="submit" onClick={addYoutubeVideo}>
             Add
           </Button>
         </DialogFooter>

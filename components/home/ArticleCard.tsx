@@ -44,7 +44,7 @@ export default function ArticleCard({
 
   // render component
   return (
-    <Link href={linkIsDisabled ? "#" : `/${title}`}>
+    <Link href={linkIsDisabled ? "#" : `/${docId}`}>
       <ArticleCardContextMenu title={title} docId={docId}>
         <Card
           className="hover:bg-secondary h-[145px]"

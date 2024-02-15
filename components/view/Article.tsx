@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { articlesQueryAtom } from "../hooks/fetch/read/articleQueryAtom";
 
 import Tag from "../all/Tag";
-import Tiptap from "../form/Tiptap";
+import Tiptap from "../form/add/fields/tiptap/toolbar/Tiptap";
 import { CardDescription, CardTitle } from "../ui/card";
 
 type Props = { articleParams: string };
@@ -19,8 +19,8 @@ export default function Article({ articleParams }: Props) {
   const [articleContent, setArticleContent] = useState("");
   const [selectedArticle, setSelectedArticle] = useAtom(selectedArticleAtom);
 
-  const currentTitle = decodeURIComponent(articleParams);
-  const [currentArticle] = _.filter(data, { title: currentTitle });
+  const [currentArticle] = _.filter(data, { id: articleParams });
+  console.log(articleParams);
 
   function renderCategories() {
     return currentArticle.category.map((tag) => (
@@ -31,8 +31,8 @@ export default function Article({ articleParams }: Props) {
   }
 
   useEffect(() => {
-    setSelectedArticle(currentTitle);
-  }, [currentTitle]);
+    setSelectedArticle(articleParams);
+  }, [articleParams]);
 
   if (isFetching) {
     return;
