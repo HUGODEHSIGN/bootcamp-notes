@@ -2,6 +2,7 @@
 
 import ArticleButton from "./ArticleButton";
 import { useAtom } from "jotai";
+import { useParams } from "next/navigation";
 
 import useFilterSortArticles from "../hooks/filter-sort/useFilterSortArticles";
 import { articlesQueryAtom } from "@/components/hooks/fetch/read/articleQueryAtom";
@@ -12,7 +13,14 @@ export default function ArticleButtonList() {
   const articles = useFilterSortArticles();
   const [{ isSuccess }] = useAtom(articlesQueryAtom);
 
-  // const init = useInit();
+  let params = useParams();
+
+  function preventParamsArray() {
+    if (Array.isArray(params.article)) {
+      return (params.article = params.article[0]);
+    }
+    return params.article;
+  }
 
   // function for renderingArticles
   // function is called above in renderCategories
@@ -23,12 +31,13 @@ export default function ArticleButtonList() {
 
       // mapping through all of the filtered articles
       return articles.map((article) => (
-        <div key={article.id}>
+        <div key={article.title}>
           <ArticleButton
             title={article.title}
             description={article.description}
             category={article.category}
             docId={article.id}
+            params={preventParamsArray()}
           />
         </div>
       ));

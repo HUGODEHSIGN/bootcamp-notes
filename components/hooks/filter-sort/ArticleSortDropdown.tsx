@@ -31,7 +31,7 @@ export default function ArticleSortDropdown() {
           <Button variant="outline" size="sm">
             {sort.charAt(0).toUpperCase() + sort.slice(1)}
             {sort === "title" && <ArrowDownAZ className="ml-2 h-4 w-4" />}
-            {sort === "newest" && <CalendarPlus className="ml-2 h-4 w-4" />}
+            {sort === "new" && <CalendarPlus className="ml-2 h-4 w-4" />}
             {sort === "edited" && <CalendarCheck className="ml-2 h-4 w-4" />}
           </Button>
         </DropdownMenuTrigger>
@@ -57,7 +57,7 @@ export default function ArticleSortDropdown() {
           onSelect={() => setSort("new")}
           checked={sort === "new"}
         >
-          Newe
+          New
           <DropdownMenuShortcut>
             <CalendarPlus className="mr-2 h-4 w-4" />
           </DropdownMenuShortcut>

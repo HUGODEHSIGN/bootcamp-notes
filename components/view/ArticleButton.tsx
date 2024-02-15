@@ -11,6 +11,7 @@ type Props = {
   description: string;
   category: string[];
   docId: string;
+  params: string;
 };
 
 export default function ArticleButton({
@@ -18,6 +19,7 @@ export default function ArticleButton({
   description,
   category,
   docId,
+  params,
 }: Props) {
   const [selectedArticle, setSelectedArticle] = useAtom(selectedArticleAtom);
 
@@ -27,7 +29,7 @@ export default function ArticleButton({
         <ArticleButtonHoverCard description={description} category={category}>
           {selectedArticle === title ? (
             <Button className="w-full justify-start" asChild>
-              <Link href={`./${title}`}>{title}</Link>
+              <Link href={`./${docId}`}>{title}</Link>
             </Button>
           ) : (
             <Button
@@ -36,7 +38,7 @@ export default function ArticleButton({
               onClick={() => setSelectedArticle(title)}
               asChild
             >
-              <Link href={`./${title}`}>{title}</Link>
+              <Link href={`./${docId}`}>{title}</Link>
             </Button>
           )}
         </ArticleButtonHoverCard>

@@ -1,4 +1,4 @@
-import Tiptap from "./Tiptap";
+import Tiptap from "./toolbar/Tiptap";
 import { UseFormReturn } from "react-hook-form";
 
 import {
