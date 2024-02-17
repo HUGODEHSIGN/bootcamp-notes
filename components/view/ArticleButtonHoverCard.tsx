@@ -22,7 +22,6 @@ export default function ArticleButtonHoverCard({
     return category.map((tag) => (
       <Tag key={description + category} category={tag} />
     ));
-    return <div></div>;
   }
   return (
     <HoverCard>

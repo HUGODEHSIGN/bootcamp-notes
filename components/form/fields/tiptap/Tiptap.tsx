@@ -1,4 +1,4 @@
-import Toolbar from "./Toolbar";
+import Toolbar from "./toolbar/Toolbar";
 import Bold from "@tiptap/extension-bold";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Document from "@tiptap/extension-document";
@@ -14,7 +14,7 @@ import "highlight.js/styles/base16/ocean.css";
 import { common, createLowlight } from "lowlight";
 
 type Props = {
-  content: string;
+  content?: string;
   onChange: (richText: string) => void;
   editable: boolean;
 };

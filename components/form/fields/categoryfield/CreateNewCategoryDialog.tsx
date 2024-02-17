@@ -13,10 +13,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
-import { Button } from "../../../../ui/button";
-import { Input } from "../../../../ui/input";
-import { Label } from "../../../../ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 type Props = {
   field: ControllerRenderProps<

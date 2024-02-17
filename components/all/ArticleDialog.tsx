@@ -24,12 +24,17 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
-import AddArticleForm from "../form/add/AddArticleForm";
+import ArticleForm from "../form/ArticleForm";
+import { ArticleType } from "../home/ArticleCardGrid";
 import { ScrollArea } from "../ui/scroll-area";
 
+type Props = {
+  children: React.ReactNode;
+  previousValue?: ArticleType;
+};
+
 // component
-export function AddArticleDialog() {
-  // set dialog/drawer open state
+export function ArticleDialog({ children, previousValue }: Props) {
   // setting states separately to allow different media queries
   const [openDialog, setOpenDialog] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -41,12 +46,14 @@ export function AddArticleDialog() {
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         {/* css mediaquery to hide on smaller devices */}
         <div className="hidden sm:block">
-          <TooltipAll content="Create a new article">
-            <DialogTrigger asChild>
-              <Button size="icon">
-                <Plus />
-              </Button>
-            </DialogTrigger>
+          <TooltipAll
+            content={
+              previousValue
+                ? `Edit ${previousValue.title}`
+                : "Add a new article"
+            }
+          >
+            <DialogTrigger asChild>{children}</DialogTrigger>
           </TooltipAll>
         </div>
 
@@ -54,7 +61,11 @@ export function AddArticleDialog() {
           {/* scroll area needs set height to work */}
           <ScrollArea className="h-[80vh]">
             <DialogHeader>
-              <DialogTitle>Add a new article</DialogTitle>
+              <DialogTitle>
+                {previousValue
+                  ? `Edit ${previousValue.title}`
+                  : "Add a new article"}
+              </DialogTitle>
               <DialogDescription>
                 Make changes to your profile here. Click save when you&apos;re
                 done.
@@ -62,7 +73,10 @@ export function AddArticleDialog() {
             </DialogHeader>
 
             {/* props allow form buttons to control state of overlay */}
-            <AddArticleForm setState={{ setOpenDialog, setOpenDrawer }} />
+            <ArticleForm
+              setState={{ setOpenDialog, setOpenDrawer }}
+              previousValue={previousValue}
+            />
           </ScrollArea>
         </DialogContent>
       </Dialog>
@@ -88,9 +102,10 @@ export function AddArticleDialog() {
             </DrawerHeader>
 
             {/* props allow form buttons to control state of overlay */}
-            <AddArticleForm
+            <ArticleForm
               className="px-4"
               setState={{ setOpenDialog, setOpenDrawer }}
+              previousValue={previousValue}
             />
             <DrawerFooter className="pt-2">
               <DrawerClose asChild>

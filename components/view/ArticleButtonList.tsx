@@ -4,8 +4,8 @@ import ArticleButton from "./ArticleButton";
 import { useAtom } from "jotai";
 import { useParams } from "next/navigation";
 
+import { articlesQueryAtom } from "../hooks/fetch/read/articleQueryAtom";
 import useFilterSortArticles from "../hooks/filter-sort/useFilterSortArticles";
-import { articlesQueryAtom } from "@/components/hooks/fetch/read/articleQueryAtom";
 
 import { Separator } from "../ui/separator";
 
@@ -14,6 +14,10 @@ export default function ArticleButtonList() {
   const [{ isSuccess }] = useAtom(articlesQueryAtom);
 
   let params = useParams();
+
+  if (!articles) {
+    return <div>Loading...</div>;
+  }
 
   function preventParamsArray() {
     if (Array.isArray(params.article)) {
@@ -25,23 +29,11 @@ export default function ArticleButtonList() {
   // function for renderingArticles
   // function is called above in renderCategories
   function renderArticles() {
-    // if statement for typescript saying articles could be undefined
-    if (articles) {
-      // filtering only the articles that has the same category as the category being rendered at the time
-
-      // mapping through all of the filtered articles
-      return articles.map((article) => (
-        <div key={article.title}>
-          <ArticleButton
-            title={article.title}
-            description={article.description}
-            category={article.category}
-            docId={article.id}
-            params={preventParamsArray()}
-          />
-        </div>
-      ));
-    }
+    return articles!.map((article) => (
+      <div key={article.title}>
+        <ArticleButton article={article} params={preventParamsArray()} />
+      </div>
+    ));
   }
 
   // render all of the articles
@@ -51,11 +43,6 @@ export default function ArticleButtonList() {
         <div className="flex flex-col mt-2 mr-2">{renderArticles()}</div>
         {isSuccess && <Separator orientation="vertical" />}
       </div>
-
-      {/* <div className="grid grid-rows-1 gap-2 p-6 pl-0">
-        {isSuccess && renderArticles()}
-        {isPending && <LoadingArticleCard />}
-      </div> */}
     </>
   );
 }

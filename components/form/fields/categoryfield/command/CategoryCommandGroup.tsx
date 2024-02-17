@@ -3,8 +3,9 @@ import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 
 import useGetCategories from "@/components/hooks/fetch/read/useGetCategories";
 
-import CreateNewCategoryDialog from "@/components/form/add/fields/categoryfield/CreateNewCategoryDialog";
 import { CommandGroup } from "@/components/ui/command";
+
+import CreateNewCategoryDialog from "../CreateNewCategoryDialog";
 
 type Props = {
   field: ControllerRenderProps<

@@ -1,14 +1,13 @@
 "use client";
 
-import { selectedArticleAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import _ from "lodash";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { articlesQueryAtom } from "../hooks/fetch/read/articleQueryAtom";
 
 import Tag from "../all/Tag";
-import Tiptap from "../form/add/fields/tiptap/toolbar/Tiptap";
+import Tiptap from "../form/fields/tiptap/Tiptap";
 import { CardDescription, CardTitle } from "../ui/card";
 
 type Props = { articleParams: string };
@@ -17,10 +16,8 @@ type Props = { articleParams: string };
 export default function Article({ articleParams }: Props) {
   const [{ data, isFetching }] = useAtom(articlesQueryAtom);
   const [articleContent, setArticleContent] = useState("");
-  const [selectedArticle, setSelectedArticle] = useAtom(selectedArticleAtom);
 
   const [currentArticle] = _.filter(data, { id: articleParams });
-  console.log(articleParams);
 
   function renderCategories() {
     return currentArticle.category.map((tag) => (
@@ -30,11 +27,7 @@ export default function Article({ articleParams }: Props) {
     ));
   }
 
-  useEffect(() => {
-    setSelectedArticle(articleParams);
-  }, [articleParams]);
-
-  if (isFetching) {
+  if (!currentArticle) {
     return;
   }
 

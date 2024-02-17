@@ -1,7 +1,9 @@
 "use client";
 
 import { ModeToggle } from "./ModeToggle";
-import { AddArticleDialog } from "./all/AddArticleDialog";
+import { ArticleDialog } from "./all/ArticleDialog";
+import { Button } from "./ui/button";
+import { Plus } from "lucide-react";
 
 export default function Navbar() {
   return (
@@ -13,7 +15,11 @@ export default function Navbar() {
         <div className="flex gap-2 navbar-end">
           <ModeToggle />
           {/* <AddArticleButton /> */}
-          <AddArticleDialog />
+          <ArticleDialog>
+            <Button size="icon">
+              <Plus />
+            </Button>
+          </ArticleDialog>
         </div>
       </div>
     </div>
