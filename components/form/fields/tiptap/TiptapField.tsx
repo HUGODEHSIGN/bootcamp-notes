@@ -1,7 +1,6 @@
 import Tiptap from "./Tiptap";
 import { UseFormReturn } from "react-hook-form";
 
-import { ArticleType } from "@/components/home/ArticleCardGrid";
 import {
   FormControl,
   FormDescription,
@@ -10,6 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { ArticleType } from "@/components/view/home/ArticleCardGrid";
 
 type Props = {
   form: UseFormReturn<
@@ -35,6 +35,7 @@ export default function TiptapField({ form, previousValue }: Props) {
           <FormLabel>Content</FormLabel>
           <FormControl>
             <Tiptap
+              // previousValue is used when editing, when creating a new article, previousValue is undefined
               content={previousValue?.content}
               onChange={field.onChange}
               editable={true}

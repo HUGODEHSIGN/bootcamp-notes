@@ -1,8 +1,7 @@
 import CategoryCommandItem from "./CategoryCommandItem";
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 
-import useGetCategories from "@/components/hooks/fetch/read/useGetCategories";
-
+import useGetCategories from "@/components/functionality/read/useGetCategories";
 import { CommandGroup } from "@/components/ui/command";
 
 import CreateNewCategoryDialog from "../CreateNewCategoryDialog";

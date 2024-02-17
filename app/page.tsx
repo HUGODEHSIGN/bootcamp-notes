@@ -1,8 +1,7 @@
-import ArticleFilterDropdown from "@/components/hooks/filter-sort/ArticleFilterDropdown";
-import ArticleSortDropdown from "@/components/hooks/filter-sort/ArticleSortDropdown";
-
-import ArticleCardGrid from "@/components/home/ArticleCardGrid";
+import ArticleFilterDropdown from "@/components/functionality/filter-sort/ArticleFilterDropdown";
+import ArticleSortDropdown from "@/components/functionality/filter-sort/ArticleSortDropdown";
 import { Separator } from "@/components/ui/separator";
+import ArticleCardGrid from "@/components/view/home/ArticleCardGrid";
 
 export default function Page() {
   return (

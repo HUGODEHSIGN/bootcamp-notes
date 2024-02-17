@@ -67,6 +67,7 @@ export default function YoutubeURLDialog({ editor }: Props) {
             onChange={(e) => setUrl(e.target.value)}
             type="url"
           />
+          {/* shows error when text box is empty */}
           {showError && (
             <Label className="text-destructive">Please add URL</Label>
           )}

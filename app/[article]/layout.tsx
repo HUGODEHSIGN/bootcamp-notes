@@ -2,14 +2,13 @@ import { ChevronLeft, Trash2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-import ArticleFilterDropdown from "@/components/hooks/filter-sort/ArticleFilterDropdown";
-import ArticleSortDropdown from "@/components/hooks/filter-sort/ArticleSortDropdown";
-
 import TooltipAll from "@/components/all/TooltipAll";
+import EditButton from "@/components/functionality/edit/EditButton";
+import ArticleFilterDropdown from "@/components/functionality/filter-sort/ArticleFilterDropdown";
+import ArticleSortDropdown from "@/components/functionality/filter-sort/ArticleSortDropdown";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import ArticleButtonList from "@/components/view/ArticleButtonList";
-import EditButton from "@/components/view/EditButton";
+import ArticleButtonList from "@/components/view/article-page/ArticleButtonList";
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (

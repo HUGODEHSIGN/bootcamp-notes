@@ -7,6 +7,7 @@ type Props = {
   editor: Editor | null;
 };
 
+// heading button information
 export default function HeadingItems({ editor }: Props) {
   const headingItems = [
     {

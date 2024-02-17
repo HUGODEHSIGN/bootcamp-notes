@@ -12,6 +12,7 @@ type Props = {
   content: string;
 };
 
+// this component reduces complexity and only reveals needed props needed for this project's use cases
 export default function TooltipAll({ children, content }: Props) {
   return (
     <TooltipProvider>

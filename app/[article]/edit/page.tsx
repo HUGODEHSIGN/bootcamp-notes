@@ -1,6 +1,6 @@
 "use client";
 
-import EditArticlePage from "@/components/hooks/fetch/edit/EditArticlePage";
+import EditArticlePage from "@/components/functionality/edit/EditArticlePage";
 
 export default function page({ params }: { params: { article: string } }) {
   return (

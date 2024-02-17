@@ -30,14 +30,13 @@ type Props = {
 export default function CategoryBadge({ field, form, category }: Props) {
   // handles removing the category on badge click
   function removeCategory(
+    // event used later, see e.stopPropogation
     e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
   ) {
     // init a copy of the field value
-    const selectedCategories = Array.isArray(field.value)
-      ? // prevents error if field.value is empty
-        [...field.value]
-      : [];
+    const selectedCategories = [...field.value];
 
+    // removes category being selected
     const index = selectedCategories.indexOf(category);
     selectedCategories.splice(index, 1);
     form.setValue("category", selectedCategories);

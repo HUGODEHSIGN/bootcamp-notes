@@ -3,24 +3,21 @@
 import InputField from "./fields/InputField";
 import CategoryField from "./fields/categoryfield/CategoryField";
 import TiptapField from "./fields/tiptap/TiptapField";
-import { useAddArticle } from "./useAddArticle";
 import { useArticleSchema } from "./useArticleSchema";
 import { cn } from "@/lib/utils";
-
-import { useEditArticle } from "../hooks/fetch/edit/useEditArticle";
+import { Dispatch, SetStateAction } from "react";
 
 // import useFetchCategories from "@/lib/hooks/useFetchCategories";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 
-import { ArticleType } from "../home/ArticleCardGrid";
+import { useAddArticle } from "../functionality/add/useAddArticle";
+import { useEditArticle } from "../functionality/edit/useEditArticle";
+import { ArticleType } from "../view/home/ArticleCardGrid";
 
 type ArticleFormProps = {
   className?: string;
-  setState?: {
-    setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
-    setOpenDrawer: React.Dispatch<React.SetStateAction<boolean>>;
-  };
+  setOpen?: Dispatch<SetStateAction<boolean>>;
   previousValue?: ArticleType;
 };
 
@@ -36,12 +33,12 @@ export type ValueType = {
 // form component
 export default function ArticleForm({
   className,
-  setState,
+  setOpen,
   previousValue,
 }: ArticleFormProps) {
   // adding necessary states to this component
   const { form } = useArticleSchema(previousValue);
-  const { onAdd } = useAddArticle(setState);
+  const { onAdd } = useAddArticle(setOpen);
   const { onEdit } = useEditArticle();
 
   // render component
