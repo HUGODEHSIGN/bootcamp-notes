@@ -8,4 +8,6 @@ export const disableLinkAtom = atom(false);
 
 export const selectedArticleAtom = atom("");
 
-export const isEditableAtom = atom(false);
+export const dialogIsOpenDialog = atom(false);
+
+export const drawerIsOpenDialog = atom(false);

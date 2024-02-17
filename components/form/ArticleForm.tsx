@@ -3,20 +3,25 @@
 import InputField from "./fields/InputField";
 import CategoryField from "./fields/categoryfield/CategoryField";
 import TiptapField from "./fields/tiptap/TiptapField";
+import { useAddArticle } from "./useAddArticle";
 import { useArticleSchema } from "./useArticleSchema";
-import { useSubmitArticle } from "./useSubmitArticle";
 import { cn } from "@/lib/utils";
 
-// import useFetchCategories from "@/lib/hooks/useFetchCategories";
-import { Button } from "../../ui/button";
-import { Form } from "../../ui/form";
+import { useEditArticle } from "../hooks/fetch/edit/useEditArticle";
 
-type AddArticleFormProps = {
+// import useFetchCategories from "@/lib/hooks/useFetchCategories";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+
+import { ArticleType } from "../home/ArticleCardGrid";
+
+type ArticleFormProps = {
   className?: string;
-  setState: {
+  setState?: {
     setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
     setOpenDrawer: React.Dispatch<React.SetStateAction<boolean>>;
   };
+  previousValue?: ArticleType;
 };
 
 export type ValueType = {
@@ -29,19 +34,24 @@ export type ValueType = {
 // function for submitting new article
 
 // form component
-export default function AddArticleForm({
+export default function ArticleForm({
   className,
   setState,
-}: AddArticleFormProps) {
+  previousValue,
+}: ArticleFormProps) {
   // adding necessary states to this component
-  const { form } = useArticleSchema();
-  const { onSubmit } = useSubmitArticle(setState);
+  const { form } = useArticleSchema(previousValue);
+  const { onAdd } = useAddArticle(setState);
+  const { onEdit } = useEditArticle();
 
   // render component
   return (
     <div className={cn("grid items-start gap-4", className)}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(previousValue ? onEdit : onAdd)}
+          className="space-y-8"
+        >
           {/* title */}
           <InputField
             form={form}
@@ -63,7 +73,7 @@ export default function AddArticleForm({
           <CategoryField form={form} />
 
           {/* form field for content */}
-          <TiptapField form={form} />
+          <TiptapField form={form} previousValue={previousValue} />
           {/* submission button */}
           <Button type="submit" className="w-full">
             Submit

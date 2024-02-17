@@ -1,7 +1,6 @@
 import { useArticleSchema } from "./useArticleSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 import { z } from "zod";
 
@@ -30,11 +29,10 @@ async function submit(value: ValueType) {
   return value;
 }
 
-export function useSubmitArticle(setState: {
+export function useAddArticle(setState?: {
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
   setOpenDrawer: Dispatch<SetStateAction<boolean>>;
 }) {
-  const router = useRouter();
   const queryClient = useQueryClient();
   const { formSchema } = useArticleSchema();
 
@@ -48,7 +46,6 @@ export function useSubmitArticle(setState: {
         ...old,
         newArticle,
       ]);
-      router.push(`/${encodeURI(newArticle.title)}`);
       return { previousArticles };
     },
     onError: (err, newArticle, context) => {
@@ -60,11 +57,13 @@ export function useSubmitArticle(setState: {
   });
 
   // function for submitting
-  function onSubmit(value: z.infer<typeof formSchema>) {
+  function onAdd(value: z.infer<typeof formSchema>) {
     mutate(value);
     // close dialog after submission
-    setState.setOpenDialog(false);
-    setState.setOpenDrawer(false);
+    if (setState) {
+      setState!.setOpenDialog(false);
+      setState!.setOpenDrawer(false);
+    }
   }
-  return { onSubmit };
+  return { onAdd };
 }

@@ -2,6 +2,7 @@ import { disableLinkAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { ArrowUpRightFromSquare, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 import {
@@ -13,20 +14,22 @@ import {
 } from "@/components/ui/context-menu";
 
 import DeleteArticleDialog from "../DeleteArticleDialog";
+import { ArticleType } from "../home/ArticleCardGrid";
 
 type Props = {
   children: React.ReactNode;
-  title: string;
-  docId: string;
+  article: ArticleType;
 };
 
-export default function ArticleCardContextMenu({
-  children,
-  title,
-  docId,
-}: Props) {
+export default function ArticleCardContextMenu({ children, article }: Props) {
   const [linkIsDisabled, setLinkIsDisabled] = useAtom(disableLinkAtom);
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
+  const router = useRouter();
+
+  if (!article) {
+    return;
+  }
+
   return (
     <>
       <ContextMenu>
@@ -37,19 +40,23 @@ export default function ArticleCardContextMenu({
           className="w-64"
         >
           <ContextMenuItem asChild>
-            <Link href={`./${title}`}>
+            <Link href={`/${article.id}`}>
               Open
               <ContextMenuShortcut>
                 <ArrowUpRightFromSquare size={18} />
               </ContextMenuShortcut>
             </Link>
           </ContextMenuItem>
-          <ContextMenuItem>
-            Edit
-            <ContextMenuShortcut>
-              <Pencil size={18} />
-            </ContextMenuShortcut>
+          {/* <ArticleDialog previousValue={article}> */}
+          <ContextMenuItem asChild>
+            <Link href={`/${article.id}/edit`}>
+              Edit
+              <ContextMenuShortcut>
+                <Pencil size={18} />
+              </ContextMenuShortcut>
+            </Link>
           </ContextMenuItem>
+          {/* </ArticleDialog> */}
           <ContextMenuItem
             className="text-destructive"
             onClick={() => {
@@ -58,7 +65,7 @@ export default function ArticleCardContextMenu({
           >
             Delete
             <ContextMenuShortcut>
-              <Trash2 size={18} />
+              <Trash2 size={18} className="text-destructive" />
             </ContextMenuShortcut>
           </ContextMenuItem>
         </ContextMenuContent>
@@ -66,7 +73,7 @@ export default function ArticleCardContextMenu({
       <DeleteArticleDialog
         isOpen={dialogIsOpen}
         setIsOpen={setDialogIsOpen}
-        docId={docId}
+        docId={article.id}
       />
     </>
   );

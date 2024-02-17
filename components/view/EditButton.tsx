@@ -1,23 +1,48 @@
 "use client";
 
-import { isEditableAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
-import { Pencil } from "lucide-react";
+import _ from "lodash";
+import { Ban, Pencil } from "lucide-react";
+import Link from "next/link";
+import { useParams, useSelectedLayoutSegment } from "next/navigation";
 
-import TooltipAll from "../all/TooltipAll";
+import { articlesQueryAtom } from "../hooks/fetch/read/articleQueryAtom";
+
+import { ArticleType } from "../home/ArticleCardGrid";
 import { Button } from "../ui/button";
 
 export default function EditButton() {
-  const [isEditable, setIsEditable] = useAtom(isEditableAtom);
-  return (
-    <TooltipAll content="Edit">
-      <Button
-        size="icon"
-        className="h-9 w-9"
-        onClick={() => setIsEditable(!isEditable)}
-      >
-        <Pencil className="h-4 w-4" />
+  const [{ data, isFetching }] = useAtom(articlesQueryAtom);
+
+  let params = useParams();
+  const segment = useSelectedLayoutSegment();
+
+  function preventParamsArray() {
+    if (Array.isArray(params.article)) {
+      return (params.article = params.article[0]);
+    }
+    return params.article;
+  }
+
+  let [currentArticle] = _.filter(data, {
+    id: preventParamsArray(),
+  }) as ArticleType[];
+
+  if (segment === "edit") {
+    return (
+      <Button size="icon" className="h-9 w-9" variant="secondary" asChild>
+        <Link href={`/${params.article}`}>
+          <Ban className="h-4 w-4" />
+        </Link>
       </Button>
-    </TooltipAll>
+    );
+  }
+
+  return (
+    <Button size="icon" className="h-9 w-9" asChild>
+      <Link href={`/${params.article}/edit`}>
+        <Pencil className="h-4 w-4" />
+      </Link>
+    </Button>
   );
 }

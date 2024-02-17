@@ -4,7 +4,6 @@ export default function Page({ params }: { params: { article: string } }) {
   return (
     <main>
       <Article articleParams={params.article} />
-      {/* <EditArticleForm articleParams={params.article} /> */}
     </main>
   );
 }
