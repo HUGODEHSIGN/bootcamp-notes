@@ -1,15 +1,27 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { articlesQueryAtom } from "../functionality/read/articleQueryAtom";
 import { ArticleType } from "../view/home/ArticleCardGrid";
 
 export function useArticleSchema(previousValue?: ArticleType) {
+  const [{ data }] = useAtom(articlesQueryAtom);
+  function getTitle() {
+    if (!data) {
+      return;
+    }
+    return data!.map((article) => article.title);
+  }
   const formSchema = z.object({
     title: z
       .string()
       .min(1, { message: "Title is required" })
-      .max(150, { message: "Title must be under 150 characters" }),
+      .max(150, { message: "Title must be under 150 characters" })
+      .refine((title) => !getTitle()?.includes(title), {
+        message: "Title already exists",
+      }),
     description: z
       .string()
       .min(1, { message: "Description is required" })
