@@ -1,7 +1,7 @@
 import "./globals.css";
 import Providers from "./providers";
 import type { Metadata } from "next";
-import { Montserrat as FontSans } from "next/font/google";
+import { Montserrat } from "next/font/google";
 
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -9,9 +9,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 // import "../lib/tomorrow-night.css";
 import { cn } from "../lib/utils";
 
-export const fontSans = FontSans({
+export const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-sans",
 });
 
 const metadata: Metadata = {
@@ -28,8 +27,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased font-medium",
-          fontSans.variable,
+          "min-h-screen bg-background antialiased font-medium",
+          montserrat.className,
         )}
       >
         <Providers>
