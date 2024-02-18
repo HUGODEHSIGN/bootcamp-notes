@@ -1,10 +1,8 @@
 "use client";
 
 import { ModeToggle } from "./theme/ModeToggle";
-import { Plus } from "lucide-react";
 
 import { ArticleDialog } from "../form/dialog/ArticleDialog";
-import { Button } from "../ui/button";
 
 export default function Navbar() {
   return (
@@ -17,9 +15,9 @@ export default function Navbar() {
           <ModeToggle />
           {/* <AddArticleButton /> */}
           <ArticleDialog>
-            <Button size="icon">
+            {/* <Button size="icon">
               <Plus />
-            </Button>
+            </Button> */}
           </ArticleDialog>
         </div>
       </div>

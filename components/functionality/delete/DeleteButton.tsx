@@ -12,6 +12,11 @@ import useGetCurrentArticle from "../current-article/useGetCurrentArticle";
 export default function DeleteButton() {
   const [isOpen, setIsOpen] = useState(false);
   const { currentArticle } = useGetCurrentArticle();
+
+  if (!currentArticle) {
+    return;
+  }
+
   return (
     <>
       <TooltipAll content="Delete">

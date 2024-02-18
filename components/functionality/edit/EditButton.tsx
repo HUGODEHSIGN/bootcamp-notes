@@ -27,6 +27,10 @@ export default function EditButton() {
     id: preventParamsArray(),
   }) as ArticleType[];
 
+  if (!currentArticle) {
+    return;
+  }
+
   if (segment === "edit") {
     return (
       <Button size="icon" className="h-9 w-9" variant="secondary" asChild>
