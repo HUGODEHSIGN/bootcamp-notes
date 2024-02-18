@@ -22,7 +22,7 @@ type Props = {
 
 export default function MobileDrawer({ open, setOpen }: Props) {
   return (
-    <Drawer open={true} onOpenChange={setOpen}>
+    <Drawer open={open} onOpenChange={setOpen}>
       <ArticleDialogTrigger />
 
       <DrawerContent>
