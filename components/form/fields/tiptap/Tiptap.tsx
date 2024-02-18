@@ -1,4 +1,3 @@
-import Toolbar from "./toolbar/Toolbar";
 import Bold from "@tiptap/extension-bold";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Document from "@tiptap/extension-document";
@@ -12,6 +11,8 @@ import Youtube from "@tiptap/extension-youtube";
 import { EditorContent, useEditor } from "@tiptap/react";
 import "highlight.js/styles/base16/ocean.css";
 import { common, createLowlight } from "lowlight";
+
+import Toolbar from "@/components/form/fields/tiptap/toolbar/Toolbar";
 
 type Props = {
   content?: string;

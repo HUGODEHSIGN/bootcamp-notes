@@ -1,8 +1,9 @@
-import { disableLinkAtom, filterAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 
-import TooltipAll from "../all/TooltipAll";
-import { Badge } from "../ui/badge";
+import TooltipAll from "@/components/all/TooltipAll";
+import { filterAtom } from "@/components/functionality/filter-sort/useFilterSortArticles";
+import { Badge } from "@/components/ui/badge";
+import { disableLinkAtom } from "@/components/view/home/ArticleCardGrid";
 
 type Props = {
   category: string;
@@ -17,6 +18,7 @@ export default function Tag({ category }: Props) {
         <Badge
           className="cursor-pointer"
           onClick={() => setFilter(category)}
+          // disables link to article cards on hover
           onMouseEnter={() => {
             setLinkIsDisabled(true);
           }}

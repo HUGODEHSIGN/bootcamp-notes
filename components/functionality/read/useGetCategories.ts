@@ -1,8 +1,10 @@
-import { articlesQueryAtom } from "./articleQueryAtom";
 import { useAtom } from "jotai";
 import _ from "lodash";
 
-import { ArticleType } from "@/components/view/home/ArticleCardGrid";
+import {
+  ArticleType,
+  articlesQueryAtom,
+} from "@/components/functionality/read/articleQueryAtom";
 
 export default function useGetCategories() {
   // all of the fetched articles
@@ -18,6 +20,7 @@ export default function useGetCategories() {
     let categories: string[] = [];
     articles.forEach((article) => {
       categories.push(...article.category);
+      console.log(article.category);
     });
     // removes duplications in the array
     return (categories = _.uniq(categories));

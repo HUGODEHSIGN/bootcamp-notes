@@ -4,18 +4,22 @@ import { useAtom } from "jotai";
 import _ from "lodash";
 
 import ArticleForm from "@/components/form/ArticleForm";
-import { articlesQueryAtom } from "@/components/functionality/read/articleQueryAtom";
-import { ArticleType } from "@/components/view/home/ArticleCardGrid";
+import {
+  ArticleType,
+  articlesQueryAtom,
+} from "@/components/functionality/read/articleQueryAtom";
 
 type Props = {
   articleParams: string;
 };
 
+// didn't want to make page client component, so extracted into this component
 export default function EditArticlePage({ articleParams }: Props) {
   const [{ data, isFetching }] = useAtom(articlesQueryAtom);
 
+  // get current article
   const [currentArticle] = _.filter(data, {
-    id: articleParams,
+    url: articleParams,
   }) as ArticleType[];
 
   if (isFetching) {

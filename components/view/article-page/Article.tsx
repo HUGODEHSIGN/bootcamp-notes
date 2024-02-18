@@ -1,15 +1,13 @@
 "use client";
 
 import { useAtom } from "jotai";
-import _ from "lodash";
 import { useState } from "react";
 
-import useFindNextArticle from "@/components/functionality/delete/useFindNextArticle";
-
-import Tiptap from "../../form/fields/tiptap/Tiptap";
-import { articlesQueryAtom } from "../../functionality/read/articleQueryAtom";
-import { CardDescription, CardTitle } from "../../ui/card";
-import Tag from "../Tag";
+import Tiptap from "@/components/form/fields/tiptap/Tiptap";
+import useGetCurrentArticle from "@/components/functionality/current-article/useGetCurrentArticle";
+import { articlesQueryAtom } from "@/components/functionality/read/articleQueryAtom";
+import { CardDescription, CardTitle } from "@/components/ui/card";
+import Tag from "@/components/view/Tag";
 
 type Props = { articleParams: string };
 
@@ -18,8 +16,7 @@ export default function Article({ articleParams }: Props) {
   const [{ data, isFetching }] = useAtom(articlesQueryAtom);
   const [articleContent, setArticleContent] = useState("");
 
-  const [currentArticle] = _.filter(data, { id: articleParams });
-  const nextArticle = useFindNextArticle();
+  const currentArticle = useGetCurrentArticle();
 
   function renderCategories() {
     return currentArticle.category.map((tag) => (
@@ -37,13 +34,13 @@ export default function Article({ articleParams }: Props) {
   return (
     // container for article
     <div className="mt-6 flex flex-col gap-6">
-      <div>{nextArticle?.title}</div>
       <div className="flex flex-col gap-1">
         <CardTitle>{currentArticle.title}</CardTitle>
         <CardDescription>{currentArticle.description}</CardDescription>
         <div className="flex flex-row gap-2">{renderCategories()}</div>
       </div>
 
+      {/* uses tiptap to render out html tags */}
       <Tiptap
         content={currentArticle.content}
         onChange={setArticleContent}

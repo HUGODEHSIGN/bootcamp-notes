@@ -1,11 +1,10 @@
-import { ArticleType } from "./home/ArticleCardGrid";
-import { disableLinkAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { ArrowUpRightFromSquare, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
+import DeleteArticleDialog from "@/components/functionality/delete/DeleteArticleDialog";
+import { ArticleType } from "@/components/functionality/read/articleQueryAtom";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -13,8 +12,7 @@ import {
   ContextMenuShortcut,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-
-import DeleteArticleDialog from "../functionality/delete/DeleteArticleDialog";
+import { disableLinkAtom } from "@/components/view/home/ArticleCardGrid";
 
 type Props = {
   children: React.ReactNode;
@@ -24,39 +22,38 @@ type Props = {
 export default function ArticleContextMenu({ children, article }: Props) {
   const [linkIsDisabled, setLinkIsDisabled] = useAtom(disableLinkAtom);
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
-  const router = useRouter();
-
-  if (!article) {
-    return;
-  }
 
   return (
     <>
       <ContextMenu>
         <ContextMenuTrigger>{children}</ContextMenuTrigger>
         <ContextMenuContent
+          // disable links on homepage when hovering context menu
           onMouseOver={() => setLinkIsDisabled(true)}
           onMouseOut={() => setLinkIsDisabled(false)}
           className="w-64"
         >
+          {/* open */}
           <ContextMenuItem asChild>
-            <Link href={`/${article.id}`}>
+            <Link href={`/${article.url}`}>
               Open
               <ContextMenuShortcut>
                 <ArrowUpRightFromSquare size={18} />
               </ContextMenuShortcut>
             </Link>
           </ContextMenuItem>
-          {/* <ArticleDialog previousValue={article}> */}
+
+          {/* edit */}
           <ContextMenuItem asChild>
-            <Link href={`/${article.id}/edit`}>
+            <Link href={`/${article.url}/edit`}>
               Edit
               <ContextMenuShortcut>
                 <Pencil size={18} />
               </ContextMenuShortcut>
             </Link>
           </ContextMenuItem>
-          {/* </ArticleDialog> */}
+
+          {/* delete */}
           <ContextMenuItem
             className="text-destructive"
             onClick={() => {
@@ -70,6 +67,8 @@ export default function ArticleContextMenu({ children, article }: Props) {
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
+
+      {/* dialog usually wraps component, but in this case, dismounts when context menu dismounts, so sits outside here */}
       <DeleteArticleDialog
         isOpen={dialogIsOpen}
         setIsOpen={setDialogIsOpen}

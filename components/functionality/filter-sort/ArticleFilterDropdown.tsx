@@ -1,9 +1,11 @@
 "use client";
 
-import { filterAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { Filter } from "lucide-react";
 
+import TooltipAll from "@/components/all/TooltipAll";
+import { filterAtom } from "@/components/functionality/filter-sort/useFilterSortArticles";
+import useGetCategories from "@/components/functionality/read/useGetCategories";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,17 +16,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import TooltipAll from "../../all/TooltipAll";
-import useGetCategories from "../read/useGetCategories";
-
 // component for deciding how to sort all of the articles
 export default function ArticleFilterDropdown() {
   // state for which sorting method to use
   const [filter, setFilter] = useAtom(filterAtom);
   const categories = useGetCategories();
 
-  // hook for filtering articles
-
+  // function for filtering articles
   function renderDropdown() {
     return categories?.map((category) => (
       <DropdownMenuCheckboxItem
@@ -51,6 +49,7 @@ export default function ArticleFilterDropdown() {
       <DropdownMenuContent
         className="w-40"
         align="start"
+        // prevents tooltip after closing dropdown
         onCloseAutoFocus={(e) => e.preventDefault()}
       >
         <DropdownMenuLabel>Filter</DropdownMenuLabel>

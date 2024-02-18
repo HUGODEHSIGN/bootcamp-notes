@@ -1,6 +1,6 @@
-import CategoryPopover from "./popover/CategoryPopover";
 import { UseFormReturn } from "react-hook-form";
 
+import CategoryPopover from "@/components/form/fields/categoryfield/popover/CategoryPopover";
 import {
   FormDescription,
   FormField,

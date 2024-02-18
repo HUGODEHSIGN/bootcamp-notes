@@ -1,9 +1,10 @@
 "use client";
 
-import { filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import { ArrowDownAZ, CalendarCheck, CalendarPlus } from "lucide-react";
 
+import TooltipAll from "@/components/all/TooltipAll";
+import { sortAtom } from "@/components/functionality/filter-sort/useFilterSortArticles";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,13 +16,43 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import TooltipAll from "../../all/TooltipAll";
+// maps through this later to render
+const dropdownItemList = [
+  {
+    label: "Title",
+    state: "title",
+    icon: <ArrowDownAZ className="mr-2 h-4 w-4" />,
+  },
+  {
+    label: "New",
+    state: "new",
+    icon: <CalendarPlus className="mr-2 h-4 w-4" />,
+  },
+  {
+    label: "Edited",
+    state: "edited",
+    icon: <CalendarCheck className="mr-2 h-4 w-4" />,
+  },
+];
 
 // component for deciding how to sort all of the articles
 export default function ArticleSortDropdown() {
   // state for which sorting method to use
-  const [filter, setFilter] = useAtom(filterAtom);
   const [sort, setSort] = useAtom(sortAtom);
+
+  // renders dropdown items
+  function renderDropdownItems() {
+    return dropdownItemList.map((item) => (
+      <DropdownMenuCheckboxItem
+        onSelect={() => setSort(item.state)}
+        checked={sort === item.state}
+        key={item.state}
+      >
+        {item.label}
+        <DropdownMenuShortcut>{item.icon}</DropdownMenuShortcut>
+      </DropdownMenuCheckboxItem>
+    ));
+  }
 
   // render dropdown
   return (
@@ -39,38 +70,12 @@ export default function ArticleSortDropdown() {
       <DropdownMenuContent
         className="w-40"
         align="start"
+        // prevents tooltip after close
         onCloseAutoFocus={(e) => e.preventDefault()}
       >
         <DropdownMenuLabel>Sort</DropdownMenuLabel>
         <DropdownMenuSeparator />
-
-        <DropdownMenuCheckboxItem
-          onSelect={() => setSort("title")}
-          checked={sort === "title"}
-        >
-          Title
-          <DropdownMenuShortcut>
-            <ArrowDownAZ className="mr-2 h-4 w-4" />
-          </DropdownMenuShortcut>
-        </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem
-          onSelect={() => setSort("new")}
-          checked={sort === "new"}
-        >
-          New
-          <DropdownMenuShortcut>
-            <CalendarPlus className="mr-2 h-4 w-4" />
-          </DropdownMenuShortcut>
-        </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem
-          onSelect={() => setSort("edited")}
-          checked={sort === "edited"}
-        >
-          Edited
-          <DropdownMenuShortcut>
-            <CalendarCheck className="mr-2 h-4 w-4" />
-          </DropdownMenuShortcut>
-        </DropdownMenuCheckboxItem>
+        {renderDropdownItems()}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -1,8 +1,8 @@
-import NewCategoryForm from "./NewCategoryForm";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 
+import NewCategoryForm from "@/components/form/fields/categoryfield/new-category/NewCategoryForm";
 import {
   AlertDialog,
   AlertDialogContent,

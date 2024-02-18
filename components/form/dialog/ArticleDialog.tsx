@@ -1,9 +1,10 @@
 "use client";
 
-import DesktopDialog from "./desktop/DesktopDialog";
-import MobileDrawer from "./mobile/MobileDrawer";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { useState } from "react";
+
+import DesktopDialog from "@/components/form/dialog/desktop/DesktopDialog";
+import MobileDrawer from "@/components/form/dialog/mobile/MobileDrawer";
 
 // component
 export function ArticleDialog() {

@@ -1,16 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { doc, updateDoc } from "firebase/firestore";
-import { useAtom } from "jotai";
-import _ from "lodash";
-import { useParams, useRouter } from "next/navigation";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 import { db } from "@/lib/firestore-config";
 
 import { useArticleSchema } from "@/components/form/useArticleSchema";
-import { ArticleType } from "@/components/view/home/ArticleCardGrid";
-
-import { articlesQueryAtom } from "../read/articleQueryAtom";
+import useGetCurrentArticle from "@/components/functionality/current-article/useGetCurrentArticle";
+import toUrl from "@/components/functionality/toUrl";
 
 type ValueType = {
   title: string;
@@ -23,51 +20,46 @@ export function useEditArticle() {
   const queryClient = useQueryClient();
   const { formSchema } = useArticleSchema();
 
-  const [{ data, isFetching }] = useAtom(articlesQueryAtom);
-  let params = useParams();
-  function preventParamsArray() {
-    if (Array.isArray(params.article)) {
-      return (params.article = params.article[0]);
-    }
-    return params.article;
-  }
-
-  const [currentArticle] = _.filter(data, {
-    id: preventParamsArray(),
-  }) as ArticleType[];
+  const currentArticle = useGetCurrentArticle();
 
   async function submit(value: ValueType) {
-    //   const articleRef = await addDoc(collection(db, "articles"), {
-    //     category: value.category,
-    //     content: value.content,
-    //     description: value.description,
-    //     title: value.title,
-    //     created: serverTimestamp(),
-    //     edited: serverTimestamp(),
-    //   });
+    // change everything except created field
+    const editedArticle = {
+      category: value.category,
+      content: value.content,
+      description: value.description,
+      title: value.title,
+      url: toUrl(value.title),
+      edited: serverTimestamp(),
+    };
 
     const articleRef = doc(db, "articles", `${currentArticle.id}`);
-    console.log(currentArticle.id);
-    await updateDoc(articleRef, value);
+    await updateDoc(articleRef, editedArticle);
     return value;
   }
 
   const router = useRouter();
 
-  const { mutate, status } = useMutation({
+  const { mutate } = useMutation({
     mutationKey: ["articles"],
     mutationFn: (value: ValueType) => submit(value),
-    onMutate: async (newArticle) => {
+    onMutate: async (editedArticle) => {
+      // cancel all fetch requests for articles
       await queryClient.cancelQueries({ queryKey: ["articles"] });
+
+      // store previous article data in case of error
       const previousArticles = queryClient.getQueryData(["articles"]);
       // insert update document with new data here for optimistic update
-      router.push(`/${preventParamsArray()}`);
+      // redirect to new url
+      router.push(`/${toUrl(editedArticle.title)}`);
       return { previousArticles };
     },
-    onError: (err, newArticle, context) => {
+    onError: (_err, _newArticle, context) => {
+      // sets query cache back to original in case of error
       queryClient.setQueryData(["articles"], context!.previousArticles);
     },
     onSettled: () => {
+      //refetch
       queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
   });

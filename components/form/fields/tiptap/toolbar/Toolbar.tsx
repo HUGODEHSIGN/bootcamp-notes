@@ -1,10 +1,9 @@
-import HeadingItems from "./HeadingItems";
-import StyleItems from "./StyleItems";
 import { Editor } from "@tiptap/react";
 
+import YoutubeURLDialog from "@/components/form/fields/tiptap/YoutubeURLDialog";
+import HeadingItems from "@/components/form/fields/tiptap/toolbar/HeadingItems";
+import StyleItems from "@/components/form/fields/tiptap/toolbar/StyleItems";
 import { Separator } from "@/components/ui/separator";
-
-import YoutubeURLDialog from "../YoutubeURLDialog";
 
 type Props = {
   editor: Editor | null;

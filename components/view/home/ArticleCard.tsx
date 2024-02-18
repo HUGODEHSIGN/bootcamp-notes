@@ -1,8 +1,7 @@
-import { ArticleType } from "./ArticleCardGrid";
-import { disableLinkAtom, filterAtom, selectedArticleAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import Link from "next/link";
 
+import { ArticleType } from "@/components/functionality/read/articleQueryAtom";
 import {
   Card,
   CardDescription,
@@ -10,9 +9,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-import ArticleContextMenu from "../ArticleContextMenu";
-import Tag from "../Tag";
+import ArticleContextMenu from "@/components/view/ArticleContextMenu";
+import Tag from "@/components/view/Tag";
+import { disableLinkAtom } from "@/components/view/home/ArticleCardGrid";
 
 type Props = {
   article: ArticleType;
@@ -20,33 +19,26 @@ type Props = {
 
 // component takes props from ArticleGrid
 export default function ArticleCard({ article }: Props) {
-  const [filter, setFilter] = useAtom(filterAtom);
-
   const [linkIsDisabled, setLinkIsDisabled] = useAtom(disableLinkAtom);
-  const [selectedArticle, setSelectedArticle] = useAtom(selectedArticleAtom);
 
   if (!article) {
     return;
   }
 
   function renderTags() {
-    if (Array.isArray(article.category)) {
-      return article.category.map((tag) => (
-        <div key={tag}>
-          <Tag category={tag} />
-        </div>
-      ));
-    }
+    return article.category.map((tag) => (
+      <div key={tag}>
+        <Tag category={tag} />
+      </div>
+    ));
   }
 
   // render component
   return (
-    <Link href={linkIsDisabled ? "#" : `/${article.id}`}>
+    // prevent link from working in certain cases where mouse click penetrates through the tree
+    <Link href={linkIsDisabled ? "#" : `/${article.url}`}>
       <ArticleContextMenu article={article}>
-        <Card
-          className="hover:bg-secondary h-[145px]"
-          // onClick={() => setSelectedArticle(article.title)}
-        >
+        <Card className="hover:bg-secondary h-[145px]">
           <CardHeader>
             <CardTitle>{article.title}</CardTitle>
             <CardDescription>{article.description}</CardDescription>
