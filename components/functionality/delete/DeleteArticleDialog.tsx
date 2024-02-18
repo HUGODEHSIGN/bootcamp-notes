@@ -1,4 +1,3 @@
-import { disableLinkAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 
 import useDeleteArticle from "@/components/functionality/delete/useDeleteArticle";
@@ -12,6 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { disableLinkAtom } from "@/components/view/home/ArticleCardGrid";
 
 type Props = {
   isOpen: boolean;

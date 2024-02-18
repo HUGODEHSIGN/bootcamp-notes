@@ -1,12 +1,11 @@
-import CategoryPopoverTrigger from "./CategoryPopoverTrigger";
 import { Popover } from "@radix-ui/react-popover";
 import { useState } from "react";
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 
+import CategoryCommandGroup from "@/components/form/fields/categoryfield/command/CategoryCommandGroup";
+import CategoryPopoverTrigger from "@/components/form/fields/categoryfield/popover/CategoryPopoverTrigger";
 import { Command, CommandEmpty, CommandInput } from "@/components/ui/command";
 import { PopoverContent } from "@/components/ui/popover";
-
-import CategoryCommandGroup from "../command/CategoryCommandGroup";
 
 type Props = {
   field: ControllerRenderProps<

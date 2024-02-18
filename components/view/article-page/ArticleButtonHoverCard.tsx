@@ -1,11 +1,10 @@
+import { CardDescription, CardTitle } from "@/components/ui/card";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-
-import { CardDescription, CardTitle } from "../../ui/card";
-import Tag from "../Tag";
+import Tag from "@/components/view/Tag";
 
 type Props = {
   children: React.ReactNode;
@@ -20,6 +19,7 @@ export default function ArticleButtonHoverCard({
   description,
   category,
 }: Props) {
+  // renders out all the tags for a particular article
   function renderTags() {
     return category.map((tag) => <Tag key={tag} category={tag} />);
   }
@@ -28,6 +28,7 @@ export default function ArticleButtonHoverCard({
       <HoverCardTrigger asChild>{children}</HoverCardTrigger>
       <HoverCardContent side="right">
         <div className="flex flex-col gap-2">
+          {/* showing full article title here to counteract downside of truncated title on button */}
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
           <div className="flex flex-row gap-2">{renderTags()}</div>

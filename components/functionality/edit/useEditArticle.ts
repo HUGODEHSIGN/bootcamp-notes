@@ -1,16 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 import { db } from "@/lib/firestore-config";
 
 import { useArticleSchema } from "@/components/form/useArticleSchema";
-
-import useGetCurrentArticle from "../current-article/useGetCurrentArticle";
-import { articlesQueryAtom } from "../read/articleQueryAtom";
-import toUrl from "../toUrl";
+import useGetCurrentArticle from "@/components/functionality/current-article/useGetCurrentArticle";
+import toUrl from "@/components/functionality/toUrl";
 
 type ValueType = {
   title: string;
@@ -23,10 +20,10 @@ export function useEditArticle() {
   const queryClient = useQueryClient();
   const { formSchema } = useArticleSchema();
 
-  const [{ data, isFetching }] = useAtom(articlesQueryAtom);
   const currentArticle = useGetCurrentArticle();
 
   async function submit(value: ValueType) {
+    // change everything except created field
     const editedArticle = {
       category: value.category,
       content: value.content,
@@ -43,20 +40,26 @@ export function useEditArticle() {
 
   const router = useRouter();
 
-  const { mutate, status } = useMutation({
+  const { mutate } = useMutation({
     mutationKey: ["articles"],
     mutationFn: (value: ValueType) => submit(value),
     onMutate: async (editedArticle) => {
+      // cancel all fetch requests for articles
       await queryClient.cancelQueries({ queryKey: ["articles"] });
+
+      // store previous article data in case of error
       const previousArticles = queryClient.getQueryData(["articles"]);
       // insert update document with new data here for optimistic update
+      // redirect to new url
       router.push(`/${toUrl(editedArticle.title)}`);
       return { previousArticles };
     },
-    onError: (err, newArticle, context) => {
+    onError: (_err, _newArticle, context) => {
+      // sets query cache back to original in case of error
       queryClient.setQueryData(["articles"], context!.previousArticles);
     },
     onSettled: () => {
+      //refetch
       queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
   });

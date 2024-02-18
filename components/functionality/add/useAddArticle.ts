@@ -6,9 +6,9 @@ import { z } from "zod";
 
 import { db } from "@/lib/firestore-config";
 
-import { useArticleSchema } from "../../form/useArticleSchema";
-import { ArticleType } from "../read/articleQueryAtom";
-import toUrl from "../toUrl";
+import { useArticleSchema } from "@/components/form/useArticleSchema";
+import { ArticleType } from "@/components/functionality/read/articleQueryAtom";
+import toUrl from "@/components/functionality/toUrl";
 
 // import useFetchCategories from "@/lib/hooks/useFetchCategories";
 
@@ -44,26 +44,36 @@ export function useAddArticle(
   const { mutate } = useMutation({
     mutationKey: ["articles"],
     mutationFn: (value: ValueType) => submit(value),
+
+    // this function is called before mutation occurs, and runs parallel to mutation
     onMutate: async (newArticle) => {
+      // cancel all fetches
       await queryClient.cancelQueries({ queryKey: ["articles"] });
+
+      // store previous state of query in case of error
       const previousArticles = queryClient.getQueryData(["articles"]);
-      const newArticleWithUrl = {
-        ...newArticle,
-        url: toUrl(newArticle.title),
-      };
+
+      // sets articles query data to include new article for optimistic update
       queryClient.setQueryData(["articles"], (old: ArticleType[]) => [
         ...old,
-        newArticleWithUrl,
+        {
+          ...newArticle,
+          url: toUrl(newArticle.title),
+        },
       ]);
-      const newParameter = toUrl(newArticle.title);
 
-      router.push(`/${newParameter}`);
+      // redirect user to url of new article
+      router.push(`/${toUrl(newArticle.title)}`);
       return { previousArticles };
     },
     onError: (_err, _newArticle, context) => {
+      router.push(`/`);
+
+      // resets articles data back to pre-mutation data
       queryClient.setQueryData(["articles"], context!.previousArticles);
     },
     onSettled: () => {
+      // refetch
       queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
   });

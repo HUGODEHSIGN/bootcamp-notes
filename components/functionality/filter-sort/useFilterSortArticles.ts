@@ -1,7 +1,13 @@
-import { filterAtom, sortAtom } from "@/lib/atoms";
-import { useAtom } from "jotai";
+import { atom, useAtom } from "jotai";
 
-import { ArticleType, articlesQueryAtom } from "../read/articleQueryAtom";
+import {
+  ArticleType,
+  articlesQueryAtom,
+} from "@/components/functionality/read/articleQueryAtom";
+
+export const sortAtom = atom("title");
+
+export const filterAtom = atom("All");
 
 export default function useFilterSortArticles() {
   // state for filter and sort parameters

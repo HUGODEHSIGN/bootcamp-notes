@@ -3,12 +3,11 @@
 import { useAtom } from "jotai";
 import { useState } from "react";
 
+import Tiptap from "@/components/form/fields/tiptap/Tiptap";
 import useGetCurrentArticle from "@/components/functionality/current-article/useGetCurrentArticle";
-
-import Tiptap from "../../form/fields/tiptap/Tiptap";
-import { articlesQueryAtom } from "../../functionality/read/articleQueryAtom";
-import { CardDescription, CardTitle } from "../../ui/card";
-import Tag from "../Tag";
+import { articlesQueryAtom } from "@/components/functionality/read/articleQueryAtom";
+import { CardDescription, CardTitle } from "@/components/ui/card";
+import Tag from "@/components/view/Tag";
 
 type Props = { articleParams: string };
 
@@ -41,6 +40,7 @@ export default function Article({ articleParams }: Props) {
         <div className="flex flex-row gap-2">{renderCategories()}</div>
       </div>
 
+      {/* uses tiptap to render out html tags */}
       <Tiptap
         content={currentArticle.content}
         onChange={setArticleContent}

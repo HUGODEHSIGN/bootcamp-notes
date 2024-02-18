@@ -1,8 +1,7 @@
 "use client";
 
-import { ModeToggle } from "./theme/ModeToggle";
-
-import { ArticleDialog } from "../form/dialog/ArticleDialog";
+import { ModeToggle } from "@/components/all/theme/ModeToggle";
+import { ArticleDialog } from "@/components/form/dialog/ArticleDialog";
 
 export default function Navbar() {
   return (

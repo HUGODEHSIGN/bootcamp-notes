@@ -1,28 +1,26 @@
 "use client";
 
-import { useAtom } from "jotai";
 import { Ban, Pencil } from "lucide-react";
 import Link from "next/link";
-import { useParams, useSelectedLayoutSegment } from "next/navigation";
+import { useSelectedLayoutSegment } from "next/navigation";
 
-import { Button } from "../../ui/button";
-import useGetCurrentArticle from "../current-article/useGetCurrentArticle";
-import { articlesQueryAtom } from "../read/articleQueryAtom";
+import useGetCurrentArticle from "@/components/functionality/current-article/useGetCurrentArticle";
+import { Button } from "@/components/ui/button";
 
 export default function EditButton() {
-  const [{ data, isFetching }] = useAtom(articlesQueryAtom);
   const currentArticle = useGetCurrentArticle();
-  let params = useParams();
   const segment = useSelectedLayoutSegment();
 
+  // only used when database is empty, don't show edit button when no entries are fetched
   if (!currentArticle) {
     return;
   }
 
+  // show cancel button if in edit mode
   if (segment === "edit") {
     return (
       <Button size="icon" className="h-9 w-9" variant="secondary" asChild>
-        <Link href={`/${params.article}`}>
+        <Link href={`/${currentArticle.url}`}>
           <Ban className="h-4 w-4" />
         </Link>
       </Button>
@@ -31,7 +29,7 @@ export default function EditButton() {
 
   return (
     <Button size="icon" className="h-9 w-9" asChild>
-      <Link href={`/${params.article}/edit`}>
+      <Link href={`/${currentArticle.url}/edit`}>
         <Pencil className="h-4 w-4" />
       </Link>
     </Button>

@@ -1,19 +1,17 @@
 "use client";
 
-import InputField from "./fields/InputField";
-import CategoryField from "./fields/categoryfield/CategoryField";
-import TiptapField from "./fields/tiptap/TiptapField";
-import { useArticleSchema } from "./useArticleSchema";
 import { cn } from "@/lib/utils";
 import { Dispatch, SetStateAction } from "react";
 
+import InputField from "@/components/form/fields/InputField";
+import CategoryField from "@/components/form/fields/categoryfield/CategoryField";
+import TiptapField from "@/components/form/fields/tiptap/TiptapField";
+import { useArticleSchema } from "@/components/form/useArticleSchema";
+import { useAddArticle } from "@/components/functionality/add/useAddArticle";
+import { useEditArticle } from "@/components/functionality/edit/useEditArticle";
 import { ArticleType } from "@/components/functionality/read/articleQueryAtom";
-// import useFetchCategories from "@/lib/hooks/useFetchCategories";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-
-import { useAddArticle } from "../functionality/add/useAddArticle";
-import { useEditArticle } from "../functionality/edit/useEditArticle";
 
 type ArticleFormProps = {
   className?: string;

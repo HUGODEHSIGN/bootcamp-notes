@@ -32,15 +32,9 @@ export function useArticleSchema(previousValue?: ArticleType) {
       .string()
       .min(1, { message: "Title is required" })
       .max(150, { message: "Title must be under 150 characters" })
-      .refine(
-        (title) =>
-          !getAllTitles()?.includes(
-            title.replace(/\s+/g, "-").replace(/[^\w\s]/gi, ""),
-          ),
-        {
-          message: "Title already exists",
-        },
-      ),
+      .refine((title) => !getAllTitles()?.includes(toUrl(title)), {
+        message: "Title already exists",
+      }),
     description: z
       .string()
       .min(1, { message: "Description is required" })

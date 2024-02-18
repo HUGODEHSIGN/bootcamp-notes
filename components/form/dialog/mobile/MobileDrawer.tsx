@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 import ArticleForm from "@/components/form/ArticleForm";
+import ArticleDialogTrigger from "@/components/form/dialog/ArticleDialogTrigger";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -12,8 +13,6 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-import ArticleDialogTrigger from "../ArticleDialogTrigger";
 
 type Props = {
   open: boolean;

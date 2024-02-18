@@ -1,16 +1,15 @@
 "use client";
 
-import ArticleButton from "./ArticleButton";
 import { useAtom } from "jotai";
 
 import useGetCurrentArticle from "@/components/functionality/current-article/useGetCurrentArticle";
-
-import useFilterSortArticles from "../../functionality/filter-sort/useFilterSortArticles";
-import { articlesQueryAtom } from "../../functionality/read/articleQueryAtom";
+import useFilterSortArticles from "@/components/functionality/filter-sort/useFilterSortArticles";
+import { articlesQueryAtom } from "@/components/functionality/read/articleQueryAtom";
+import ArticleButton from "@/components/view/article-page/ArticleButton";
 
 export default function ArticleButtonList() {
   const articles = useFilterSortArticles();
-  const [{ isSuccess, isFetching, isError }] = useAtom(articlesQueryAtom);
+  const [{ isFetching, isError }] = useAtom(articlesQueryAtom);
   const currentArticle = useGetCurrentArticle();
 
   if (isFetching) {

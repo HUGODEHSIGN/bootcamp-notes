@@ -13,9 +13,11 @@ type Props = {
   articleParams: string;
 };
 
+// didn't want to make page client component, so extracted into this component
 export default function EditArticlePage({ articleParams }: Props) {
   const [{ data, isFetching }] = useAtom(articlesQueryAtom);
 
+  // get current article
   const [currentArticle] = _.filter(data, {
     url: articleParams,
   }) as ArticleType[];

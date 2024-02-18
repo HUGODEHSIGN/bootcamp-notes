@@ -1,8 +1,8 @@
-import CategoryBadge from "./CategoryBadge";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 
+import CategoryBadge from "@/components/form/fields/categoryfield/popover/CategoryBadge";
 import { Button } from "@/components/ui/button";
 import { FormControl } from "@/components/ui/form";
 import { PopoverTrigger } from "@/components/ui/popover";

@@ -1,6 +1,6 @@
-import useCategorySchema from "./useCategorySchema";
 import { Dispatch, SetStateAction } from "react";
 
+import useCategorySchema from "@/components/form/fields/categoryfield/new-category/useCategorySchema";
 import {
   AlertDialogAction,
   AlertDialogCancel,

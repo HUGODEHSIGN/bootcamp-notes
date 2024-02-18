@@ -1,6 +1,7 @@
-import Tiptap from "./Tiptap";
 import { UseFormReturn } from "react-hook-form";
 
+import Tiptap from "@/components/form/fields/tiptap/Tiptap";
+import { ArticleType } from "@/components/functionality/read/articleQueryAtom";
 import {
   FormControl,
   FormDescription,
@@ -9,7 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ArticleType } from "@/components/view/home/ArticleCardGrid";
 
 type Props = {
   form: UseFormReturn<

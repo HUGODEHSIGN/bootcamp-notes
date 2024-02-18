@@ -1,6 +1,10 @@
-import { ArticleType, articlesQueryAtom } from "./articleQueryAtom";
 import { useAtom } from "jotai";
 import _ from "lodash";
+
+import {
+  ArticleType,
+  articlesQueryAtom,
+} from "@/components/functionality/read/articleQueryAtom";
 
 export default function useGetCategories() {
   // all of the fetched articles

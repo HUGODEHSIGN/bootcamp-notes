@@ -1,21 +1,21 @@
 "use client";
 
-import ArticleCard from "./ArticleCard";
-import LoadingArticleCard from "./LoadingArticleCard";
-import { useAtom } from "jotai";
+import { atom } from "jotai";
 
-import { articlesQueryAtom } from "@/components/functionality/read/articleQueryAtom";
+import useFilterSortArticles from "@/components/functionality/filter-sort/useFilterSortArticles";
+import ArticleCard from "@/components/view/home/ArticleCard";
 
-import useFilterSortArticles from "../../functionality/filter-sort/useFilterSortArticles";
+export const disableLinkAtom = atom(false);
 
 export default function ArticleCardGrid() {
   const articles = useFilterSortArticles();
-  const [{ isSuccess, isPending }] = useAtom(articlesQueryAtom);
 
+  // if no articles, don't show anything
   if (!articles) {
     return;
   }
 
+  // maps through all the articles in the array
   function renderArticles() {
     return articles?.map((article) => (
       <div key={article.id}>
@@ -26,10 +26,7 @@ export default function ArticleCardGrid() {
 
   return (
     <>
-      <div className="grid grid-rows-1 gap-2">
-        {isSuccess && renderArticles()}
-        {isPending && <LoadingArticleCard />}
-      </div>
+      <div className="grid grid-rows-1 gap-2">{renderArticles()}</div>
     </>
   );
 }

@@ -1,4 +1,3 @@
-import { disableLinkAtom, filterAtom, selectedArticleAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import Link from "next/link";
 
@@ -10,9 +9,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-import ArticleContextMenu from "../ArticleContextMenu";
-import Tag from "../Tag";
+import ArticleContextMenu from "@/components/view/ArticleContextMenu";
+import Tag from "@/components/view/Tag";
+import { disableLinkAtom } from "@/components/view/home/ArticleCardGrid";
 
 type Props = {
   article: ArticleType;
@@ -20,10 +19,7 @@ type Props = {
 
 // component takes props from ArticleGrid
 export default function ArticleCard({ article }: Props) {
-  const [filter, setFilter] = useAtom(filterAtom);
-
   const [linkIsDisabled, setLinkIsDisabled] = useAtom(disableLinkAtom);
-  const [selectedArticle, setSelectedArticle] = useAtom(selectedArticleAtom);
 
   if (!article) {
     return;
@@ -39,12 +35,10 @@ export default function ArticleCard({ article }: Props) {
 
   // render component
   return (
+    // prevent link from working in certain cases where mouse click penetrates through the tree
     <Link href={linkIsDisabled ? "#" : `/${article.url}`}>
       <ArticleContextMenu article={article}>
-        <Card
-          className="hover:bg-secondary h-[145px]"
-          // onClick={() => setSelectedArticle(article.title)}
-        >
+        <Card className="hover:bg-secondary h-[145px]">
           <CardHeader>
             <CardTitle>{article.title}</CardTitle>
             <CardDescription>{article.description}</CardDescription>
