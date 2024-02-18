@@ -8,6 +8,7 @@ type Props = {
 };
 
 export default function StyleItems({ editor }: Props) {
+  // all of the various style buttons information
   const styleItems = [
     {
       name: "bold",

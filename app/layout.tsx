@@ -3,8 +3,8 @@ import Providers from "./providers";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 
-import Navbar from "@/components/Navbar";
-import { ThemeProvider } from "@/components/theme-provider";
+import Navbar from "@/components/all/Navbar";
+import { ThemeProvider } from "@/components/all/theme/theme-provider";
 
 // import "../lib/tomorrow-night.css";
 import { cn } from "../lib/utils";

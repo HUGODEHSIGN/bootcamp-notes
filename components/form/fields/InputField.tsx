@@ -27,6 +27,8 @@ type Props = {
   description: string;
 };
 
+// this is a reusable component, used for title and description in the article form
+
 export default function InputField({
   form,
   name,

@@ -31,10 +31,7 @@ export default function CategoryCommandItem({ field, form, category }: Props) {
   // handles what happens when you click on an item in the combobox
   function handleSelect() {
     // init array of a copy of already selected categories
-    const selectedCategories = Array.isArray(field.value)
-      ? // prevents error if field.value is empty
-        [...field.value]
-      : [];
+    let selectedCategories = [...field.value];
 
     if (selectedCategories.includes(category)) {
       // remove it from the selectedCategories
@@ -43,6 +40,10 @@ export default function CategoryCommandItem({ field, form, category }: Props) {
     } else {
       selectedCategories.push(category);
     }
+    // case-insensetive sorting
+    selectedCategories = selectedCategories.sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: "base" }),
+    );
     form.setValue("category", selectedCategories);
   }
 

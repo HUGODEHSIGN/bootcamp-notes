@@ -15,7 +15,7 @@ import { common, createLowlight } from "lowlight";
 
 type Props = {
   content?: string;
-  onChange: (richText: string) => void;
+  onChange?: (richText: string) => void;
   editable: boolean;
 };
 
@@ -60,7 +60,7 @@ export default function Tiptap({ content, onChange, editable }: Props) {
       }),
     ],
 
-    // editable and content are passed through props here
+    // this component is used to render article data as well as to edit it, editable prop allows dual use
     editable,
 
     // content only determines initial value, not the onchange value
@@ -71,9 +71,11 @@ export default function Tiptap({ content, onChange, editable }: Props) {
       },
     },
 
-    // editor content is stored as html elements
     onUpdate({ editor }) {
-      onChange(editor.getHTML());
+      // make onChange optional if tiptap is read only
+      if (onChange) {
+        onChange(editor.getHTML());
+      }
     },
   });
 
