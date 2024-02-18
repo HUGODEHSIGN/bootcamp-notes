@@ -12,12 +12,7 @@ export default function Navbar() {
         </div>
         <div className="flex gap-2 navbar-end">
           <ModeToggle />
-          {/* <AddArticleButton /> */}
-          <ArticleDialog>
-            {/* <Button size="icon">
-              <Plus />
-            </Button> */}
-          </ArticleDialog>
+          <ArticleDialog />
         </div>
       </div>
     </div>

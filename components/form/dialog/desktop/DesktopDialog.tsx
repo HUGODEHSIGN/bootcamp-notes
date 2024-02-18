@@ -1,13 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
 
 import ArticleForm from "@/components/form/ArticleForm";
+import ArticleDialogTrigger from "@/components/form/dialog/ArticleDialogTrigger";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -19,8 +19,7 @@ type Props = {
 export default function DesktopDialog({ open, setOpen }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger />
-
+      <ArticleDialogTrigger />
       <DialogContent className="min-w-[80vw] p-0 pt-12 pb-6">
         {/* scroll area needs set height to work */}
         <ScrollArea className="h-[80vh]">
