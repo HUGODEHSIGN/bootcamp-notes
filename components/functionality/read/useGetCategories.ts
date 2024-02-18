@@ -17,7 +17,6 @@ export default function useGetCategories() {
     // init array to store categories
     let categories: string[] = [];
     articles.forEach((article) => {
-      console.log(article);
       categories.push(...article.category);
     });
     // removes duplications in the array

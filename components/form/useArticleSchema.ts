@@ -26,7 +26,7 @@ export function useArticleSchema(previousValue?: ArticleType) {
       .string()
       .min(1, { message: "Description is required" })
       .max(500, { message: "Description must be under 500 characters" }),
-    category: z.array(z.string()).nonempty({ message: "Category is required" }),
+    category: z.string().array(),
     content: z
       .string()
       .min(1, { message: "Content is required" })
