@@ -3,7 +3,16 @@ import { atomWithQuery } from "jotai-tanstack-query";
 
 import { db } from "@/lib/firestore-config";
 
-import { ArticleType } from "@/components/view/home/ArticleCardGrid";
+export type ArticleType = {
+  id: string;
+  category: string[];
+  content: string;
+  title: string;
+  description: string;
+  url: string;
+  created: { seconds: number; nanoseconds: number };
+  edited: { seconds: number; nanoseconds: number };
+};
 
 async function fetchArticles() {
   // initialize variable for storing array of articles
@@ -21,6 +30,7 @@ async function fetchArticles() {
       content: doc.data().content,
       title: doc.data().title,
       description: doc.data().description,
+      url: doc.data().url,
       created: doc.data().created,
       edited: doc.data().edited,
     };

@@ -1,8 +1,7 @@
 import { filterAtom, sortAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 
-import { ArticleType } from "../../view/home/ArticleCardGrid";
-import { articlesQueryAtom } from "../read/articleQueryAtom";
+import { ArticleType, articlesQueryAtom } from "../read/articleQueryAtom";
 
 export default function useFilterSortArticles() {
   // state for filter and sort parameters

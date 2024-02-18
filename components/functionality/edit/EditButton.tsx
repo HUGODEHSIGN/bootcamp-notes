@@ -1,31 +1,19 @@
 "use client";
 
 import { useAtom } from "jotai";
-import _ from "lodash";
 import { Ban, Pencil } from "lucide-react";
 import Link from "next/link";
 import { useParams, useSelectedLayoutSegment } from "next/navigation";
 
 import { Button } from "../../ui/button";
-import { ArticleType } from "../../view/home/ArticleCardGrid";
+import useGetCurrentArticle from "../current-article/useGetCurrentArticle";
 import { articlesQueryAtom } from "../read/articleQueryAtom";
 
 export default function EditButton() {
   const [{ data, isFetching }] = useAtom(articlesQueryAtom);
-
+  const currentArticle = useGetCurrentArticle();
   let params = useParams();
   const segment = useSelectedLayoutSegment();
-
-  function preventParamsArray() {
-    if (Array.isArray(params.article)) {
-      return (params.article = params.article[0]);
-    }
-    return params.article;
-  }
-
-  let [currentArticle] = _.filter(data, {
-    id: preventParamsArray(),
-  }) as ArticleType[];
 
   if (!currentArticle) {
     return;

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { db } from "@/lib/firestore-config";
 
-import { ArticleType } from "@/components/view/home/ArticleCardGrid";
+import { ArticleType } from "@/components/functionality/read/articleQueryAtom";
 
 async function deleteArticle(docId: string) {
   await deleteDoc(doc(db, "articles", docId));
@@ -27,7 +27,7 @@ export default function useDeleteArticle() {
       queryClient.setQueryData(["articles"], (old: ArticleType[]) =>
         _.filter(old, { id: !deletedArticleId }),
       );
-      router.push(`/${nextArticle?.id}`);
+      router.push(`/${nextArticle ? nextArticle.url : "#"}`);
       return { previousArticles };
     },
     onError: (_err, _newTodo, context) => {

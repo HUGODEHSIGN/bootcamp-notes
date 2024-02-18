@@ -1,10 +1,9 @@
 "use client";
 
 import { useAtom } from "jotai";
-import _ from "lodash";
 import { useState } from "react";
 
-import useFindNextArticle from "@/components/functionality/delete/useFindNextArticle";
+import useGetCurrentArticle from "@/components/functionality/current-article/useGetCurrentArticle";
 
 import Tiptap from "../../form/fields/tiptap/Tiptap";
 import { articlesQueryAtom } from "../../functionality/read/articleQueryAtom";
@@ -18,8 +17,7 @@ export default function Article({ articleParams }: Props) {
   const [{ data, isFetching }] = useAtom(articlesQueryAtom);
   const [articleContent, setArticleContent] = useState("");
 
-  const [currentArticle] = _.filter(data, { id: articleParams });
-  const nextArticle = useFindNextArticle();
+  const currentArticle = useGetCurrentArticle();
 
   function renderCategories() {
     return currentArticle.category.map((tag) => (
@@ -37,7 +35,6 @@ export default function Article({ articleParams }: Props) {
   return (
     // container for article
     <div className="mt-6 flex flex-col gap-6">
-      <div>{nextArticle?.title}</div>
       <div className="flex flex-col gap-1">
         <CardTitle>{currentArticle.title}</CardTitle>
         <CardDescription>{currentArticle.description}</CardDescription>

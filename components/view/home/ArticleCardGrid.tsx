@@ -8,16 +8,6 @@ import { articlesQueryAtom } from "@/components/functionality/read/articleQueryA
 
 import useFilterSortArticles from "../../functionality/filter-sort/useFilterSortArticles";
 
-export type ArticleType = {
-  id: string;
-  category: string[];
-  content: string;
-  title: string;
-  description: string;
-  created: { seconds: number; nanoseconds: number };
-  edited: { seconds: number; nanoseconds: number };
-};
-
 export default function ArticleCardGrid() {
   const articles = useFilterSortArticles();
   const [{ isSuccess, isPending }] = useAtom(articlesQueryAtom);

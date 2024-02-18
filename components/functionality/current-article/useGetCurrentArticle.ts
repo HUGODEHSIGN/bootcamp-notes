@@ -2,12 +2,10 @@ import { useAtom } from "jotai";
 import _ from "lodash";
 import { useParams } from "next/navigation";
 
-import { ArticleType } from "@/components/view/home/ArticleCardGrid";
-
-import { articlesQueryAtom } from "../read/articleQueryAtom";
+import { ArticleType, articlesQueryAtom } from "../read/articleQueryAtom";
 
 export default function useGetCurrentArticle() {
-  const [{ data, isFetching }] = useAtom(articlesQueryAtom);
+  const [{ data }] = useAtom(articlesQueryAtom);
   let params = useParams();
 
   function preventParamsArray() {
@@ -17,11 +15,9 @@ export default function useGetCurrentArticle() {
     return params.article;
   }
 
-  const articleId = preventParamsArray();
-
   const [currentArticle] = _.filter(data, {
-    id: preventParamsArray(),
+    url: preventParamsArray(),
   }) as ArticleType[];
 
-  return { articleId, currentArticle };
+  return currentArticle;
 }

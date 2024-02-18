@@ -1,8 +1,8 @@
-import { ArticleType } from "./ArticleCardGrid";
 import { disableLinkAtom, filterAtom, selectedArticleAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
 import Link from "next/link";
 
+import { ArticleType } from "@/components/functionality/read/articleQueryAtom";
 import {
   Card,
   CardDescription,
@@ -30,18 +30,16 @@ export default function ArticleCard({ article }: Props) {
   }
 
   function renderTags() {
-    if (Array.isArray(article.category)) {
-      return article.category.map((tag) => (
-        <div key={tag}>
-          <Tag category={tag} />
-        </div>
-      ));
-    }
+    return article.category.map((tag) => (
+      <div key={tag}>
+        <Tag category={tag} />
+      </div>
+    ));
   }
 
   // render component
   return (
-    <Link href={linkIsDisabled ? "#" : `/${article.id}`}>
+    <Link href={linkIsDisabled ? "#" : `/${article.url}`}>
       <ArticleContextMenu article={article}>
         <Card
           className="hover:bg-secondary h-[145px]"

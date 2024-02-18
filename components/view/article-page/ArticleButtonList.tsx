@@ -11,7 +11,7 @@ import { articlesQueryAtom } from "../../functionality/read/articleQueryAtom";
 export default function ArticleButtonList() {
   const articles = useFilterSortArticles();
   const [{ isSuccess, isFetching, isError }] = useAtom(articlesQueryAtom);
-  const { articleId } = useGetCurrentArticle();
+  const currentArticle = useGetCurrentArticle();
 
   if (isFetching) {
     return <div>Loading...</div>;
@@ -21,12 +21,16 @@ export default function ArticleButtonList() {
     return <div>Error...</div>;
   }
 
+  if (!currentArticle) {
+    return <div>No current Article</div>;
+  }
+
   // render all of the article buttons
   function renderArticles() {
     return articles!.map((article) => (
       <div key={article.title}>
         {/* passes in articleId to detect if currently selected article matches the button for different style */}
-        <ArticleButton article={article} params={articleId} />
+        <ArticleButton article={article} params={currentArticle.url} />
       </div>
     ));
   }

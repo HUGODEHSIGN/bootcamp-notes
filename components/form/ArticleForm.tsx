@@ -7,13 +7,13 @@ import { useArticleSchema } from "./useArticleSchema";
 import { cn } from "@/lib/utils";
 import { Dispatch, SetStateAction } from "react";
 
+import { ArticleType } from "@/components/functionality/read/articleQueryAtom";
 // import useFetchCategories from "@/lib/hooks/useFetchCategories";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 
 import { useAddArticle } from "../functionality/add/useAddArticle";
 import { useEditArticle } from "../functionality/edit/useEditArticle";
-import { ArticleType } from "../view/home/ArticleCardGrid";
 
 type ArticleFormProps = {
   className?: string;
