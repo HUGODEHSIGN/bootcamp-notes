@@ -16,12 +16,14 @@ import {
 type Props = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  title: string;
   docId: string;
 };
 
 export default function DeleteArticleDialog({
   isOpen,
   setIsOpen,
+  title,
   docId,
 }: Props) {
   const [linkIsDisabled, setLinkIsDisabled] = useAtom(disableLinkAtom);
@@ -37,10 +39,11 @@ export default function DeleteArticleDialog({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Are you sure you want to delete {title}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete this
-              article.
+              This will permanently delete this article.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -48,6 +51,7 @@ export default function DeleteArticleDialog({
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/80"
               onClick={() => {
                 mutate(docId);
               }}

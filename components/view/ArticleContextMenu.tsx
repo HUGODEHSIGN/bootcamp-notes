@@ -73,6 +73,7 @@ export default function ArticleContextMenu({ children, article }: Props) {
       <DeleteArticleDialog
         isOpen={dialogIsOpen}
         setIsOpen={setDialogIsOpen}
+        title={article.title}
         docId={article.id}
       />
     </>

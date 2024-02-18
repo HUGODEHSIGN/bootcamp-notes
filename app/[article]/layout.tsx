@@ -1,8 +1,9 @@
-import { ChevronLeft, Trash2 } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 import TooltipAll from "@/components/all/TooltipAll";
+import DeleteButton from "@/components/functionality/delete/DeleteButton";
 import EditButton from "@/components/functionality/edit/EditButton";
 import ArticleFilterDropdown from "@/components/functionality/filter-sort/ArticleFilterDropdown";
 import ArticleSortDropdown from "@/components/functionality/filter-sort/ArticleSortDropdown";
@@ -29,11 +30,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
         <div className="flex flex-row gap-2 mb-2">
           <EditButton />
 
-          <TooltipAll content="Delete">
-            <Button variant="destructive" size="icon" className="h-9 w-9">
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </TooltipAll>
+          <DeleteButton />
         </div>
       </div>
 
